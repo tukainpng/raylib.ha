@@ -78,7 +78,10 @@ export @symbol("GetGamepadAxisMovement") fn get_gamepad_axis_movement(gamepad: i
 @symbol("SetGamepadMappings") fn SetGamepadMappings(*c::char) int;
 
 // Timing-Related Functions
+export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;
 export @symbol("GetFrameTime") fn get_frame_time() f32;
+export @symbol("GetTime") fn get_time() f32;
+export @symbol("GetFPS") fn get_fps() int;
 
 // module: rshapes
 // Basic shapes drawing functions
