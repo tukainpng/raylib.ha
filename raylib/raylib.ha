@@ -19,7 +19,7 @@ export type Vector3 = struct {
 	z: f32,
 };
 
-// Window-Related Functions
+// Window-Related functions
 export fn init_window(width: size, height: size, title: str) void = {
 	InitWindow(width, height, c::fromstr(title));
 };
@@ -33,10 +33,40 @@ export fn set_window_title(title: str) void = {
 export @symbol("WindowShouldClose") fn window_should_close() bool;
 export @symbol("CloseWindow") fn close_window() void;
 
-// Drawing-Related Functions
+// Cursor-Related functions
+export @symbol("ShowCursor") fn show_cursor() void;
+export @symbol("HideCursor") fn hide_cursor() void;
+export @symbol("IsCursorHidden") fn is_cursor_hidden() bool;
+export @symbol("EnableCursor") fn enable_cursor() void;
+export @symbol("DisableCursor") fn disable_cursor() void;
+export @symbol("IsCursorOnScreen") fn is_cursor_on_screen() bool;
+
+// Drawing-Related functions
 export @symbol("BeginDrawing") fn begin_drawing() void;
 export @symbol("EndDrawing") fn end_drawing() void;
 export @symbol("ClearBackground") fn clear_background(color: Color) void;
+
+// Timing-Related functions
+export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;
+export @symbol("GetFrameTime") fn get_frame_time() f32;
+export @symbol("GetTime") fn get_time() f32;
+export @symbol("GetFPS") fn get_fps() int;
+
+// Misc. Functions
+export fn take_screenshot(filename: str) void = {
+	TakeScreenshot(c::fromstr(filename));
+};
+
+export fn open_url(url: str) void = {
+	OpenURL(c::fromstr(url));
+};
+
+@symbol("TakeScreenshot") fn TakeScreenshot(*c::char) void;
+@symbol("OpenURL") fn OpenURL(*c::char) void;
+
+//------------------------------------------------------------------------------------
+// Input Handling Functions (Module: core)
+//------------------------------------------------------------------------------------
 
 // Input-related functions: keyboard
 export @symbol("IsKeyPressed") fn is_key_pressed(key: int) bool;
@@ -77,12 +107,6 @@ export @symbol("GetGamepadAxisCount") fn get_gamepad_axis_count() int;
 export @symbol("GetGamepadAxisMovement") fn get_gamepad_axis_movement(gamepad: int, axis: int) f32;
 @symbol("SetGamepadMappings") fn SetGamepadMappings(*c::char) int;
 
-// Timing-Related Functions
-export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;
-export @symbol("GetFrameTime") fn get_frame_time() f32;
-export @symbol("GetTime") fn get_time() f32;
-export @symbol("GetFPS") fn get_fps() int;
-
 // module: rshapes
 // Basic shapes drawing functions
 export @symbol("DrawRectangle") fn draw_rectangle(x: int, y: int, w: int, h: int, color: Color) void;
@@ -92,7 +116,7 @@ export @symbol("DrawRectangle") fn draw_rectangle(x: int, y: int, w: int, h: int
 export @symbol("GetColor") fn get_color(color: u32) Color;
 
 // module: rtext
-// Text-Drawing Functions
+// Text-Drawing functions
 export fn draw_text(title: str, x: size, y: size, text_size: size, color: Color) void = {
 	DrawText(c::fromstr(title), x, y, text_size, color);
 };

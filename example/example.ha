@@ -25,7 +25,10 @@ export fn main() void = {
 	let size_x: f32 = 30.0;
 	let size_y: f32 = 30.0;
 
-	let keyboard_square_color = green;
+	let square_color = green;
+	let square_size_x: f32 = 30.0;
+	let square_size_y: f32 = 30.0;
+
 	let mouse_square_color = aqua;
 
 	let first_axis_square_color = purple;
@@ -56,44 +59,9 @@ export fn main() void = {
 		begin_drawing();
 		clear_background(bg);
 		draw_text("Input Test", 10, 570, 20, fg);
-		let fps_int = get_fps();
-		let fps_str = strconv::i32tos(fps_int);
+		set_target_fps(120);
+		let fps_str = strconv::i32tos(get_fps());
 		draw_text(fps_str, 750, 570, 20, fg);
-
-		// Keyboard
-		if (is_key_down('W')) y -= SPEED*get_frame_time();
-		if (is_key_down('A')) x -= SPEED*get_frame_time();
-		if (is_key_down('S')) y += SPEED*get_frame_time();
-		if (is_key_down('D')) x += SPEED*get_frame_time();
-
-		if (is_key_down('1')) keyboard_square_color = red;
-		if (is_key_down('2')) keyboard_square_color = green;
-		if (is_key_down('3')) keyboard_square_color = yellow;
-		if (is_key_down('4')) keyboard_square_color = blue;
-		if (is_key_down('5')) keyboard_square_color = purple;
-		if (is_key_down('6')) keyboard_square_color = aqua;
-		if (is_key_down('7')) keyboard_square_color = orange;
-		if (is_key_down('8')) keyboard_square_color = fg;
-		if (is_key_down('9')) keyboard_square_color = bg;
-
-		draw_rectangle(x: int, y: int, size_x: int, size_y: int, keyboard_square_color);
-
-		// Mouse
-		let mouse_x = get_mouse_x();
-		let mouse_y = get_mouse_y();
-		let offset_x = size_x / 2.0 * -1.0;
-		let offset_y = size_y / 2.0 * -1.0;
-		set_mouse_offset(offset_x: int,offset_y: int);
-
-		if (is_mouse_button_pressed(0)) mouse_square_color = blue;
-		if (is_mouse_button_pressed(1)) mouse_square_color = red;
-		if (is_mouse_button_pressed(2)) mouse_square_color = bg;
-
-		if (is_mouse_button_released(0)) mouse_square_color = aqua;
-		if (is_mouse_button_released(1)) mouse_square_color = aqua;
-		if (is_mouse_button_released(2)) mouse_square_color = aqua;
-
-		draw_rectangle(mouse_x, mouse_y, size_x: int, size_y: int, mouse_square_color);
 
 		// Gamepad
 		let first_axis_x = 100.0 + get_gamepad_axis_movement(0,0)*30.0;
@@ -134,6 +102,17 @@ export fn main() void = {
 		let button_x_y = 280.0;
 		let button_b_x = 330.0;
 		let button_b_y = 280.0;
+
+		x += get_gamepad_axis_movement(0,0)*2.0;
+		y += get_gamepad_axis_movement(0,1)*2.0;
+		if (is_gamepad_button_pressed(0,6)) square_color = red;
+		if (is_gamepad_button_pressed(0,8)) square_color = blue;
+		if (is_gamepad_button_pressed(0,7)) square_color = green;
+		if (is_gamepad_button_pressed(0,5)) square_color = yellow;
+		if (is_gamepad_button_pressed(0,1)) square_size_y -= 10.0;
+		if (is_gamepad_button_pressed(0,3)) square_size_y += 10.0;
+		if (is_gamepad_button_pressed(0,4)) square_size_x -= 10.0;
+		if (is_gamepad_button_pressed(0,2)) square_size_x += 10.0;
 
 		if (is_gamepad_button_pressed(0,16)) first_axis_square_color = blue;
 		if (is_gamepad_button_pressed(0,17)) second_axis_square_color = blue;
@@ -198,7 +177,47 @@ export fn main() void = {
 		draw_rectangle(button_x_x: int, button_x_y: int, size_x: int, size_y: int, button_x_square_color);
 		draw_rectangle(button_y_x: int, button_y_y: int, size_x: int, size_y: int, button_y_square_color);
 
+		// Keyboard
+		if (is_key_down('W')) y -= SPEED*get_frame_time();
+		if (is_key_down('A')) x -= SPEED*get_frame_time();
+		if (is_key_down('S')) y += SPEED*get_frame_time();
+		if (is_key_down('D')) x += SPEED*get_frame_time();
+
+		if (is_key_down('1')) square_color = red;
+		if (is_key_down('2')) square_color = green;
+		if (is_key_down('3')) square_color = yellow;
+		if (is_key_down('4')) square_color = blue;
+		if (is_key_down('5')) square_color = purple;
+		if (is_key_down('6')) square_color = aqua;
+		if (is_key_down('7')) square_color = orange;
+		if (is_key_down('8')) square_color = fg;
+		if (is_key_down('9')) square_color = bg;
+
+		draw_rectangle(x: int, y: int, square_size_x: int, square_size_y: int, square_color);
+
+		// Mouse
+		let mouse_x = get_mouse_x();
+		let mouse_y = get_mouse_y();
+		let offset_x = size_x / 2.0 * -1.0;
+		let offset_y = size_y / 2.0 * -1.0;
+		set_mouse_offset(offset_x: int,offset_y: int);
+
+		if (is_mouse_button_pressed(0)) mouse_square_color = blue;
+		if (is_mouse_button_pressed(1)) mouse_square_color = red;
+		if (is_mouse_button_pressed(2)) mouse_square_color = bg;
+
+		if (is_mouse_button_released(0)) mouse_square_color = aqua;
+		if (is_mouse_button_released(1)) mouse_square_color = aqua;
+		if (is_mouse_button_released(2)) mouse_square_color = aqua;
+
+		hide_cursor();
+		draw_rectangle(mouse_x, mouse_y, 10, 10, mouse_square_color);
+
 		end_drawing();
+
+		// Misc.
+		if (is_key_down(' ')) take_screenshot("scr.png");
+		if (is_key_down('C')) open_url("https://codeberg.org/guapito/raylib.ha");
 	};
 
 	close_window();
