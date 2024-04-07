@@ -7,7 +7,7 @@
 ### Things to know
 - Currently, i'm focussing on 2D game development, this means that any/all 3D
   related functions/structs/variables will not be implemented yet.
-- I'm not a programmer, and I dont know fully what things do. If theres an
+- I'm not a programmer, and I dont fully know what things do. If theres an
   issue in some part of the code, please, report it at the issues tab.
 
 ### Objectives
