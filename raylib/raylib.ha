@@ -2,23 +2,9 @@ use fmt;
 use types::c;
 
 // Structs
-export type Vector2 = struct {
-	x: f32,
-	y: f32,
-};
-
-export type Vector3 = struct {
-	x: f32,
-	y: f32,
-	z: f32,
-};
-
-export type Vector4 = struct {
-	x: f32,
-	y: f32,
-	z: f32,
-	w: f32,
-};
+export type Vector2 = struct { x: f32, y: f32 };
+export type Vector3 = struct { x: f32, y: f32, z: f32 };
+export type Vector4 = struct { x: f32, y: f32, z: f32, w: f32 };
 
 export type Matrix = struct {
 	m0: f32, m4: f32, m8: f32, m12: f32,
@@ -27,12 +13,7 @@ export type Matrix = struct {
 	m3: f32, m7: f32, m11: f32, m15: f32,
 };
 
-export type Color = struct {
-	r: u8,
-	g: u8,
-	b: u8,
-	a: u8,
-};
+export type Color = struct { r: u8, g: u8, b: u8, a: u8 };
 
 export type Rectangle = struct {
 	x: f32,
@@ -52,6 +33,21 @@ export type Texture = struct {
 export type Texture2D = Texture;
 export type TextureCubemap = Texture;
 
+export type RenderTexture = struct {
+	id: u32,
+	texture: Texture,
+	depth: Texture,
+};
+
+export type RenderTexture2D = RenderTexture;
+
+export type Camera2D = struct {
+	cam_offset: Vector2,
+	target: Vector2,
+	rotation: f32,
+	zoom: f32,
+};
+
 // Window-Related functions
 export fn init_window(width: size, height: size, title: str) void = {
 	InitWindow(width, height, c::fromstr(title));
@@ -65,6 +61,51 @@ export fn set_window_title(title: str) void = {
 @symbol("SetWindowTitle") fn SetWindowTitle(*c::char) void;
 export @symbol("WindowShouldClose") fn window_should_close() bool;
 export @symbol("CloseWindow") fn close_window() void;
+// TODO:
+// IsWindowReady
+// IsWindowFullscreen
+// IsWindowHidden
+// IsWindowMinimized
+// IsWindowMaximized
+// IsWindowFocused
+// IsWindowResized
+// IsWindowState
+// SetWindowState
+// ClearWindowState
+// ToggleFullscreen
+// ToggleBorderlessWindowed
+// MaximizeWindow
+// MinimizeWindow
+// RestoreWindow
+// SetWindowIcon
+// SetWindowIcons
+// SetWindowPosition
+// SetWindowMonitor
+// SetWindowMinSize
+// SetWindowMaxSize
+// SetWindowSize
+// SetWindowOpacity
+// SetWindowFocused
+// *GetWindowHandle
+// GetScreenWidth
+// GetScreenHeight
+// GetRenderWidth
+// GetRenderHeight
+// GetMonitorCount
+// GetCurrentMonitor
+// GetMonitorPosition
+// GetMonitorWidth
+// GetMonitorHeight
+// GetMonitorPhysicalWidth
+// GetMonitorPhysicalHeight
+// GetMonitorRefreshRate
+// GetWindowPosition
+// GetWindowScaleDPI
+// *GetMonitorName
+// SetClipboardText
+// *GetClipboardText
+// EnableEventWaiting
+// DisableEventWaiting
 
 // Cursor-Related functions
 export @symbol("ShowCursor") fn show_cursor() void;			// Shows cursor
@@ -77,7 +118,20 @@ export @symbol("IsCursorOnScreen") fn is_cursor_on_screen() bool;	// Check if cu
 // Drawing-Related functions
 export @symbol("BeginDrawing") fn begin_drawing() void;
 export @symbol("EndDrawing") fn end_drawing() void;
+export @symbol("BeginMode2D") fn begin_mode_2d(camera: Camera2D) void;
+export @symbol("EndMode2D") fn end_mode_2d() void;
+export @symbol("BeginTextureMode") fn begin_texture_mode(target: RenderTexture2D) void;
+export @symbol("EndTextureMode") fn end_texture_mode() void;
 export @symbol("ClearBackground") fn clear_background(color: Color) void;
+// TODO:
+// BeginShaderMode
+// EndShaderMode
+// BeginBlendMode
+// EndBlendMode
+// BeginScissorMode
+// EndScissorMode
+// BeginVrStereoMode
+// EndVrStereoMode
 
 // Timing-Related functions
 export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;	// Set target FPS (maximum)

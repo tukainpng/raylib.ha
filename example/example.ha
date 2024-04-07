@@ -17,8 +17,8 @@ export fn main() void = {
 	const aqua       = get_color(aqua0);
 	const orange     = get_color(orange0);
 
-	let x = 0.0;
-	let y = 0.0;
+	let square_x = 0.0;
+	let square_y = 0.0;
 
 	let size_x = 30.0;
 	let size_y = 30.0;
@@ -50,6 +50,15 @@ export fn main() void = {
 	let button_x_circle_color = fg;
 	let button_y_circle_color = fg;
 
+	let center_x = 800.0;
+	let center_y = 600.0;
+
+	let camera = Camera2D {
+		cam_offset = Vector2 { x = 800.0/2.0, y = 600.0/2.0 },
+		target = Vector2 { x = square_x: f32 + square_size_x: f32 / 2.0, y = square_y: f32 + square_size_y: f32 / 2.0 },
+		rotation = 0.0,
+		zoom = 1.0,
+	};
 
 	init_window(800, 600, "Input Test");
 
@@ -57,18 +66,16 @@ export fn main() void = {
 		set_window_title("Input Test");
 		begin_drawing();
 		clear_background(bg);
-		draw_text("Input Test", 10, 570, 20, fg);
-		set_target_fps(120);
-		draw_fps(700,570);
+		begin_mode_2d(camera);
 
-		let line_1_start	= Vector2 {x = 0.0, y = 0.0};
-		let line_1_end		= Vector2 {x = 800.0, y = 0.0};
-		let line_2_start	= Vector2 {x = 800.0, y = 0.0};
-		let line_2_end		= Vector2 {x = 800.0, y = 600.0};
-		let line_3_start	= Vector2 {x = 800.0, y = 600.0};
-		let line_3_end		= Vector2 {x = 0.0, y = 600.0};
-		let line_4_start	= Vector2 {x = 0.0, y = 600.0};
-		let line_4_end		= Vector2 {x = 0.0, y = 0.0};
+		let line_1_start	= Vector2 { x = 0.0, y = 0.0 };
+		let line_1_end		= Vector2 { x = 800.0, y = 0.0 };
+		let line_2_start	= Vector2 { x = 800.0, y = 0.0 };
+		let line_2_end		= Vector2 { x = 800.0, y = 600.0 };
+		let line_3_start	= Vector2 { x = 800.0, y = 600.0 };
+		let line_3_end		= Vector2 { x = 0.0, y = 600.0 };
+		let line_4_start	= Vector2 { x = 0.0, y = 600.0 };
+		let line_4_end		= Vector2 { x = 0.0, y = 0.0 };
 
 		draw_line_ex(line_1_start, line_1_end, 5.0, purple);
 		draw_line_ex(line_2_start, line_2_end, 5.0, purple);
@@ -81,21 +88,21 @@ export fn main() void = {
 		let second_axis_x = 315.0 + get_gamepad_axis_movement(0,2)*30.0;
 		let second_axis_y = 115.0 + get_gamepad_axis_movement(0,3)*30.0;
 
-		let dpad_triangle_up_v1 = Vector2 {x = 100.0, y = 280.0};
-		let dpad_triangle_up_v2 = Vector2 {x = 130.0, y = 280.0};
-		let dpad_triangle_up_v3 = Vector2 {x = 115.0, y = 250.0};
+		let dpad_triangle_up_v1 = Vector2 { x = 100.0, y = 280.0 };
+		let dpad_triangle_up_v2 = Vector2 { x = 130.0, y = 280.0 };
+		let dpad_triangle_up_v3 = Vector2 { x = 115.0, y = 250.0 };
 
-		let dpad_triangle_down_v1 = Vector2 {x = 100.0, y = 310.0};
-		let dpad_triangle_down_v2 = Vector2 {x = 115.0, y = 340.0};
-		let dpad_triangle_down_v3 = Vector2 {x = 130.0, y = 310.0};
+		let dpad_triangle_down_v1 = Vector2 { x = 100.0, y = 310.0 };
+		let dpad_triangle_down_v2 = Vector2 { x = 115.0, y = 340.0 };
+		let dpad_triangle_down_v3 = Vector2 { x = 130.0, y = 310.0 };
 
-		let dpad_triangle_left_v1 = Vector2 {x = 70.0, y = 295.0};
-		let dpad_triangle_left_v2 = Vector2 {x = 100.0, y = 310.0};
-		let dpad_triangle_left_v3 = Vector2 {x = 100.0, y = 280.0};
+		let dpad_triangle_left_v1 = Vector2 { x = 70.0, y = 295.0 };
+		let dpad_triangle_left_v2 = Vector2 { x = 100.0, y = 310.0 };
+		let dpad_triangle_left_v3 = Vector2 { x = 100.0, y = 280.0 };
 
-		let dpad_triangle_right_v3 = Vector2 {x = 160.0, y = 295.0};
-		let dpad_triangle_right_v1 = Vector2 {x = 130.0, y = 280.0};
-		let dpad_triangle_right_v2 = Vector2 {x = 130.0, y = 310.0};
+		let dpad_triangle_right_v3 = Vector2 { x = 160.0, y = 295.0 };
+		let dpad_triangle_right_v1 = Vector2 { x = 130.0, y = 280.0 };
+		let dpad_triangle_right_v2 = Vector2 { x = 130.0, y = 310.0 };
 
 		let button_select_x = 180.0;
 		let button_select_y = 250.0;
@@ -125,8 +132,8 @@ export fn main() void = {
 		let button_b_x = 345.0;
 		let button_b_y = 295.0;
 
-		x += get_gamepad_axis_movement(0,0)*2.0;
-		y += get_gamepad_axis_movement(0,1)*2.0;
+		square_x += get_gamepad_axis_movement(0,0)*2.0;
+		square_y += get_gamepad_axis_movement(0,1)*2.0;
 		if (is_gamepad_button_pressed(0,6)) square_color = red;
 		if (is_gamepad_button_pressed(0,8)) square_color = blue;
 		if (is_gamepad_button_pressed(0,7)) square_color = green;
@@ -146,14 +153,14 @@ export fn main() void = {
 		if (is_gamepad_button_released(0,13)) button_select_square_color = fg;
 		if (is_gamepad_button_released(0,15)) button_start_square_color = fg;
 
-		if (is_gamepad_button_pressed(0,10)) button_lt_square_color = orange;
-		if (is_gamepad_button_pressed(0,9)) button_lb_square_color = red;
-		if (is_gamepad_button_pressed(0,12)) button_rt_square_color = orange;
-		if (is_gamepad_button_pressed(0,11)) button_rb_square_color = red;
-		if (is_gamepad_button_released(0,10)) button_lt_square_color = fg;
-		if (is_gamepad_button_released(0,9)) button_lb_square_color = fg;
-		if (is_gamepad_button_released(0,12)) button_rt_square_color = fg;
-		if (is_gamepad_button_released(0,11)) button_rb_square_color = fg;
+		if (is_gamepad_button_pressed(0,10)) button_lb_square_color = orange;
+		if (is_gamepad_button_pressed(0,9)) button_lt_square_color = red;
+		if (is_gamepad_button_pressed(0,12)) button_rb_square_color = orange;
+		if (is_gamepad_button_pressed(0,11)) button_rt_square_color = red;
+		if (is_gamepad_button_released(0,10)) button_lb_square_color = fg;
+		if (is_gamepad_button_released(0,9)) button_lt_square_color = fg;
+		if (is_gamepad_button_released(0,12)) button_rb_square_color = fg;
+		if (is_gamepad_button_released(0,11)) button_rt_square_color = fg;
 
 		if (is_gamepad_button_pressed(0,6)) button_b_circle_color = red;
 		if (is_gamepad_button_pressed(0,8)) button_x_circle_color = blue;
@@ -202,10 +209,10 @@ export fn main() void = {
 		// Keyboard
 		set_exit_key('Q');
 
-		if (is_key_down('W')) y -= SPEED*get_frame_time();
-		if (is_key_down('A')) x -= SPEED*get_frame_time();
-		if (is_key_down('S')) y += SPEED*get_frame_time();
-		if (is_key_down('D')) x += SPEED*get_frame_time();
+		if (is_key_down('W')) square_y -= SPEED*get_frame_time();
+		if (is_key_down('A')) square_x -= SPEED*get_frame_time();
+		if (is_key_down('S')) square_y += SPEED*get_frame_time();
+		if (is_key_down('D')) square_x += SPEED*get_frame_time();
 
 		if (is_key_down('1')) square_color = red;
 		if (is_key_down('2')) square_color = green;
@@ -217,7 +224,7 @@ export fn main() void = {
 		if (is_key_down('8')) square_color = fg;
 		if (is_key_down('9')) square_color = bg;
 
-		draw_rectangle(x: int, y: int, square_size_x: int, square_size_y: int, square_color);
+		draw_rectangle(square_x: int, square_y: int, square_size_x: int, square_size_y: int, square_color);
 
 		// Mouse
 		let mouse_x = get_mouse_x();
@@ -237,6 +244,21 @@ export fn main() void = {
 		hide_cursor();
 		draw_rectangle(mouse_x, mouse_y, 10, 10, mouse_square_color);
 
+		// Camera
+		camera.target = Vector2 { x = square_x: f32 + square_size_x: f32 / 2.0, y = square_y: f32 + square_size_y: f32 / 2.0 };
+		if (is_gamepad_button_down(0,10)) camera.rotation -= 0.3;
+		if (is_gamepad_button_down(0,12)) camera.rotation += 0.3;
+		if (is_gamepad_button_down(0,9)) camera.zoom -= 0.01;
+		if (is_gamepad_button_down(0,11)) camera.zoom += 0.01;
+		if (is_gamepad_button_pressed(0,13)) camera.rotation = 0.0;
+		if (is_gamepad_button_pressed(0,15)) camera.zoom = 1.0;
+		camera.zoom += get_mouse_wheel_move() / 20.0;
+
+		end_mode_2d();
+
+		set_target_fps(120);
+		draw_text("Input Test", 10, 570, 20, fg);
+		draw_fps(700,570);
 		end_drawing();
 
 		// Misc.
