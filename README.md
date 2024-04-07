@@ -1,4 +1,7 @@
-# raylib.ha
+<div align="center">
+    <img width="200px" src="logo.jpg">
+    <h1>raylib.ha</h1>
+</div>
 
 Hare symbols for raylib.
 
