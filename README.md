@@ -1,9 +1,8 @@
 <div align="center">
     <img width="200px" src="logo.jpg">
     <h1>raylib.ha</h1>
+    <p>Hare symbols for raylib.</p>
 </div>
-
-Hare symbols for raylib.
 
 ### Objectives
 
