@@ -67,12 +67,12 @@ export @symbol("WindowShouldClose") fn window_should_close() bool;
 export @symbol("CloseWindow") fn close_window() void;
 
 // Cursor-Related functions
-export @symbol("ShowCursor") fn show_cursor() void;
-export @symbol("HideCursor") fn hide_cursor() void;
-export @symbol("IsCursorHidden") fn is_cursor_hidden() bool;
-export @symbol("EnableCursor") fn enable_cursor() void;
-export @symbol("DisableCursor") fn disable_cursor() void;
-export @symbol("IsCursorOnScreen") fn is_cursor_on_screen() bool;
+export @symbol("ShowCursor") fn show_cursor() void;			// Shows cursor
+export @symbol("HideCursor") fn hide_cursor() void;			// Hides cursor
+export @symbol("IsCursorHidden") fn is_cursor_hidden() bool;		// Check if cursor is not visible
+export @symbol("EnableCursor") fn enable_cursor() void;			// Enables cursor (unlock cursor)
+export @symbol("DisableCursor") fn disable_cursor() void;		// Disables cursor (lock cursor)
+export @symbol("IsCursorOnScreen") fn is_cursor_on_screen() bool;	// Check if cursor is on the screen
 
 // Drawing-Related functions
 export @symbol("BeginDrawing") fn begin_drawing() void;
@@ -80,10 +80,10 @@ export @symbol("EndDrawing") fn end_drawing() void;
 export @symbol("ClearBackground") fn clear_background(color: Color) void;
 
 // Timing-Related functions
-export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;
-export @symbol("GetFrameTime") fn get_frame_time() f32;
-export @symbol("GetTime") fn get_time() f32;
-export @symbol("GetFPS") fn get_fps() int;
+export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;	// Set target FPS (maximum)
+export @symbol("GetFrameTime") fn get_frame_time() f32;			// Get time in seconds for last frame drawn (delta time)
+export @symbol("GetTime") fn get_time() f64;				// Get elapsed time in seconds since InitWindow()
+export @symbol("GetFPS") fn get_fps() int;				// Get current FPS
 
 // Misc. Functions
 export fn take_screenshot(filename: str) void = {
@@ -94,51 +94,55 @@ export fn open_url(url: str) void = {
 	OpenURL(c::fromstr(url));
 };
 
-@symbol("TakeScreenshot") fn TakeScreenshot(*c::char) void;
-@symbol("OpenURL") fn OpenURL(*c::char) void;
+@symbol("TakeScreenshot") fn TakeScreenshot(*c::char) void;	// Takes a screenshot of current screen (filename extension defines format)
+@symbol("OpenURL") fn OpenURL(*c::char) void;			// Open URL with default system browser (if available)
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
 
 // Input-related functions: keyboard
-export @symbol("IsKeyPressed") fn is_key_pressed(key: int) bool;
-export @symbol("IsKeyPressedRepeat") fn is_key_pressed_repeat(key: int) bool;
-export @symbol("IsKeyDown") fn is_key_down(key: int) bool;
-export @symbol("IsKeyReleased") fn is_key_released(key: int) bool;
-export @symbol("IsKeyUp") fn is_key_up(key: int) bool;
-export @symbol("GetKeyPressed") fn get_key_pressed() int;
-export @symbol("GetCharPressed") fn get_char_pressed() int;
-export @symbol("SetExitKey") fn set_exit_key(key: int) void;
-
-// Input-related functions: mouse
-export @symbol("IsMouseButtonPressed") fn is_mouse_button_pressed(mouse_button: int) bool;
-export @symbol("IsMouseButtonDown") fn is_mouse_button_down(mouse_button: int) bool;
-export @symbol("IsMouseButtonReleased") fn is_mouse_button_released(mouse_button: int) bool;
-export @symbol("IsMouseButtonUp") fn is_mouse_button_up(mouse_button: int) bool;
-export @symbol("GetMouseX") fn get_mouse_x() int;
-export @symbol("GetMouseY") fn get_mouse_y() int;
-export @symbol("SetMousePosition") fn set_mouse_position(x: int, y: int) void;
-export @symbol("SetMouseOffset") fn set_mouse_offset(offset_x: int, offset_y: int) void;
-export @symbol("SetMouseScale") fn set_mouse_scale(scale_x: f32, scale_y: f32) void;
-export @symbol("GetMouseWheelMove") fn get_mouse_wheel_move() f32;
-export @symbol("GetMouseWheelMoveV") fn get_mouse_wheel_move_v() Vector2;
-export @symbol("SetMouseCursor") fn set_mouse_cursor(cursor: int) void;
+export @symbol("IsKeyPressed") fn is_key_pressed(key: int) bool;		// Check if a key has been pressed once
+export @symbol("IsKeyPressedRepeat") fn is_key_pressed_repeat(key: int) bool;	// Check if a key has been pressed again (Only PLATFORM_DESKTOP)
+export @symbol("IsKeyDown") fn is_key_down(key: int) bool;			// Check if a key is being pressed
+export @symbol("IsKeyReleased") fn is_key_released(key: int) bool;		// Check if a key has been released once
+export @symbol("IsKeyUp") fn is_key_up(key: int) bool;				// Check if a key is NOT being pressed
+export @symbol("GetKeyPressed") fn get_key_pressed() int;			// Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
+export @symbol("GetCharPressed") fn get_char_pressed() int;			// Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
+export @symbol("SetExitKey") fn set_exit_key(key: int) void;			// Set a custom key to exit program (default is ESC)
 
 // Input-related functions: gamepad
 export fn set_gamepad_mappings(mappings: str) void = {
 	SetGamepadMappings(c::fromstr(mappings));
 };
 
-export @symbol("IsGamepadAvaible") fn is_gamepad_avaible(gamepad: int) bool;
-export @symbol("IsGamepadButtonPressed") fn is_gamepad_button_pressed(gamepad: int, button: int) bool;
-export @symbol("IsGamepadButtonDown") fn is_gamepad_button_down(gamepad: int, button: int) bool;
-export @symbol("IsGamepadButtonReleased") fn is_gamepad_button_released(gamepad: int, button: int) bool;
-export @symbol("IsGamepadButtonUp") fn is_gamepad_button_up(gamepad: int, button: int) bool;
-export @symbol("GetGamepadButtonPressed") fn get_gamepad_button_pressed() int;
-export @symbol("GetGamepadAxisCount") fn get_gamepad_axis_count() int;
-export @symbol("GetGamepadAxisMovement") fn get_gamepad_axis_movement(gamepad: int, axis: int) f32;
-@symbol("SetGamepadMappings") fn SetGamepadMappings(*c::char) int;
+export @symbol("IsGamepadAvaible") fn is_gamepad_avaible(gamepad: int) bool;					// Check if a gamepad is available
+// TODO:
+// GetGamepadName
+export @symbol("IsGamepadButtonPressed") fn is_gamepad_button_pressed(gamepad: int, button: int) bool;		// Check if a gamepad button has been pressed once
+export @symbol("IsGamepadButtonDown") fn is_gamepad_button_down(gamepad: int, button: int) bool;		// Check if a gamepad button is being pressed
+export @symbol("IsGamepadButtonReleased") fn is_gamepad_button_released(gamepad: int, button: int) bool;	// Check if a gamepad button has been released once
+export @symbol("IsGamepadButtonUp") fn is_gamepad_button_up(gamepad: int, button: int) bool;			// Check if a gamepad button is NOT being pressed
+export @symbol("GetGamepadButtonPressed") fn get_gamepad_button_pressed() int;					// Get the last gamepad button pressed
+export @symbol("GetGamepadAxisCount") fn get_gamepad_axis_count() int;						// Get gamepad axis count for a gamepad
+export @symbol("GetGamepadAxisMovement") fn get_gamepad_axis_movement(gamepad: int, axis: int) f32;		// Get axis movement value for a gamepad axis
+@symbol("SetGamepadMappings") fn SetGamepadMappings(*c::char) int;						// Set internal gamepad mappings (SDL_GameControllerDB)
+
+// Input-related functions: mouse
+export @symbol("IsMouseButtonPressed") fn is_mouse_button_pressed(mouse_button: int) bool;	// Check if a mouse button has been pressed once
+export @symbol("IsMouseButtonDown") fn is_mouse_button_down(mouse_button: int) bool;		// Check if a mouse button is being pressed
+export @symbol("IsMouseButtonReleased") fn is_mouse_button_released(mouse_button: int) bool;	// Check if a mouse button has been released once
+export @symbol("IsMouseButtonUp") fn is_mouse_button_up(mouse_button: int) bool;		// Check if a mouse button is NOT being pressed
+export @symbol("GetMouseX") fn get_mouse_x() int;						// Get mouse position X
+export @symbol("GetMouseY") fn get_mouse_y() int;						// Get mouse position Y
+export @symbol("GetMousePosition") fn get_mouse_position() Vector2;				// Get mouse position XY
+export @symbol("GetMouseDelta") fn get_mouse_delta() Vector2;					// Get mouse delta between frames
+export @symbol("SetMousePosition") fn set_mouse_position(x: int, y: int) void;			// Set mouse position XY
+export @symbol("SetMouseOffset") fn set_mouse_offset(offset_x: int, offset_y: int) void;	// Set mouse offset
+export @symbol("SetMouseScale") fn set_mouse_scale(scale_x: f32, scale_y: f32) void;		// Set mouse scaling
+export @symbol("GetMouseWheelMove") fn get_mouse_wheel_move() f32;				// Get mouse wheel movement for X or Y, whichever is larger
+export @symbol("GetMouseWheelMoveV") fn get_mouse_wheel_move_v() Vector2;			// Get mouse wheel movement for both X and Y
+export @symbol("SetMouseCursor") fn set_mouse_cursor(cursor: int) void;				// Set mouse cursor
 
 // module: rshapes
 // Basic shapes drawing functions
@@ -163,18 +167,15 @@ export @symbol("DrawRing") fn draw_ring(center: Vector2, inner_radius: f32, outt
 export @symbol("DrawRingLine") fn draw_ring_line(center: Vector2, inner_radius: f32, outter_radius: f32, start_angle: f32, end_angle: f32, segments: int, color: Color) void;
 export @symbol("DrawRectangle") fn draw_rectangle(x: int, y: int, w: int, h: int, color: Color) void;
 export @symbol("DrawRectangleV") fn draw_rectangle_v(position: Vector2, rectangle_size: Vector2, color: Color) void;
-// TODO:
-// DrawRectangleRec
-// DrawRectanglePro
+export @symbol("DrawRectangleRec") fn draw_rectangle_rec(rec: Rectangle, color: Color) void;
+export @symbol("DrawRectanglePro") fn draw_rectangle_pro(rec: Rectangle, origin: Vector2, rotation: f32, color: Color) void;
 export @symbol("DrawRectangleGradientV") fn draw_rectangle_gradient_v(x: int, y: int, w: int, h: int, color_1: Color, color_2: Color) void;
 export @symbol("DrawRectangleGradientH") fn draw_rectangle_gradient_h(x: int, y: int, w: int, h: int, color_1: Color, color_2: Color) void;
-// TODO:
-// DrawRectangleGradientEx
+export @symbol("DrawRectangleGradientEx") fn draw_rectangle_gradient_ex(rec: Rectangle, color_1: Color, color_2: Color, color_3: Color, color_4: Color, ) void;
 export @symbol("DrawRectangleLines") fn draw_rectangle_lines(x: int, y: int, w: int, h: int, color: Color) void;
-// TODO:
-// DrawRectangleLinesEx
-// DrawRectangleRounded
-// DrawRectangleRoundedLines
+export @symbol("DrawRectangleLinesEx") fn draw_rectangle_lines_ex(rec: Rectangle, line_thic: f32, color: Color) void;
+export @symbol("DrawRectangleRounded") fn draw_rectangle_rounded(rec: Rectangle, roundness: f32, segments: int, color: Color) void;
+export @symbol("DrawRectangleRoundedLines") fn draw_rectangle_rounded_lines(rec: Rectangle, roundness: f32, segments: int, line_thic: f32, color: Color) void;
 export @symbol("DrawTriangle") fn draw_triangle(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void;
 export @symbol("DrawTriangleLines") fn draw_triangle_lines(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void;
 // TODO:
