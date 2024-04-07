@@ -4,6 +4,8 @@ use raylib::*;
 use gruvbox::*;
 
 const SPEED: f32 = 200.0;
+const SCREEN_X = 1280;
+const SCREEN_Y = 720;
 
 export fn main() void = {
 
@@ -50,17 +52,17 @@ export fn main() void = {
 	let button_x_circle_color = fg;
 	let button_y_circle_color = fg;
 
-	let center_x = 800.0;
-	let center_y = 600.0;
+	let center_x = SCREEN_X: f32;
+	let center_y = SCREEN_Y: f32;
 
 	let camera = Camera2D {
-		cam_offset = Vector2 { x = 800.0/2.0, y = 600.0/2.0 },
+		cam_offset = Vector2 { x = SCREEN_X: f32/2.0, y = SCREEN_Y: f32/2.0 },
 		target = Vector2 { x = square_x: f32 + square_size_x: f32 / 2.0, y = square_y: f32 + square_size_y: f32 / 2.0 },
 		rotation = 0.0,
 		zoom = 1.0,
 	};
 
-	init_window(800, 600, "Input Test");
+	init_window(SCREEN_X: u32, SCREEN_Y: u32, "Input Test");
 
 	for (!window_should_close()) {
 		set_window_title("Input Test");
@@ -69,12 +71,12 @@ export fn main() void = {
 		begin_mode_2d(camera);
 
 		let line_1_start	= Vector2 { x = 0.0, y = 0.0 };
-		let line_1_end		= Vector2 { x = 800.0, y = 0.0 };
-		let line_2_start	= Vector2 { x = 800.0, y = 0.0 };
-		let line_2_end		= Vector2 { x = 800.0, y = 600.0 };
-		let line_3_start	= Vector2 { x = 800.0, y = 600.0 };
-		let line_3_end		= Vector2 { x = 0.0, y = 600.0 };
-		let line_4_start	= Vector2 { x = 0.0, y = 600.0 };
+		let line_1_end		= Vector2 { x = SCREEN_X: f32, y = 0.0 };
+		let line_2_start	= Vector2 { x = SCREEN_X: f32, y = 0.0 };
+		let line_2_end		= Vector2 { x = SCREEN_X: f32, y = SCREEN_Y: f32 };
+		let line_3_start	= Vector2 { x = SCREEN_X: f32, y = SCREEN_Y: f32 };
+		let line_3_end		= Vector2 { x = 0.0, y = SCREEN_Y: f32 };
+		let line_4_start	= Vector2 { x = 0.0, y = SCREEN_Y: f32 };
 		let line_4_end		= Vector2 { x = 0.0, y = 0.0 };
 
 		draw_line_ex(line_1_start, line_1_end, 5.0, purple);
@@ -257,8 +259,8 @@ export fn main() void = {
 		end_mode_2d();
 
 		set_target_fps(120);
-		draw_text("Input Test", 10, 570, 20, fg);
-		draw_fps(700,570);
+		draw_text("Input Test", 10, SCREEN_Y: u32 - 30, 20, fg);
+		draw_fps(SCREEN_X - 100, SCREEN_Y - 30);
 		end_drawing();
 
 		// Misc.
