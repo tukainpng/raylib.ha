@@ -8,22 +8,21 @@ const SPEED: f32 = 200.0;
 
 export fn main() void = {
 
-	let bg         = get_color(bg0);
-	let fg         = get_color(fg1);
+	const bg         = get_color(bg0);
+	const fg         = get_color(fg1);
+	const red        = get_color(red0);
+	const green      = get_color(green0);
+	const yellow     = get_color(yellow0);
+	const blue       = get_color(blue0);
+	const purple     = get_color(purple0);
+	const aqua       = get_color(aqua0);
+	const orange     = get_color(orange0);
 
-	let red        = get_color(red0);
-	let green      = get_color(green0);
-	let yellow     = get_color(yellow0);
-	let blue       = get_color(blue0);
-	let purple     = get_color(purple0);
-	let aqua       = get_color(aqua0);
-	let orange     = get_color(orange0);
+	let x = 0.0;
+	let y = 0.0;
 
-	let x: f32 = 0.0;
-	let y: f32 = 0.0;
-
-	let size_x: f32 = 30.0;
-	let size_y: f32 = 30.0;
+	let size_x = 30.0;
+	let size_y = 30.0;
 
 	let square_color = green;
 	let square_size_x: f32 = 30.0;
@@ -52,6 +51,7 @@ export fn main() void = {
 	let button_x_square_color = fg;
 	let button_y_square_color = fg;
 
+
 	init_window(800, 600, "Input Test");
 
 	for (!window_should_close()) {
@@ -60,8 +60,11 @@ export fn main() void = {
 		clear_background(bg);
 		draw_text("Input Test", 10, 570, 20, fg);
 		set_target_fps(120);
-		let fps_str = strconv::i32tos(get_fps());
-		draw_text(fps_str, 750, 570, 20, fg);
+		draw_fps(700,570);
+		draw_line(0, 1, 800, 1, purple);
+		draw_line(800, 1, 800, 600, purple);
+		draw_line(800, 600, 1, 600, purple);
+		draw_line(1, 600, 1, 1, purple);
 
 		// Gamepad
 		let first_axis_x = 100.0 + get_gamepad_axis_movement(0,0)*30.0;
@@ -94,14 +97,17 @@ export fn main() void = {
 		let button_rb_x = 300.0;
 		let button_rb_y = 220.0;
 
-		let button_y_x = 300.0;
-		let button_y_y = 250.0;
-		let button_a_x = 300.0;
-		let button_a_y = 310.0;
-		let button_x_x = 270.0;
-		let button_x_y = 280.0;
-		let button_b_x = 330.0;
-		let button_b_y = 280.0;
+		let button_y_x = 315.0;
+		let button_y_y = 265.0;
+
+		let button_a_x = 315.0;
+		let button_a_y = 325.0;
+
+		let button_x_x = 285.0;
+		let button_x_y = 295.0;
+
+		let button_b_x = 345.0;
+		let button_b_y = 295.0;
 
 		x += get_gamepad_axis_movement(0,0)*2.0;
 		y += get_gamepad_axis_movement(0,1)*2.0;
@@ -172,12 +178,14 @@ export fn main() void = {
 		draw_rectangle(button_rb_x: int, button_rb_y: int, size_x: int, 15, button_rb_square_color);
 
 		// front buttons
-		draw_rectangle(button_a_x: int, button_a_y: int, size_x: int, size_y: int, button_a_square_color);
-		draw_rectangle(button_b_x: int, button_b_y: int, size_x: int, size_y: int, button_b_square_color);
-		draw_rectangle(button_x_x: int, button_x_y: int, size_x: int, size_y: int, button_x_square_color);
-		draw_rectangle(button_y_x: int, button_y_y: int, size_x: int, size_y: int, button_y_square_color);
+		draw_circle(button_a_x: int, button_a_y: int, 15.0, button_a_square_color);
+		draw_circle(button_b_x: int, button_b_y: int, 15.0, button_b_square_color);
+		draw_circle(button_x_x: int, button_x_y: int, 15.0, button_x_square_color);
+		draw_circle(button_y_x: int, button_y_y: int, 15.0, button_y_square_color);
 
 		// Keyboard
+		set_exit_key('Q');
+
 		if (is_key_down('W')) y -= SPEED*get_frame_time();
 		if (is_key_down('A')) x -= SPEED*get_frame_time();
 		if (is_key_down('S')) y += SPEED*get_frame_time();
@@ -219,6 +227,7 @@ export fn main() void = {
 		if (is_key_down(' ')) take_screenshot("scr.png");
 		if (is_key_down('C')) open_url("https://codeberg.org/guapito/raylib.ha");
 	};
+
 
 	close_window();
 };

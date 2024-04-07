@@ -1,13 +1,7 @@
 use fmt;
 use types::c;
 
-export type Color = struct {
-	r: u8,
-	g: u8,
-	b: u8,
-	a: u8,
-};
-
+// Structs
 export type Vector2 = struct {
 	x: f32,
 	y: f32,
@@ -18,6 +12,45 @@ export type Vector3 = struct {
 	y: f32,
 	z: f32,
 };
+
+export type Vector4 = struct {
+	x: f32,
+	y: f32,
+	z: f32,
+	w: f32,
+};
+
+export type Matrix = struct {
+	m0: f32, m4: f32, m8: f32, m12: f32,
+	m1: f32, m5: f32, m9: f32, m13: f32,
+	m2: f32, m6: f32, m10: f32, m14: f32,
+	m3: f32, m7: f32, m11: f32, m15: f32,
+};
+
+export type Color = struct {
+	r: u8,
+	g: u8,
+	b: u8,
+	a: u8,
+};
+
+export type Rectangle = struct {
+	x: f32,
+	y: f32,
+	width: f32,
+	height: f32,
+};
+
+export type Texture = struct {
+	id: u32,
+	width: int,
+	height: int,
+	mipmaps: int,
+	format: int,
+};
+
+export type Texture2D = Texture;
+export type TextureCubemap = Texture;
 
 // Window-Related functions
 export fn init_window(width: size, height: size, title: str) void = {
@@ -109,17 +142,41 @@ export @symbol("GetGamepadAxisMovement") fn get_gamepad_axis_movement(gamepad: i
 
 // module: rshapes
 // Basic shapes drawing functions
+export @symbol("DrawPixel") fn draw_pixel(x: int, y: int, color: Color) void;
+export @symbol("DrawPixelV") fn draw_pixel_v(position: Vector2, color: Color) void;
+export @symbol("DrawLine") fn draw_line(start_x: int, start_y: int, end_x: int, end_y: int, color: Color) void;
+export @symbol("DrawLineV") fn draw_line_v(start_vector: Vector2, end_vector: Vector2, color: Color) void;
+export @symbol("DrawCircle") fn draw_circle(center_x: int, center_y: int, radius: f32, color: Color) void;
+export @symbol("DrawCircleLines") fn draw_circle_lines(center_x: int, center_y: int, radius: f32, color: Color) void;
 export @symbol("DrawRectangle") fn draw_rectangle(x: int, y: int, w: int, h: int, color: Color) void;
+export @symbol("DrawTriangle") fn draw_triangle(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void;
 
 // module: rtextures
+
+// STILL IN DEVELOPMENT
+// ---------------------------------------------------------------------------------------------------
+// Texture loading functions
+export fn load_texture(filename: str) Texture2D = {
+	return LoadTexture(c::fromstr(filename));
+};
+@symbol("LoadTexture") fn LoadTexture(*c::char) Texture2D;
+export @symbol("UnloadTexture") fn unload_texture(texture: Texture2D) void;
+
+// Texture drawing functions
+export @symbol("DrawTexture") fn draw_texture(texture: Texture, x: int, y: int, tint: Color) void;
+// ---------------------------------------------------------------------------------------------------
+
 // Color/Pixel related functions
 export @symbol("GetColor") fn get_color(color: u32) Color;
 
 // module: rtext
 // Text-Drawing functions
+export @symbol("DrawFPS") fn draw_fps(x: int, y: int) void;
 export fn draw_text(title: str, x: size, y: size, text_size: size, color: Color) void = {
 	DrawText(c::fromstr(title), x, y, text_size, color);
 };
-
 @symbol("DrawText") fn DrawText(*c::char, size, size, size, Color) void;
+
+// Text font info functions
+export @symbol("SetTextLineSpacing") fn set_text_line_spacing(spacing: int) void;
 
