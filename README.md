@@ -10,3 +10,5 @@
 possible to the original.
 - Take advantage of Hare features
 
+### Known issues
+- The texture loading/unloading is not implemented properly, resulting in a fork-bomb-like behavior.
