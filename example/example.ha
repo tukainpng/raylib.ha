@@ -1,5 +1,4 @@
 use fmt;
-use strconv;
 use types::c;
 use raylib::*;
 use gruvbox::*;
@@ -30,13 +29,13 @@ export fn main() void = {
 
 	let mouse_square_color = aqua;
 
-	let first_axis_square_color = purple;
-	let second_axis_square_color = purple;
+	let first_axis_circle_color = purple;
+	let second_axis_circle_color = purple;
 
-	let up_dpad_square_color = fg;
-	let down_dpad_square_color = fg;
-	let left_dpad_square_color = fg;
-	let right_dpad_square_color = fg;
+	let dpad_up_triangle_color = fg;
+	let dpad_down_triangle_color = fg;
+	let dpad_left_triangle_color = fg;
+	let dpad_right_triangle_color = fg;
 
 	let button_select_square_color = fg;
 	let button_start_square_color = fg;
@@ -46,10 +45,10 @@ export fn main() void = {
 	let button_rt_square_color = fg;
 	let button_rb_square_color = fg;
 
-	let button_a_square_color = fg;
-	let button_b_square_color = fg;
-	let button_x_square_color = fg;
-	let button_y_square_color = fg;
+	let button_a_circle_color = fg;
+	let button_b_circle_color = fg;
+	let button_x_circle_color = fg;
+	let button_y_circle_color = fg;
 
 
 	init_window(800, 600, "Input Test");
@@ -61,25 +60,42 @@ export fn main() void = {
 		draw_text("Input Test", 10, 570, 20, fg);
 		set_target_fps(120);
 		draw_fps(700,570);
-		draw_line(0, 1, 800, 1, purple);
-		draw_line(800, 1, 800, 600, purple);
-		draw_line(800, 600, 1, 600, purple);
-		draw_line(1, 600, 1, 1, purple);
+
+		let line_1_start	= Vector2 {x = 0.0, y = 0.0};
+		let line_1_end		= Vector2 {x = 800.0, y = 0.0};
+		let line_2_start	= Vector2 {x = 800.0, y = 0.0};
+		let line_2_end		= Vector2 {x = 800.0, y = 600.0};
+		let line_3_start	= Vector2 {x = 800.0, y = 600.0};
+		let line_3_end		= Vector2 {x = 0.0, y = 600.0};
+		let line_4_start	= Vector2 {x = 0.0, y = 600.0};
+		let line_4_end		= Vector2 {x = 0.0, y = 0.0};
+
+		draw_line_ex(line_1_start, line_1_end, 5.0, purple);
+		draw_line_ex(line_2_start, line_2_end, 5.0, purple);
+		draw_line_ex(line_3_start, line_3_end, 5.0, purple);
+		draw_line_ex(line_4_start, line_4_end, 5.0, purple);
 
 		// Gamepad
-		let first_axis_x = 100.0 + get_gamepad_axis_movement(0,0)*30.0;
-		let first_axis_y = 100.0 + get_gamepad_axis_movement(0,1)*30.0;
-		let second_axis_x = 300.0 + get_gamepad_axis_movement(0,2)*30.0;
-		let second_axis_y = 100.0 + get_gamepad_axis_movement(0,3)*30.0;
+		let first_axis_x = 115.0 + get_gamepad_axis_movement(0,0)*30.0;
+		let first_axis_y = 115.0 + get_gamepad_axis_movement(0,1)*30.0;
+		let second_axis_x = 315.0 + get_gamepad_axis_movement(0,2)*30.0;
+		let second_axis_y = 115.0 + get_gamepad_axis_movement(0,3)*30.0;
 
-		let dpad_up_x = 100.0;
-		let dpad_up_y = 250.0;
-		let dpad_down_x = 100.0;
-		let dpad_down_y = 310.0;
-		let dpad_left_x = 70.0;
-		let dpad_left_y = 280.0;
-		let dpad_right_x = 130.0;
-		let dpad_right_y = 280.0;
+		let dpad_triangle_up_v1 = Vector2 {x = 100.0, y = 280.0};
+		let dpad_triangle_up_v2 = Vector2 {x = 130.0, y = 280.0};
+		let dpad_triangle_up_v3 = Vector2 {x = 115.0, y = 250.0};
+
+		let dpad_triangle_down_v1 = Vector2 {x = 100.0, y = 310.0};
+		let dpad_triangle_down_v2 = Vector2 {x = 115.0, y = 340.0};
+		let dpad_triangle_down_v3 = Vector2 {x = 130.0, y = 310.0};
+
+		let dpad_triangle_left_v1 = Vector2 {x = 70.0, y = 295.0};
+		let dpad_triangle_left_v2 = Vector2 {x = 100.0, y = 310.0};
+		let dpad_triangle_left_v3 = Vector2 {x = 100.0, y = 280.0};
+
+		let dpad_triangle_right_v3 = Vector2 {x = 160.0, y = 295.0};
+		let dpad_triangle_right_v1 = Vector2 {x = 130.0, y = 280.0};
+		let dpad_triangle_right_v2 = Vector2 {x = 130.0, y = 310.0};
 
 		let button_select_x = 180.0;
 		let button_select_y = 250.0;
@@ -120,10 +136,10 @@ export fn main() void = {
 		if (is_gamepad_button_pressed(0,4)) square_size_x -= 10.0;
 		if (is_gamepad_button_pressed(0,2)) square_size_x += 10.0;
 
-		if (is_gamepad_button_pressed(0,16)) first_axis_square_color = blue;
-		if (is_gamepad_button_pressed(0,17)) second_axis_square_color = blue;
-		if (is_gamepad_button_released(0,16)) first_axis_square_color = purple;
-		if (is_gamepad_button_released(0,17)) second_axis_square_color = purple;
+		if (is_gamepad_button_pressed(0,16)) first_axis_circle_color = blue;
+		if (is_gamepad_button_pressed(0,17)) second_axis_circle_color = blue;
+		if (is_gamepad_button_released(0,16)) first_axis_circle_color = purple;
+		if (is_gamepad_button_released(0,17)) second_axis_circle_color = purple;
 
 		if (is_gamepad_button_pressed(0,13)) button_select_square_color = blue;
 		if (is_gamepad_button_pressed(0,15)) button_start_square_color = blue;
@@ -139,37 +155,37 @@ export fn main() void = {
 		if (is_gamepad_button_released(0,12)) button_rt_square_color = fg;
 		if (is_gamepad_button_released(0,11)) button_rb_square_color = fg;
 
-		if (is_gamepad_button_pressed(0,6)) button_b_square_color = red;
-		if (is_gamepad_button_pressed(0,8)) button_x_square_color = blue;
-		if (is_gamepad_button_pressed(0,7)) button_a_square_color = green;
-		if (is_gamepad_button_pressed(0,5)) button_y_square_color = yellow;
-		if (is_gamepad_button_released(0,6)) button_b_square_color = fg;
-		if (is_gamepad_button_released(0,8)) button_x_square_color = fg;
-		if (is_gamepad_button_released(0,7)) button_a_square_color = fg;
-		if (is_gamepad_button_released(0,5)) button_y_square_color = fg;
+		if (is_gamepad_button_pressed(0,6)) button_b_circle_color = red;
+		if (is_gamepad_button_pressed(0,8)) button_x_circle_color = blue;
+		if (is_gamepad_button_pressed(0,7)) button_a_circle_color = green;
+		if (is_gamepad_button_pressed(0,5)) button_y_circle_color = yellow;
+		if (is_gamepad_button_released(0,6)) button_b_circle_color = fg;
+		if (is_gamepad_button_released(0,8)) button_x_circle_color = fg;
+		if (is_gamepad_button_released(0,7)) button_a_circle_color = fg;
+		if (is_gamepad_button_released(0,5)) button_y_circle_color = fg;
 
-		if (is_gamepad_button_pressed(0,1)) up_dpad_square_color = orange;
-		if (is_gamepad_button_pressed(0,3)) down_dpad_square_color = orange;
-		if (is_gamepad_button_pressed(0,4)) left_dpad_square_color = orange;
-		if (is_gamepad_button_pressed(0,2)) right_dpad_square_color = orange;
-		if (is_gamepad_button_released(0,1)) up_dpad_square_color = fg;
-		if (is_gamepad_button_released(0,3)) down_dpad_square_color = fg;
-		if (is_gamepad_button_released(0,4)) left_dpad_square_color = fg;
-		if (is_gamepad_button_released(0,2)) right_dpad_square_color = fg;
+		if (is_gamepad_button_pressed(0,1)) dpad_up_triangle_color = orange;
+		if (is_gamepad_button_pressed(0,3)) dpad_down_triangle_color = orange;
+		if (is_gamepad_button_pressed(0,4)) dpad_left_triangle_color = orange;
+		if (is_gamepad_button_pressed(0,2)) dpad_right_triangle_color = orange;
+		if (is_gamepad_button_released(0,1)) dpad_up_triangle_color = fg;
+		if (is_gamepad_button_released(0,3)) dpad_down_triangle_color = fg;
+		if (is_gamepad_button_released(0,4)) dpad_left_triangle_color = fg;
+		if (is_gamepad_button_released(0,2)) dpad_right_triangle_color = fg;
 
 		// axis
-		draw_rectangle(first_axis_x: int, first_axis_y: int, size_x: int, size_y: int, first_axis_square_color);
-		draw_rectangle(second_axis_x: int, second_axis_y: int, size_x: int, size_y: int, second_axis_square_color);
+		draw_circle(first_axis_x: int, first_axis_y: int, 15.0, first_axis_circle_color);
+		draw_circle(second_axis_x: int, second_axis_y: int, 15.0, second_axis_circle_color);
 
 		// middle buttons
 		draw_rectangle(button_select_x: int, button_start_y: int, size_x: int, 10, button_select_square_color);
 		draw_rectangle(button_start_x: int, button_start_y: int, size_x: int, 10, button_start_square_color);
 
 		// dpad
-		draw_rectangle(dpad_up_x: int, dpad_up_y: int, size_x: int, size_y: int, up_dpad_square_color);
-		draw_rectangle(dpad_down_x: int, dpad_down_y: int, size_x: int, size_y: int, down_dpad_square_color);
-		draw_rectangle(dpad_left_x: int, dpad_left_y: int, size_x: int, size_y: int, left_dpad_square_color);
-		draw_rectangle(dpad_right_x: int, dpad_right_y: int, size_x: int, size_y: int, right_dpad_square_color);
+		draw_triangle(dpad_triangle_up_v1, dpad_triangle_up_v2, dpad_triangle_up_v3, dpad_up_triangle_color);
+		draw_triangle(dpad_triangle_down_v1, dpad_triangle_down_v2, dpad_triangle_down_v3, dpad_down_triangle_color);
+		draw_triangle(dpad_triangle_left_v1, dpad_triangle_left_v2, dpad_triangle_left_v3, dpad_left_triangle_color);
+		draw_triangle(dpad_triangle_right_v1, dpad_triangle_right_v2, dpad_triangle_right_v3, dpad_right_triangle_color);
 
 		// back buttons
 		draw_rectangle(button_lt_x: int, button_lt_y: int, size_x: int, 15, button_lt_square_color);
@@ -178,10 +194,10 @@ export fn main() void = {
 		draw_rectangle(button_rb_x: int, button_rb_y: int, size_x: int, 15, button_rb_square_color);
 
 		// front buttons
-		draw_circle(button_a_x: int, button_a_y: int, 15.0, button_a_square_color);
-		draw_circle(button_b_x: int, button_b_y: int, 15.0, button_b_square_color);
-		draw_circle(button_x_x: int, button_x_y: int, 15.0, button_x_square_color);
-		draw_circle(button_y_x: int, button_y_y: int, 15.0, button_y_square_color);
+		draw_circle(button_a_x: int, button_a_y: int, 15.0, button_a_circle_color);
+		draw_circle(button_b_x: int, button_b_y: int, 15.0, button_b_circle_color);
+		draw_circle(button_x_x: int, button_x_y: int, 15.0, button_x_circle_color);
+		draw_circle(button_y_x: int, button_y_y: int, 15.0, button_y_circle_color);
 
 		// Keyboard
 		set_exit_key('Q');
