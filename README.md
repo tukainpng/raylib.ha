@@ -1,7 +1,7 @@
 <div align="center">
     <img width="200px" src="logo.jpg">
     <h1>raylib.ha</h1>
-    <p>raylib symbols for Hare.</p>
+    <p>raylib bindings for Hare.</p>
 </div>
 
 ### Things to know
