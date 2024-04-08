@@ -58,22 +58,22 @@ export type Camera2D = struct {
 
 // Gruvbox colors
 export const BG_DARK		= Color { r = 40,  g = 40,  b = 40,  a = 255 };
-export const BG_LIGHT		= Color { r = 60,  g = 56,  b = 54,  a = 255 };
 export const FG_DARK		= Color { r = 168, g = 153, b = 132, a = 255 };
-export const FG_LIGHT		= Color { r = 235, g = 219, b = 178, a = 255 };
 export const RED_DARK		= Color { r = 204, g = 36,  b = 29,  a = 255 };
-export const RED_LIGHT		= Color { r = 251, g = 73,  b = 52,  a = 255 };
 export const GREEN_DARK		= Color { r = 152, g = 151, b = 26,  a = 255 };
-export const GREEN_LIGHT	= Color { r = 184, g = 187, b = 38,  a = 255 };
 export const YELLOW_DARK	= Color { r = 215, g = 153, b = 33,  a = 255 };
-export const YELLOW_LIGHT	= Color { r = 250, g = 189, b = 47,  a = 255 };
 export const BLUE_DARK		= Color { r = 69,  g = 133, b = 136, a = 255 };
-export const BLUE_LIGHT		= Color { r = 131, g = 165, b = 152, a = 255 };
 export const PURPLE_DARK	= Color { r = 177, g = 98,  b = 134, a = 255 };
-export const PURPLE_LIGHT	= Color { r = 211, g = 134, b = 155, a = 255 };
 export const AQUA_DARK		= Color { r = 104, g = 157, b = 106, a = 255 };
-export const AQUA_LIGHT		= Color { r = 142, g = 192, b = 124, a = 255 };
 export const ORANGE_DARK	= Color { r = 214, g = 93,  b = 14,  a = 255 };
+export const BG_LIGHT		= Color { r = 60,  g = 56,  b = 54,  a = 255 };
+export const FG_LIGHT		= Color { r = 235, g = 219, b = 178, a = 255 };
+export const RED_LIGHT		= Color { r = 251, g = 73,  b = 52,  a = 255 };
+export const GREEN_LIGHT	= Color { r = 184, g = 187, b = 38,  a = 255 };
+export const YELLOW_LIGHT	= Color { r = 250, g = 189, b = 47,  a = 255 };
+export const BLUE_LIGHT		= Color { r = 131, g = 165, b = 152, a = 255 };
+export const PURPLE_LIGHT	= Color { r = 211, g = 134, b = 155, a = 255 };
+export const AQUA_LIGHT		= Color { r = 142, g = 192, b = 124, a = 255 };
 export const ORANGE_LIGHT	= Color { r = 254, g = 128, b = 25,  a = 255 };
 
 // Window-Related functions

@@ -4,8 +4,8 @@ use types::c;
 use raylib::*;
 
 def SPEED: f32 = 200.0;
-def SCREEN_X = 1280;
-def SCREEN_Y = 720;
+def SCREEN_X: int = 1280;
+def SCREEN_Y: int = 720;
 
 export fn main() void = {
 
@@ -61,7 +61,10 @@ export fn main() void = {
 		set_window_title("Input Test");
 		begin_drawing();
 		clear_background(BG_LIGHT);
+		set_target_fps(120);
 		begin_mode_2d(camera);
+
+		draw_texture(texture, SCREEN_X / 3, SCREEN_Y / 3, get_color(0x000000FF));
 
 		let line_1_start	= Vector2 { x = 0.0, y = 0.0 };
 		let line_1_end		= Vector2 { x = SCREEN_X: f32, y = 0.0 };
@@ -250,27 +253,29 @@ export fn main() void = {
 		camera.zoom += get_mouse_wheel_move() / 20.0;
 		if (camera.zoom < 0.0) camera.zoom = 0.0;
 
-		draw_texture(texture, SCREEN_X / 2, SCREEN_Y / 2, get_color(0x000000FF));
-
 		end_mode_2d();
 
-		set_target_fps(120);
-		draw_text("Input Test", 10, 10, 20, FG_LIGHT);
-		draw_text(c::tostr(get_gamepad_name(0)): str, 10, 40, 20, FG_LIGHT);
+		if (is_gamepad_button_down(0,17)) { debug_info(); };
+		if (is_key_down('I')) { debug_info(); };
 
-		draw_text(strconv::u32tos(SCREEN_X), 10, 70, 20, FG_LIGHT);
-		draw_text("x", 60, 70, 20, FG_LIGHT);
-		draw_text(strconv::u32tos(SCREEN_Y), 80, 70, 20, FG_LIGHT);
-
-
-		draw_fps(10, 100);
 		end_drawing();
 
 		// Misc.
-		if (is_key_down(' ')) take_screenshot("scr.png");
-		if (is_key_down('C')) open_url("https://codeberg.org/guapito/raylib.ha");
+		if (is_key_pressed(' ')) take_screenshot("scr.png");
+		if (is_key_pressed('C')) open_url("https://codeberg.org/guapito/raylib.ha");
 	};
 
 	close_window();
 };
 
+fn debug_info() void = {
+	draw_rectangle(0, 0, SCREEN_X, 140, get_color(0x282828AA));
+	draw_text("Example: Input Test", 10, 10, 20, FG_LIGHT);
+	draw_text("Controller:", 10, 40, 20, FG_LIGHT);
+	draw_text(c::tostr(get_gamepad_name(0)): str, 120, 40, 20, FG_LIGHT);
+	draw_text("Resolution:", 10, 70, 20, FG_LIGHT);
+	draw_text(strconv::itos(SCREEN_X), 130, 70, 20, FG_LIGHT);
+	draw_text("x", 180, 70, 20, FG_LIGHT);
+	draw_text(strconv::itos(SCREEN_Y), 200, 70, 20, FG_LIGHT);
+	draw_fps(10, 100);
+};
