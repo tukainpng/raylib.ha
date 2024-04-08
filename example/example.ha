@@ -66,19 +66,19 @@ export fn main() void = {
 
 		draw_texture(texture, SCREEN_X / 3, SCREEN_Y / 3, get_color(0x000000FF));
 
-		let line_1_start	= Vector2 { x = 0.0, y = 0.0 };
-		let line_1_end		= Vector2 { x = SCREEN_X: f32, y = 0.0 };
-		let line_2_start	= Vector2 { x = SCREEN_X: f32, y = 0.0 };
-		let line_2_end		= Vector2 { x = SCREEN_X: f32, y = SCREEN_Y: f32 };
-		let line_3_start	= Vector2 { x = SCREEN_X: f32, y = SCREEN_Y: f32 };
-		let line_3_end		= Vector2 { x = 0.0, y = SCREEN_Y: f32 };
-		let line_4_start	= Vector2 { x = 0.0, y = SCREEN_Y: f32 };
-		let line_4_end		= Vector2 { x = 0.0, y = 0.0 };
+		let rec_1_position = Vector2 { x = 0.0, y = 0.0 };
+		let rec_1_size     = Vector2 { x = SCREEN_X: f32, y = 5.0 };
+		let rec_2_position = Vector2 { x = SCREEN_X: f32, y = 0.0 };
+		let rec_2_size     = Vector2 { x = 5.0, y = SCREEN_Y: f32 };
+		let rec_3_position = Vector2 { x = 0.0, y = SCREEN_Y: f32 };
+		let rec_3_size     = Vector2 { x = SCREEN_X: f32 + 5.0, y = 5.0 };
+		let rec_4_position = Vector2 { x = 0.0, y = 0.0 };
+		let rec_4_size     = Vector2 { x = 5.0, y = SCREEN_Y: f32 };
 
-		draw_line_ex(line_1_start, line_1_end, 5.0, PURPLE_DARK);
-		draw_line_ex(line_2_start, line_2_end, 5.0, PURPLE_DARK);
-		draw_line_ex(line_3_start, line_3_end, 5.0, PURPLE_DARK);
-		draw_line_ex(line_4_start, line_4_end, 5.0, PURPLE_DARK);
+		draw_rectangle_v(rec_1_position, rec_1_size, PURPLE_DARK);
+		draw_rectangle_v(rec_2_position, rec_2_size, PURPLE_DARK);
+		draw_rectangle_v(rec_3_position, rec_3_size, PURPLE_DARK);
+		draw_rectangle_v(rec_4_position, rec_4_size, PURPLE_DARK);
 
 		// Gamepad
 		let first_axis_x = 115.0 + get_gamepad_axis_movement(0,0)*30.0;
@@ -222,8 +222,6 @@ export fn main() void = {
 		if (is_key_down('8')) square_color = FG_LIGHT;
 		if (is_key_down('9')) square_color = BG_LIGHT;
 
-		draw_rectangle(square_x: int, square_y: int, square_size_x: int, square_size_y: int, square_color);
-
 		// Mouse
 		let mouse_x = get_mouse_x();
 		let mouse_y = get_mouse_y();
@@ -253,6 +251,35 @@ export fn main() void = {
 		camera.zoom += get_mouse_wheel_move() / 20.0;
 		if (camera.zoom < 0.0) camera.zoom = 0.0;
 
+		// Collision detection
+		let square_position_v = Vector2 { x = square_x: f32 + 10.0, y = square_y: f32 + 10.0};
+		let square_size_v = Vector2 { x = square_size_x: f32, y = square_size_y: f32 };
+		let line_1_collision = Rectangle { x = 0.0, y = 0.0, width = SCREEN_X: f32, height = 2.0 };
+		let line_2_collision = Rectangle { x = SCREEN_X: f32 - 15.0, y = 0.0, width = 5.0, height = SCREEN_Y: f32 };
+		let line_3_collision = Rectangle { x = 0.0, y = SCREEN_Y: f32 - 15.0, width = SCREEN_X: f32 + 5.0, height = 5.0 };
+		let line_4_collision = Rectangle { x = 0.0, y = 0.0, width = 2.0, height = SCREEN_Y: f32 };
+		let square_collision = Rectangle { x = square_x: f32, y = square_y: f32, width = square_size_x: f32, height = square_size_y: f32 };
+
+		if (check_collision_recs(line_1_collision, square_collision)) { 
+			draw_rectangle_v(rec_1_position, rec_1_size, PURPLE_LIGHT);
+			square_y = 2.0;
+		};
+		if (check_collision_recs(line_2_collision, square_collision)) { 
+			draw_rectangle_v(rec_2_position, rec_2_size, PURPLE_LIGHT);
+			square_x = SCREEN_X: f32 - square_size_x - 15.0;
+		};
+		if (check_collision_recs(line_3_collision, square_collision)) { 
+			draw_rectangle_v(rec_3_position, rec_3_size, PURPLE_LIGHT);
+			square_y = SCREEN_Y: f32 - square_size_y - 15.0;
+		};
+		if (check_collision_recs(line_4_collision, square_collision)) { 
+			draw_rectangle_v(rec_4_position, rec_4_size, PURPLE_LIGHT);
+			square_x = 2.0;
+		};
+
+		// Target square
+		draw_rectangle_v(square_position_v, square_size_v, square_color);
+
 		end_mode_2d();
 
 		if (is_gamepad_button_down(0,17)) { debug_info(); };
@@ -269,13 +296,13 @@ export fn main() void = {
 };
 
 fn debug_info() void = {
-	draw_rectangle(0, 0, SCREEN_X, 140, get_color(0x282828AA));
+	draw_rectangle(0, 0, get_render_width(), 140, get_color(0x282828AA));
 	draw_text("Example: Input Test", 10, 10, 20, FG_LIGHT);
 	draw_text("Controller:", 10, 40, 20, FG_LIGHT);
 	draw_text(c::tostr(get_gamepad_name(0)): str, 120, 40, 20, FG_LIGHT);
 	draw_text("Resolution:", 10, 70, 20, FG_LIGHT);
-	draw_text(strconv::itos(SCREEN_X), 130, 70, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_render_width()), 130, 70, 20, FG_LIGHT);
 	draw_text("x", 180, 70, 20, FG_LIGHT);
-	draw_text(strconv::itos(SCREEN_Y), 200, 70, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_render_height()), 200, 70, 20, FG_LIGHT);
 	draw_fps(10, 100);
 };

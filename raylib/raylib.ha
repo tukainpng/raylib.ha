@@ -81,14 +81,16 @@ export fn init_window(width: size, height: size, title: str) void = {
 	InitWindow(width, height, c::fromstr(title));
 };
 
-export fn set_window_title(title: str) void = {
-	SetWindowTitle(c::fromstr(title));
-};
 
 @symbol("InitWindow") fn InitWindow(size, size, *c::char) void;
-@symbol("SetWindowTitle") fn SetWindowTitle(*c::char) void;
-export @symbol("WindowShouldClose") fn window_should_close() bool;
 export @symbol("CloseWindow") fn close_window() void;
+export @symbol("WindowShouldClose") fn window_should_close() bool;
+export fn set_window_title(title: str) void = { SetWindowTitle(c::fromstr(title)); };
+@symbol("SetWindowTitle") fn SetWindowTitle(*c::char) void;
+export @symbol("GetScreenWidth") fn get_screen_width() int;
+export @symbol("GetScreenHeight") fn get_screen_height() int;
+export @symbol("GetRenderWidth") fn get_render_width() int;
+export @symbol("GetRenderHeight") fn get_render_height() int;
 // TODO:
 // IsWindowReady
 // IsWindowFullscreen
@@ -115,10 +117,6 @@ export @symbol("CloseWindow") fn close_window() void;
 // SetWindowOpacity
 // SetWindowFocused
 // *GetWindowHandle
-// GetScreenWidth
-// GetScreenHeight
-// GetRenderWidth
-// GetRenderHeight
 // GetMonitorCount
 // GetCurrentMonitor
 // GetMonitorPosition
@@ -144,13 +142,13 @@ export @symbol("DisableCursor") fn disable_cursor() void;		// Disables cursor (l
 export @symbol("IsCursorOnScreen") fn is_cursor_on_screen() bool;	// Check if cursor is on the screen
 
 // Drawing-Related functions
+export @symbol("ClearBackground") fn clear_background(color: Color) void;
 export @symbol("BeginDrawing") fn begin_drawing() void;
 export @symbol("EndDrawing") fn end_drawing() void;
 export @symbol("BeginMode2D") fn begin_mode_2d(camera: Camera2D) void;
 export @symbol("EndMode2D") fn end_mode_2d() void;
 export @symbol("BeginTextureMode") fn begin_texture_mode(target: RenderTexture2D) void;
 export @symbol("EndTextureMode") fn end_texture_mode() void;
-export @symbol("ClearBackground") fn clear_background(color: Color) void;
 // TODO:
 // BeginShaderMode
 // EndShaderMode
@@ -167,7 +165,7 @@ export @symbol("GetFrameTime") fn get_frame_time() f32;			// Get time in seconds
 export @symbol("GetTime") fn get_time() f64;				// Get elapsed time in seconds since InitWindow()
 export @symbol("GetFPS") fn get_fps() int;				// Get current FPS
 
-// Misc. Functions
+// Misc. functions
 export fn take_screenshot(filename: str) void = {
 	TakeScreenshot(c::fromstr(filename));
 };
@@ -226,6 +224,10 @@ export @symbol("GetMouseWheelMoveV") fn get_mouse_wheel_move_v() Vector2;			// G
 export @symbol("SetMouseCursor") fn set_mouse_cursor(cursor: int) void;				// Set mouse cursor
 
 // module: rshapes
+// NOTE: It can be useful when using basic shapes and one single font,
+// defining a font char white rectangle would allow drawing everything in a single draw call
+export @symbol("SetShapesTexture") fn set_shapes_texture(texture: Texture2D, source: Rectangle) void; // Set texture and rectangle to be used on shapes drawing
+
 // Basic shapes drawing functions
 export @symbol("DrawPixel") fn draw_pixel(x: int, y: int, color: Color) void;
 export @symbol("DrawPixelV") fn draw_pixel_v(position: Vector2, color: Color) void;
@@ -265,6 +267,9 @@ export @symbol("DrawTriangleLines") fn draw_triangle_lines(v1: Vector2, v2: Vect
 export @symbol("DrawPoly") fn draw_poly(center: Vector2, sides: int, radius: f32, rotation: f32, color: Color) void;
 export @symbol("DrawPolyLines") fn draw_poly_lines(center: Vector2, sides: int, radius: f32, rotation: f32, color: Color) void;
 export @symbol("DrawPolyLinesEx") fn draw_poly_lines_ex(center: Vector2, sides: int, radius: f32, rotation: f32, line_thic: f32,color: Color) void;
+
+// Basic shapes collision detection functions
+export @symbol("CheckCollisionRecs") fn check_collision_recs(rec_1: Rectangle, rec_2: Rectangle) bool;
 
 // module: rtextures
 // Image loading functions
