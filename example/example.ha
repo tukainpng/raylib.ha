@@ -1,15 +1,16 @@
 use fmt;
+use strconv;
 use types::c;
 use raylib::*;
 use gruvbox::*;
 
-const SPEED: f32 = 200.0;
-const SCREEN_X = 1280;
-const SCREEN_Y = 720;
+def SPEED: f32 = 200.0;
+def SCREEN_X = 1280;
+def SCREEN_Y = 720;
 
 export fn main() void = {
 
-	const bg         = get_color(bg0);
+	const bg         = get_color(bg1);
 	const fg         = get_color(fg1);
 	const red        = get_color(red0);
 	const green      = get_color(green0);
@@ -64,11 +65,17 @@ export fn main() void = {
 
 	init_window(SCREEN_X: u32, SCREEN_Y: u32, "Input Test");
 
+	let image = load_image("./example/hare.png");
+	let texture = load_texture_from_image(image);
+
 	for (!window_should_close()) {
 		set_window_title("Input Test");
 		begin_drawing();
 		clear_background(bg);
 		begin_mode_2d(camera);
+
+		draw_texture(texture, SCREEN_X / 2, SCREEN_Y / 2, get_color(0x00000099));
+
 
 		let line_1_start	= Vector2 { x = 0.0, y = 0.0 };
 		let line_1_end		= Vector2 { x = SCREEN_X: f32, y = 0.0 };
@@ -255,11 +262,17 @@ export fn main() void = {
 		if (is_gamepad_button_pressed(0,13)) camera.rotation = 0.0;
 		if (is_gamepad_button_pressed(0,15)) camera.zoom = 1.0;
 		camera.zoom += get_mouse_wheel_move() / 20.0;
+		if (camera.zoom < 0.0) camera.zoom = 0.0;
 
 		end_mode_2d();
 
 		set_target_fps(120);
 		draw_text("Input Test", 10, SCREEN_Y: u32 - 30, 20, fg);
+
+		draw_text(strconv::u32tos(SCREEN_X), 10, 10, 20, fg);
+		draw_text("x", 60, 10, 20, fg);
+		draw_text(strconv::u32tos(SCREEN_Y), 80, 10, 20, fg);
+
 		draw_fps(SCREEN_X - 100, SCREEN_Y - 30);
 		end_drawing();
 
@@ -267,7 +280,6 @@ export fn main() void = {
 		if (is_key_down(' ')) take_screenshot("scr.png");
 		if (is_key_down('C')) open_url("https://codeberg.org/guapito/raylib.ha");
 	};
-
 
 	close_window();
 };

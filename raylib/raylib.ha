@@ -22,6 +22,14 @@ export type Rectangle = struct {
 	height: f32,
 };
 
+export type Image = struct {
+	data: *opaque,
+	width: int,
+	height: int,
+	mipmaps: int,
+	format: int,
+};
+
 export type Texture = struct {
 	id: u32,
 	width: int,
@@ -240,14 +248,20 @@ export @symbol("DrawPolyLines") fn draw_poly_lines(center: Vector2, sides: int, 
 export @symbol("DrawPolyLinesEx") fn draw_poly_lines_ex(center: Vector2, sides: int, radius: f32, rotation: f32, line_thic: f32,color: Color) void;
 
 // module: rtextures
-
 // STILL IN DEVELOPMENT
 // ---------------------------------------------------------------------------------------------------
+// Image loading functions
+export fn load_image(filename: str) Image = {
+	return LoadImage(c::fromstr(filename));
+};
+@symbol("LoadImage") fn LoadImage(*c::char) Image;
+
 // Texture loading functions
 export fn load_texture(filename: str) Texture2D = {
 	return LoadTexture(c::fromstr(filename));
 };
 @symbol("LoadTexture") fn LoadTexture(*c::char) Texture2D;
+export @symbol("LoadTextureFromImage") fn load_texture_from_image(image: Image) Texture2D;
 export @symbol("UnloadTexture") fn unload_texture(texture: Texture2D) void;
 
 // Texture drawing functions
