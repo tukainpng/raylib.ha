@@ -56,6 +56,26 @@ export type Camera2D = struct {
 	zoom: f32,
 };
 
+// Gruvbox colors
+export const BG_DARK		= Color { r = 40,  g = 40,  b = 40,  a = 255 };
+export const BG_LIGHT		= Color { r = 60,  g = 56,  b = 54,  a = 255 };
+export const FG_DARK		= Color { r = 168, g = 153, b = 132, a = 255 };
+export const FG_LIGHT		= Color { r = 235, g = 219, b = 178, a = 255 };
+export const RED_DARK		= Color { r = 204, g = 36,  b = 29,  a = 255 };
+export const RED_LIGHT		= Color { r = 251, g = 73,  b = 52,  a = 255 };
+export const GREEN_DARK		= Color { r = 152, g = 151, b = 26,  a = 255 };
+export const GREEN_LIGHT	= Color { r = 184, g = 187, b = 38,  a = 255 };
+export const YELLOW_DARK	= Color { r = 215, g = 153, b = 33,  a = 255 };
+export const YELLOW_LIGHT	= Color { r = 250, g = 189, b = 47,  a = 255 };
+export const BLUE_DARK		= Color { r = 69,  g = 133, b = 136, a = 255 };
+export const BLUE_LIGHT		= Color { r = 131, g = 165, b = 152, a = 255 };
+export const PURPLE_DARK	= Color { r = 177, g = 98,  b = 134, a = 255 };
+export const PURPLE_LIGHT	= Color { r = 211, g = 134, b = 155, a = 255 };
+export const AQUA_DARK		= Color { r = 104, g = 157, b = 106, a = 255 };
+export const AQUA_LIGHT		= Color { r = 142, g = 192, b = 124, a = 255 };
+export const ORANGE_DARK	= Color { r = 214, g = 93,  b = 14,  a = 255 };
+export const ORANGE_LIGHT	= Color { r = 254, g = 128, b = 25,  a = 255 };
+
 // Window-Related functions
 export fn init_window(width: size, height: size, title: str) void = {
 	InitWindow(width, height, c::fromstr(title));
@@ -179,8 +199,7 @@ export fn set_gamepad_mappings(mappings: str) void = {
 };
 
 export @symbol("IsGamepadAvaible") fn is_gamepad_avaible(gamepad: int) bool;					// Check if a gamepad is available
-// TODO:
-// GetGamepadName
+export @symbol("GetGamepadName") fn get_gamepad_name(gamepad: int) const *c::char;				// Get gamepad internal name id
 export @symbol("IsGamepadButtonPressed") fn is_gamepad_button_pressed(gamepad: int, button: int) bool;		// Check if a gamepad button has been pressed once
 export @symbol("IsGamepadButtonDown") fn is_gamepad_button_down(gamepad: int, button: int) bool;		// Check if a gamepad button is being pressed
 export @symbol("IsGamepadButtonReleased") fn is_gamepad_button_released(gamepad: int, button: int) bool;	// Check if a gamepad button has been released once
@@ -248,25 +267,18 @@ export @symbol("DrawPolyLines") fn draw_poly_lines(center: Vector2, sides: int, 
 export @symbol("DrawPolyLinesEx") fn draw_poly_lines_ex(center: Vector2, sides: int, radius: f32, rotation: f32, line_thic: f32,color: Color) void;
 
 // module: rtextures
-// STILL IN DEVELOPMENT
-// ---------------------------------------------------------------------------------------------------
 // Image loading functions
-export fn load_image(filename: str) Image = {
-	return LoadImage(c::fromstr(filename));
-};
+export fn load_image(filename: str) Image = { return LoadImage(c::fromstr(filename)); };
 @symbol("LoadImage") fn LoadImage(*c::char) Image;
 
 // Texture loading functions
-export fn load_texture(filename: str) Texture2D = {
-	return LoadTexture(c::fromstr(filename));
-};
+export fn load_texture(filename: str) Texture2D = { return LoadTexture(c::fromstr(filename)); };
 @symbol("LoadTexture") fn LoadTexture(*c::char) Texture2D;
 export @symbol("LoadTextureFromImage") fn load_texture_from_image(image: Image) Texture2D;
 export @symbol("UnloadTexture") fn unload_texture(texture: Texture2D) void;
 
 // Texture drawing functions
 export @symbol("DrawTexture") fn draw_texture(texture: Texture, x: int, y: int, tint: Color) void;
-// ---------------------------------------------------------------------------------------------------
 
 // Color/Pixel related functions
 export @symbol("GetColor") fn get_color(color: u32) Color;
