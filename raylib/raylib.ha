@@ -81,7 +81,6 @@ export fn init_window(width: size, height: size, title: str) void = {
 	InitWindow(width, height, c::fromstr(title));
 };
 
-
 @symbol("InitWindow") fn InitWindow(size, size, *c::char) void;
 export @symbol("CloseWindow") fn close_window() void;
 export @symbol("WindowShouldClose") fn window_should_close() bool;

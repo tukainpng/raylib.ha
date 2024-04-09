@@ -3,7 +3,7 @@ use strconv;
 use types::c;
 use raylib::*;
 
-def SPEED: f32 = 200.0;
+def SPEED: f32 = 300.0;
 def SCREEN_X: int = 1280;
 def SCREEN_Y: int = 720;
 
@@ -42,12 +42,15 @@ export fn main() void = {
 	let button_x_circle_color = FG_LIGHT;
 	let button_y_circle_color = FG_LIGHT;
 
-	let center_x = SCREEN_X: f32;
-	let center_y = SCREEN_Y: f32;
-
 	let camera = Camera2D {
-		cam_offset = Vector2 { x = SCREEN_X: f32/2.0, y = SCREEN_Y: f32/2.0 },
-		target = Vector2 { x = square_x: f32 + square_size_x: f32 / 2.0, y = square_y: f32 + square_size_y: f32 / 2.0 },
+		cam_offset = Vector2 {
+			x = SCREEN_X: f32/2.0,
+			y = SCREEN_Y: f32/2.0,
+		},
+		target = Vector2 {
+			x = square_x: f32 + square_size_x: f32 / 2.0,
+			y = square_y: f32 + square_size_y: f32 / 2.0,
+		},
 		rotation = 0.0,
 		zoom = 1.0,
 	};
@@ -178,32 +181,6 @@ export fn main() void = {
 		if (is_gamepad_button_released(0,4)) dpad_left_triangle_color = FG_LIGHT;
 		if (is_gamepad_button_released(0,2)) dpad_right_triangle_color = FG_LIGHT;
 
-		// axis
-		draw_circle(first_axis_x: int, first_axis_y: int, 15.0, first_axis_circle_color);
-		draw_circle(second_axis_x: int, second_axis_y: int, 15.0, second_axis_circle_color);
-
-		// middle buttons
-		draw_rectangle(button_select_x: int, button_start_y: int, size_x: int, 10, button_select_square_color);
-		draw_rectangle(button_start_x: int, button_start_y: int, size_x: int, 10, button_start_square_color);
-
-		// dpad
-		draw_triangle(dpad_triangle_up_v1, dpad_triangle_up_v2, dpad_triangle_up_v3, dpad_up_triangle_color);
-		draw_triangle(dpad_triangle_down_v1, dpad_triangle_down_v2, dpad_triangle_down_v3, dpad_down_triangle_color);
-		draw_triangle(dpad_triangle_left_v1, dpad_triangle_left_v2, dpad_triangle_left_v3, dpad_left_triangle_color);
-		draw_triangle(dpad_triangle_right_v1, dpad_triangle_right_v2, dpad_triangle_right_v3, dpad_right_triangle_color);
-
-		// back buttons
-		draw_rectangle(button_lt_x: int, button_lt_y: int, size_x: int, 15, button_lt_square_color);
-		draw_rectangle(button_lb_x: int, button_lb_y: int, size_x: int, 15, button_lb_square_color);
-		draw_rectangle(button_rt_x: int, button_rt_y: int, size_x: int, 15, button_rt_square_color);
-		draw_rectangle(button_rb_x: int, button_rb_y: int, size_x: int, 15, button_rb_square_color);
-
-		// front buttons
-		draw_circle(button_a_x: int, button_a_y: int, 15.0, button_a_circle_color);
-		draw_circle(button_b_x: int, button_b_y: int, 15.0, button_b_circle_color);
-		draw_circle(button_x_x: int, button_x_y: int, 15.0, button_x_circle_color);
-		draw_circle(button_y_x: int, button_y_y: int, 15.0, button_y_circle_color);
-
 		// Keyboard
 		set_exit_key('Q');
 
@@ -238,10 +215,78 @@ export fn main() void = {
 		if (is_mouse_button_released(2)) mouse_square_color = AQUA_DARK;
 
 		hide_cursor();
-		draw_rectangle(mouse_x, mouse_y, 10, 10, mouse_square_color);
+
+		// Collision detection
+		let square_position_v = Vector2 {
+			x = square_x: f32 + 10.0,
+			y = square_y: f32 + 10.0,
+		};
+
+		let square_size_v = Vector2 {
+			x = square_size_x: f32,
+			y = square_size_y: f32,
+		};
+
+		let line_1_collision = Rectangle {
+			x = 0.0,
+			y = 0.0,
+			width = SCREEN_X: f32,
+			height = 2.0,
+		};
+
+		let line_2_collision = Rectangle {
+			x = SCREEN_X: f32 - 15.0,
+			y = 0.0, width = 5.0,
+			height = SCREEN_Y: f32,
+		};
+
+		let line_3_collision = Rectangle {
+			x = 0.0,
+			y = SCREEN_Y: f32 - 15.0,
+			width = SCREEN_X: f32 + 5.0,
+			height = 5.0,
+		};
+
+		let line_4_collision = Rectangle {
+			x = 0.0,
+			y = 0.0,
+			width = 2.0,
+			height = SCREEN_Y: f32,
+		};
+
+		let square_collision = Rectangle {
+			x = square_x: f32,
+			y = square_y: f32,
+			width = square_size_x: f32,
+			height = square_size_y: f32,
+		};
+
+		if (check_collision_recs(line_1_collision, square_collision)) { 
+			draw_rectangle_v(rec_1_position, rec_1_size, PURPLE_LIGHT);
+			square_y = 2.0;
+		};
+
+		if (check_collision_recs(line_2_collision, square_collision)) { 
+			draw_rectangle_v(rec_2_position, rec_2_size, PURPLE_LIGHT);
+			square_x = SCREEN_X: f32 - square_size_x - 15.0;
+		};
+
+		if (check_collision_recs(line_3_collision, square_collision)) { 
+			draw_rectangle_v(rec_3_position, rec_3_size, PURPLE_LIGHT);
+			square_y = SCREEN_Y: f32 - square_size_y - 15.0;
+		};
+
+		if (check_collision_recs(line_4_collision, square_collision)) { 
+			draw_rectangle_v(rec_4_position, rec_4_size, PURPLE_LIGHT);
+			square_x = 2.0;
+		};
 
 		// Camera
-		camera.target = Vector2 { x = square_x: f32 + square_size_x: f32 / 2.0, y = square_y: f32 + square_size_y: f32 / 2.0 };
+		camera.target = Vector2 {
+			x = square_x: f32 + square_size_x: f32 / 2.0,
+			y = square_y: f32 + square_size_y: f32 / 2.0
+		};
+
 		if (is_gamepad_button_down(0,10)) camera.rotation -= 0.3;
 		if (is_gamepad_button_down(0,12)) camera.rotation += 0.3;
 		if (is_gamepad_button_down(0,9)) camera.zoom -= 0.01;
@@ -251,31 +296,99 @@ export fn main() void = {
 		camera.zoom += get_mouse_wheel_move() / 20.0;
 		if (camera.zoom < 0.0) camera.zoom = 0.0;
 
-		// Collision detection
-		let square_position_v = Vector2 { x = square_x: f32 + 10.0, y = square_y: f32 + 10.0};
-		let square_size_v = Vector2 { x = square_size_x: f32, y = square_size_y: f32 };
-		let line_1_collision = Rectangle { x = 0.0, y = 0.0, width = SCREEN_X: f32, height = 2.0 };
-		let line_2_collision = Rectangle { x = SCREEN_X: f32 - 15.0, y = 0.0, width = 5.0, height = SCREEN_Y: f32 };
-		let line_3_collision = Rectangle { x = 0.0, y = SCREEN_Y: f32 - 15.0, width = SCREEN_X: f32 + 5.0, height = 5.0 };
-		let line_4_collision = Rectangle { x = 0.0, y = 0.0, width = 2.0, height = SCREEN_Y: f32 };
-		let square_collision = Rectangle { x = square_x: f32, y = square_y: f32, width = square_size_x: f32, height = square_size_y: f32 };
+		// Axis circles
+		draw_circle(    first_axis_x: int,
+				first_axis_y: int,
+				15.0,
+				first_axis_circle_color);
 
-		if (check_collision_recs(line_1_collision, square_collision)) { 
-			draw_rectangle_v(rec_1_position, rec_1_size, PURPLE_LIGHT);
-			square_y = 2.0;
-		};
-		if (check_collision_recs(line_2_collision, square_collision)) { 
-			draw_rectangle_v(rec_2_position, rec_2_size, PURPLE_LIGHT);
-			square_x = SCREEN_X: f32 - square_size_x - 15.0;
-		};
-		if (check_collision_recs(line_3_collision, square_collision)) { 
-			draw_rectangle_v(rec_3_position, rec_3_size, PURPLE_LIGHT);
-			square_y = SCREEN_Y: f32 - square_size_y - 15.0;
-		};
-		if (check_collision_recs(line_4_collision, square_collision)) { 
-			draw_rectangle_v(rec_4_position, rec_4_size, PURPLE_LIGHT);
-			square_x = 2.0;
-		};
+		draw_circle(    second_axis_x: int,
+				second_axis_y: int,
+				15.0,
+				second_axis_circle_color);
+
+		// Middle buttons rectangles
+		draw_rectangle( button_select_x: int,
+				button_start_y: int,
+				size_x: int,
+				10,
+				button_select_square_color);
+
+		draw_rectangle( button_start_x: int,
+				button_start_y: int,
+				size_x: int,
+				10,
+				button_start_square_color);
+
+		// D-PAD Triangles
+		draw_triangle(  dpad_triangle_up_v1, 
+				dpad_triangle_up_v2, 
+				dpad_triangle_up_v3, 
+				dpad_up_triangle_color);
+
+		draw_triangle(  dpad_triangle_down_v1, 
+				dpad_triangle_down_v2, 
+				dpad_triangle_down_v3, 
+				dpad_down_triangle_color);
+
+		draw_triangle(  dpad_triangle_left_v1, 
+				dpad_triangle_left_v2, 
+				dpad_triangle_left_v3, 
+				dpad_left_triangle_color);
+
+		draw_triangle(  dpad_triangle_right_v1, 
+				dpad_triangle_right_v2, 
+				dpad_triangle_right_v3, 
+				dpad_right_triangle_color);
+
+		// Triggers/Shoulder buttons rectangles
+		draw_rectangle( button_lt_x: int,
+				button_lt_y: int,
+				size_x: int,
+				15,
+				button_lt_square_color);
+
+		draw_rectangle( button_lb_x: int,
+				button_lb_y: int,
+				size_x: int,
+				15,
+				button_lb_square_color);
+
+		draw_rectangle( button_rt_x: int,
+				button_rt_y: int,
+				size_x: int,
+				15,
+				button_rt_square_color);
+
+		draw_rectangle( button_rb_x: int,
+				button_rb_y: int,
+				size_x: int,
+				15,
+				button_rb_square_color);
+
+		// Front buttons circles
+		draw_circle(    button_a_x: int,
+				button_a_y: int,
+				15.0,
+				button_a_circle_color);
+
+		draw_circle(    button_b_x: int,
+				button_b_y: int,
+				15.0,
+				button_b_circle_color);
+
+		draw_circle(    button_x_x: int,
+				button_x_y: int,
+				15.0,
+				button_x_circle_color);
+
+		draw_circle(    button_y_x: int,
+				button_y_y: int,
+				15.0,
+				button_y_circle_color);
+
+		// Mouse cursor
+		draw_rectangle(mouse_x, mouse_y, 10, 10, mouse_square_color);
 
 		// Target square
 		draw_rectangle_v(square_position_v, square_size_v, square_color);
@@ -299,10 +412,11 @@ fn debug_info() void = {
 	draw_rectangle(0, 0, get_render_width(), 140, get_color(0x282828AA));
 	draw_text("Example: Input Test", 10, 10, 20, FG_LIGHT);
 	draw_text("Controller:", 10, 40, 20, FG_LIGHT);
-	draw_text(c::tostr(get_gamepad_name(0)): str, 120, 40, 20, FG_LIGHT);
+	draw_text(c::tostr(get_gamepad_name(0)): str, 130, 40, 20, FG_LIGHT);
 	draw_text("Resolution:", 10, 70, 20, FG_LIGHT);
 	draw_text(strconv::itos(get_render_width()), 130, 70, 20, FG_LIGHT);
 	draw_text("x", 180, 70, 20, FG_LIGHT);
 	draw_text(strconv::itos(get_render_height()), 200, 70, 20, FG_LIGHT);
 	draw_fps(10, 100);
 };
+
