@@ -57,6 +57,9 @@ export fn main() void = {
 
 	init_window(SCREEN_X: u32, SCREEN_Y: u32, "Input Test");
 
+	let monitor = get_current_monitor();
+	let refresh_rate = get_monitor_refresh_rate(monitor);
+
 	let image = load_image("./example/hare.png");
 	let texture = load_texture_from_image(image);
 
@@ -64,7 +67,7 @@ export fn main() void = {
 		set_window_title("Input Test");
 		begin_drawing();
 		clear_background(BG_LIGHT);
-		set_target_fps(120);
+		set_target_fps(refresh_rate * 2);
 		begin_mode_2d(camera);
 
 		draw_texture(texture, SCREEN_X / 3, SCREEN_Y / 3, get_color(0x000000FF));
@@ -296,6 +299,13 @@ export fn main() void = {
 		camera.zoom += get_mouse_wheel_move() / 20.0;
 		if (camera.zoom < 0.0) camera.zoom = 0.0;
 
+		// Resident Evil-like camera
+		//
+		// if (square_x <= SCREEN_X: f32 / 2.0) camera.target.x = SCREEN_X: f32 / 4.0;
+		// if (square_x >= SCREEN_X: f32 / 2.0) camera.target.x = SCREEN_X: f32;
+		// if (square_y <= SCREEN_Y: f32 / 2.0) camera.target.y = SCREEN_Y: f32 / 4.0;
+		// if (square_y >= SCREEN_Y: f32 / 2.0) camera.target.y = SCREEN_Y: f32;
+
 		// Axis circles
 		draw_circle(    first_axis_x: int,
 				first_axis_y: int,
@@ -395,8 +405,8 @@ export fn main() void = {
 
 		end_mode_2d();
 
-		if (is_gamepad_button_down(0,17)) { debug_info(); };
-		if (is_key_down('I')) { debug_info(); };
+		if (is_gamepad_button_down(0,17)) debug_info(get_current_monitor());
+		if (is_key_down('I')) debug_info(get_current_monitor());
 
 		end_drawing();
 
@@ -408,15 +418,22 @@ export fn main() void = {
 	close_window();
 };
 
-fn debug_info() void = {
+fn debug_info(monitor: int) void = {
+	// Background
 	draw_rectangle(0, 0, get_render_width(), 140, get_color(0x282828AA));
+
+	// Left-side
 	draw_text("Example: Input Test", 10, 10, 20, FG_LIGHT);
 	draw_text("Controller:", 10, 40, 20, FG_LIGHT);
 	draw_text(c::tostr(get_gamepad_name(0)): str, 130, 40, 20, FG_LIGHT);
-	draw_text("Resolution:", 10, 70, 20, FG_LIGHT);
-	draw_text(strconv::itos(get_render_width()), 130, 70, 20, FG_LIGHT);
-	draw_text("x", 180, 70, 20, FG_LIGHT);
-	draw_text(strconv::itos(get_render_height()), 200, 70, 20, FG_LIGHT);
 	draw_fps(10, 100);
+
+	// Right-side
+	draw_text("Resolution:", SCREEN_X: u32 - 300, 10, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_render_width()), SCREEN_X: u32 - 180, 10, 20, FG_LIGHT);
+	draw_text("x", SCREEN_X: u32 - 130, 10, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_render_height()), SCREEN_X: u32 - 110, 10, 20, FG_LIGHT);
+	draw_text("Monitor name:", SCREEN_X: u32 - 300, 40, 20, FG_LIGHT);
+	draw_text(c::tostr(get_monitor_name(monitor)): str, SCREEN_X: u32 - 150, 40, 20, FG_LIGHT);
 };
 

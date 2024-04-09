@@ -90,6 +90,13 @@ export @symbol("GetScreenWidth") fn get_screen_width() int;
 export @symbol("GetScreenHeight") fn get_screen_height() int;
 export @symbol("GetRenderWidth") fn get_render_width() int;
 export @symbol("GetRenderHeight") fn get_render_height() int;
+export @symbol("GetCurrentMonitor") fn get_current_monitor() int;
+export @symbol("GetMonitorWidth") fn get_monitor_width(monitor: int) int;
+export @symbol("GetMonitorHeight") fn get_monitor_height(monitor: int) int;
+export @symbol("GetMonitorRefreshRate") fn get_monitor_refresh_rate(monitor: int) int;
+export @symbol("GetWindowPosition") fn get_window_position() Vector2;
+export @symbol("GetWindowScaleDPI") fn get_window_scale_dpi() Vector2;
+export @symbol("GetMonitorName") fn get_monitor_name(monitor: int) const *c::char;
 // TODO:
 // IsWindowReady
 // IsWindowFullscreen
@@ -117,16 +124,9 @@ export @symbol("GetRenderHeight") fn get_render_height() int;
 // SetWindowFocused
 // *GetWindowHandle
 // GetMonitorCount
-// GetCurrentMonitor
 // GetMonitorPosition
-// GetMonitorWidth
-// GetMonitorHeight
 // GetMonitorPhysicalWidth
 // GetMonitorPhysicalHeight
-// GetMonitorRefreshRate
-// GetWindowPosition
-// GetWindowScaleDPI
-// *GetMonitorName
 // SetClipboardText
 // *GetClipboardText
 // EnableEventWaiting
