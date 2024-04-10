@@ -7,85 +7,83 @@ export type Vector3 = struct { x: f32, y: f32, z: f32 };
 export type Vector4 = struct { x: f32, y: f32, z: f32, w: f32 };
 
 export type Matrix = struct {
-	m0: f32, m4: f32, m8: f32, m12: f32,
-	m1: f32, m5: f32, m9: f32, m13: f32,
-	m2: f32, m6: f32, m10: f32, m14: f32,
-	m3: f32, m7: f32, m11: f32, m15: f32,
+    m0: f32, m4: f32, m8: f32, m12: f32,
+    m1: f32, m5: f32, m9: f32, m13: f32,
+    m2: f32, m6: f32, m10: f32, m14: f32,
+    m3: f32, m7: f32, m11: f32, m15: f32,
 };
 
 export type Color = struct { r: u8, g: u8, b: u8, a: u8 };
 
 export type Rectangle = struct {
-	x: f32,
-	y: f32,
-	width: f32,
-	height: f32,
+    x: f32,
+    y: f32,
+    width: f32,
+    height: f32,
 };
 
 export type Image = struct {
-	data: *opaque,
-	width: int,
-	height: int,
-	mipmaps: int,
-	format: int,
+    data: *opaque,
+    width: int,
+    height: int,
+    mipmaps: int,
+    format: int,
 };
 
 export type Texture = struct {
-	id: u32,
-	width: int,
-	height: int,
-	mipmaps: int,
-	format: int,
+    id: u32,
+    width: int,
+    height: int,
+    mipmaps: int,
+    format: int,
 };
 
 export type Texture2D = Texture;
 export type TextureCubemap = Texture;
 
 export type RenderTexture = struct {
-	id: u32,
-	texture: Texture,
-	depth: Texture,
+    id: u32,
+    texture: Texture,
+    depth: Texture,
 };
 
 export type RenderTexture2D = RenderTexture;
 
 export type Camera2D = struct {
-	cam_offset: Vector2,
-	target: Vector2,
-	rotation: f32,
-	zoom: f32,
+    cam_offset: Vector2,
+    target: Vector2,
+    rotation: f32,
+    zoom: f32,
 };
 
 // Gruvbox colors
-export const BG_DARK		= Color { r = 40,  g = 40,  b = 40,  a = 255 };
-export const FG_DARK		= Color { r = 168, g = 153, b = 132, a = 255 };
-export const RED_DARK		= Color { r = 204, g = 36,  b = 29,  a = 255 };
-export const GREEN_DARK		= Color { r = 152, g = 151, b = 26,  a = 255 };
-export const YELLOW_DARK	= Color { r = 215, g = 153, b = 33,  a = 255 };
-export const BLUE_DARK		= Color { r = 69,  g = 133, b = 136, a = 255 };
-export const PURPLE_DARK	= Color { r = 177, g = 98,  b = 134, a = 255 };
-export const AQUA_DARK		= Color { r = 104, g = 157, b = 106, a = 255 };
-export const ORANGE_DARK	= Color { r = 214, g = 93,  b = 14,  a = 255 };
-export const BG_LIGHT		= Color { r = 60,  g = 56,  b = 54,  a = 255 };
-export const FG_LIGHT		= Color { r = 235, g = 219, b = 178, a = 255 };
-export const RED_LIGHT		= Color { r = 251, g = 73,  b = 52,  a = 255 };
-export const GREEN_LIGHT	= Color { r = 184, g = 187, b = 38,  a = 255 };
-export const YELLOW_LIGHT	= Color { r = 250, g = 189, b = 47,  a = 255 };
-export const BLUE_LIGHT		= Color { r = 131, g = 165, b = 152, a = 255 };
-export const PURPLE_LIGHT	= Color { r = 211, g = 134, b = 155, a = 255 };
-export const AQUA_LIGHT		= Color { r = 142, g = 192, b = 124, a = 255 };
-export const ORANGE_LIGHT	= Color { r = 254, g = 128, b = 25,  a = 255 };
+export const BG_DARK        = Color { r = 40,  g = 40,  b = 40,  a = 255 };
+export const FG_DARK        = Color { r = 168, g = 153, b = 132, a = 255 };
+export const RED_DARK       = Color { r = 204, g = 36,  b = 29,  a = 255 };
+export const GREEN_DARK     = Color { r = 152, g = 151, b = 26,  a = 255 };
+export const YELLOW_DARK    = Color { r = 215, g = 153, b = 33,  a = 255 };
+export const BLUE_DARK      = Color { r = 69,  g = 133, b = 136, a = 255 };
+export const PURPLE_DARK    = Color { r = 177, g = 98,  b = 134, a = 255 };
+export const AQUA_DARK      = Color { r = 104, g = 157, b = 106, a = 255 };
+export const ORANGE_DARK    = Color { r = 214, g = 93,  b = 14,  a = 255 };
+export const BG_LIGHT       = Color { r = 60,  g = 56,  b = 54,  a = 255 };
+export const FG_LIGHT       = Color { r = 235, g = 219, b = 178, a = 255 };
+export const RED_LIGHT      = Color { r = 251, g = 73,  b = 52,  a = 255 };
+export const GREEN_LIGHT    = Color { r = 184, g = 187, b = 38,  a = 255 };
+export const YELLOW_LIGHT   = Color { r = 250, g = 189, b = 47,  a = 255 };
+export const BLUE_LIGHT     = Color { r = 131, g = 165, b = 152, a = 255 };
+export const PURPLE_LIGHT   = Color { r = 211, g = 134, b = 155, a = 255 };
+export const AQUA_LIGHT     = Color { r = 142, g = 192, b = 124, a = 255 };
+export const ORANGE_LIGHT   = Color { r = 254, g = 128, b = 25,  a = 255 };
 
 // Window-Related functions
-export fn init_window(width: size, height: size, title: str) void = {
-	InitWindow(width, height, c::fromstr(title));
-};
-
 @symbol("InitWindow") fn InitWindow(size, size, *c::char) void;
+@symbol("SetWindowTitle") fn SetWindowTitle(*c::char) void;
+@symbol("GetMonitorName") fn GetMonitorName(monitor: int) const *c::char;
+export fn init_window(width: size, height: size, title: str) void = InitWindow(width, height, c::fromstr(title));
 export @symbol("CloseWindow") fn close_window() void;
 export @symbol("WindowShouldClose") fn window_should_close() bool;
-export fn set_window_title(title: str) void = { SetWindowTitle(c::fromstr(title)); };
-@symbol("SetWindowTitle") fn SetWindowTitle(*c::char) void;
+export fn set_window_title(title: str) void = SetWindowTitle(c::fromstr(title));
 export @symbol("GetScreenWidth") fn get_screen_width() int;
 export @symbol("GetScreenHeight") fn get_screen_height() int;
 export @symbol("GetRenderWidth") fn get_render_width() int;
@@ -96,7 +94,7 @@ export @symbol("GetMonitorHeight") fn get_monitor_height(monitor: int) int;
 export @symbol("GetMonitorRefreshRate") fn get_monitor_refresh_rate(monitor: int) int;
 export @symbol("GetWindowPosition") fn get_window_position() Vector2;
 export @symbol("GetWindowScaleDPI") fn get_window_scale_dpi() Vector2;
-export @symbol("GetMonitorName") fn get_monitor_name(monitor: int) const *c::char;
+export fn get_monitor_name(monitor: int) str = return c::tostr(GetMonitorName(monitor))!;
 // TODO:
 // IsWindowReady
 // IsWindowFullscreen
@@ -133,12 +131,12 @@ export @symbol("GetMonitorName") fn get_monitor_name(monitor: int) const *c::cha
 // DisableEventWaiting
 
 // Cursor-Related functions
-export @symbol("ShowCursor") fn show_cursor() void;			// Shows cursor
-export @symbol("HideCursor") fn hide_cursor() void;			// Hides cursor
-export @symbol("IsCursorHidden") fn is_cursor_hidden() bool;		// Check if cursor is not visible
-export @symbol("EnableCursor") fn enable_cursor() void;			// Enables cursor (unlock cursor)
-export @symbol("DisableCursor") fn disable_cursor() void;		// Disables cursor (lock cursor)
-export @symbol("IsCursorOnScreen") fn is_cursor_on_screen() bool;	// Check if cursor is on the screen
+export @symbol("ShowCursor") fn show_cursor() void;                  // Shows cursor
+export @symbol("HideCursor") fn hide_cursor() void;                  // Hides cursor
+export @symbol("IsCursorHidden") fn is_cursor_hidden() bool;         // Check if cursor is not visible
+export @symbol("EnableCursor") fn enable_cursor() void;              // Enables cursor (unlock cursor)
+export @symbol("DisableCursor") fn disable_cursor() void;            // Disables cursor (lock cursor)
+export @symbol("IsCursorOnScreen") fn is_cursor_on_screen() bool;    // Check if cursor is on the screen
 
 // Drawing-Related functions
 export @symbol("ClearBackground") fn clear_background(color: Color) void;
@@ -159,73 +157,66 @@ export @symbol("EndTextureMode") fn end_texture_mode() void;
 // EndVrStereoMode
 
 // Timing-Related functions
-export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;	// Set target FPS (maximum)
-export @symbol("GetFrameTime") fn get_frame_time() f32;			// Get time in seconds for last frame drawn (delta time)
-export @symbol("GetTime") fn get_time() f64;				// Get elapsed time in seconds since InitWindow()
-export @symbol("GetFPS") fn get_fps() int;				// Get current FPS
+export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;    // Set target FPS (maximum)
+export @symbol("GetFrameTime") fn get_frame_time() f32;             // Get time in seconds for last frame drawn (delta time)
+export @symbol("GetTime") fn get_time() f64;                        // Get elapsed time in seconds since InitWindow()
+export @symbol("GetFPS") fn get_fps() int;                          // Get current FPS
 
 // Misc. functions
-export fn take_screenshot(filename: str) void = {
-	TakeScreenshot(c::fromstr(filename));
-};
+@symbol("TakeScreenshot") fn TakeScreenshot(*c::char) void;
+@symbol("OpenURL") fn OpenURL(*c::char) void;
+export fn take_screenshot(filename: str) void = TakeScreenshot(c::fromstr(filename));    // Takes a screenshot of current screen (filename extension defines format)
+export fn open_url(url: str) void = OpenURL(c::fromstr(url));                            // Open URL with default system browser (if available)
 
-export fn open_url(url: str) void = {
-	OpenURL(c::fromstr(url));
-};
-
-@symbol("TakeScreenshot") fn TakeScreenshot(*c::char) void;	// Takes a screenshot of current screen (filename extension defines format)
-@symbol("OpenURL") fn OpenURL(*c::char) void;			// Open URL with default system browser (if available)
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
 //------------------------------------------------------------------------------------
 
 // Input-related functions: keyboard
-export @symbol("IsKeyPressed") fn is_key_pressed(key: int) bool;		// Check if a key has been pressed once
-export @symbol("IsKeyPressedRepeat") fn is_key_pressed_repeat(key: int) bool;	// Check if a key has been pressed again (Only PLATFORM_DESKTOP)
-export @symbol("IsKeyDown") fn is_key_down(key: int) bool;			// Check if a key is being pressed
-export @symbol("IsKeyReleased") fn is_key_released(key: int) bool;		// Check if a key has been released once
-export @symbol("IsKeyUp") fn is_key_up(key: int) bool;				// Check if a key is NOT being pressed
-export @symbol("GetKeyPressed") fn get_key_pressed() int;			// Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
-export @symbol("GetCharPressed") fn get_char_pressed() int;			// Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
-export @symbol("SetExitKey") fn set_exit_key(key: int) void;			// Set a custom key to exit program (default is ESC)
+export @symbol("IsKeyPressed") fn is_key_pressed(key: int) bool;                 // Check if a key has been pressed once
+export @symbol("IsKeyPressedRepeat") fn is_key_pressed_repeat(key: int) bool;    // Check if a key has been pressed again (Only PLATFORM_DESKTOP)
+export @symbol("IsKeyDown") fn is_key_down(key: int) bool;                       // Check if a key is being pressed
+export @symbol("IsKeyReleased") fn is_key_released(key: int) bool;               // Check if a key has been released once
+export @symbol("IsKeyUp") fn is_key_up(key: int) bool;                           // Check if a key is NOT being pressed
+export @symbol("GetKeyPressed") fn get_key_pressed() int;                        // Get key pressed (keycode), call it multiple times for keys queued, returns 0 when the queue is empty
+export @symbol("GetCharPressed") fn get_char_pressed() int;                      // Get char pressed (unicode), call it multiple times for chars queued, returns 0 when the queue is empty
+export @symbol("SetExitKey") fn set_exit_key(key: int) void;                     // Set a custom key to exit program (default is ESC)
 
 // Input-related functions: gamepad
-export fn set_gamepad_mappings(mappings: str) void = {
-	SetGamepadMappings(c::fromstr(mappings));
-};
-
-export @symbol("IsGamepadAvaible") fn is_gamepad_avaible(gamepad: int) bool;					// Check if a gamepad is available
-export @symbol("GetGamepadName") fn get_gamepad_name(gamepad: int) const *c::char;				// Get gamepad internal name id
-export @symbol("IsGamepadButtonPressed") fn is_gamepad_button_pressed(gamepad: int, button: int) bool;		// Check if a gamepad button has been pressed once
-export @symbol("IsGamepadButtonDown") fn is_gamepad_button_down(gamepad: int, button: int) bool;		// Check if a gamepad button is being pressed
-export @symbol("IsGamepadButtonReleased") fn is_gamepad_button_released(gamepad: int, button: int) bool;	// Check if a gamepad button has been released once
-export @symbol("IsGamepadButtonUp") fn is_gamepad_button_up(gamepad: int, button: int) bool;			// Check if a gamepad button is NOT being pressed
-export @symbol("GetGamepadButtonPressed") fn get_gamepad_button_pressed() int;					// Get the last gamepad button pressed
-export @symbol("GetGamepadAxisCount") fn get_gamepad_axis_count() int;						// Get gamepad axis count for a gamepad
-export @symbol("GetGamepadAxisMovement") fn get_gamepad_axis_movement(gamepad: int, axis: int) f32;		// Get axis movement value for a gamepad axis
-@symbol("SetGamepadMappings") fn SetGamepadMappings(*c::char) int;						// Set internal gamepad mappings (SDL_GameControllerDB)
+@symbol("GetGamepadName") fn GetGamepadName(gamepad: int) const *c::char;
+@symbol("SetGamepadMappings") fn SetGamepadMappings(*c::char) int;    
+export @symbol("IsGamepadAvaible") fn is_gamepad_avaible(gamepad: int) bool;                                // Check if a gamepad is available
+export fn get_gamepad_name(gamepad: int) str = return c::tostr(GetGamepadName(gamepad))!;                   // Get gamepad internal name id
+export @symbol("IsGamepadButtonPressed") fn is_gamepad_button_pressed(gamepad: int, button: int) bool;      // Check if a gamepad button has been pressed once
+export @symbol("IsGamepadButtonDown") fn is_gamepad_button_down(gamepad: int, button: int) bool;            // Check if a gamepad button is being pressed
+export @symbol("IsGamepadButtonReleased") fn is_gamepad_button_released(gamepad: int, button: int) bool;    // Check if a gamepad button has been released once
+export @symbol("IsGamepadButtonUp") fn is_gamepad_button_up(gamepad: int, button: int) bool;                // Check if a gamepad button is NOT being pressed
+export @symbol("GetGamepadButtonPressed") fn get_gamepad_button_pressed() int;                              // Get the last gamepad button pressed
+export @symbol("GetGamepadAxisCount") fn get_gamepad_axis_count() int;                                      // Get gamepad axis count for a gamepad
+export @symbol("GetGamepadAxisMovement") fn get_gamepad_axis_movement(gamepad: int, axis: int) f32;         // Get axis movement value for a gamepad axis
+export fn set_gamepad_mappings(mappings: str) int = SetGamepadMappings(c::fromstr(mappings));               // Set internal gamepad mappings (SDL_GameControllerDB)
 
 // Input-related functions: mouse
-export @symbol("IsMouseButtonPressed") fn is_mouse_button_pressed(mouse_button: int) bool;	// Check if a mouse button has been pressed once
-export @symbol("IsMouseButtonDown") fn is_mouse_button_down(mouse_button: int) bool;		// Check if a mouse button is being pressed
-export @symbol("IsMouseButtonReleased") fn is_mouse_button_released(mouse_button: int) bool;	// Check if a mouse button has been released once
-export @symbol("IsMouseButtonUp") fn is_mouse_button_up(mouse_button: int) bool;		// Check if a mouse button is NOT being pressed
-export @symbol("GetMouseX") fn get_mouse_x() int;						// Get mouse position X
-export @symbol("GetMouseY") fn get_mouse_y() int;						// Get mouse position Y
-export @symbol("GetMousePosition") fn get_mouse_position() Vector2;				// Get mouse position XY
-export @symbol("GetMouseDelta") fn get_mouse_delta() Vector2;					// Get mouse delta between frames
-export @symbol("SetMousePosition") fn set_mouse_position(x: int, y: int) void;			// Set mouse position XY
-export @symbol("SetMouseOffset") fn set_mouse_offset(offset_x: int, offset_y: int) void;	// Set mouse offset
-export @symbol("SetMouseScale") fn set_mouse_scale(scale_x: f32, scale_y: f32) void;		// Set mouse scaling
-export @symbol("GetMouseWheelMove") fn get_mouse_wheel_move() f32;				// Get mouse wheel movement for X or Y, whichever is larger
-export @symbol("GetMouseWheelMoveV") fn get_mouse_wheel_move_v() Vector2;			// Get mouse wheel movement for both X and Y
-export @symbol("SetMouseCursor") fn set_mouse_cursor(cursor: int) void;				// Set mouse cursor
+export @symbol("IsMouseButtonPressed") fn is_mouse_button_pressed(mouse_button: int) bool;      // Check if a mouse button has been pressed once
+export @symbol("IsMouseButtonDown") fn is_mouse_button_down(mouse_button: int) bool;            // Check if a mouse button is being pressed
+export @symbol("IsMouseButtonReleased") fn is_mouse_button_released(mouse_button: int) bool;    // Check if a mouse button has been released once
+export @symbol("IsMouseButtonUp") fn is_mouse_button_up(mouse_button: int) bool;                // Check if a mouse button is NOT being pressed
+export @symbol("GetMouseX") fn get_mouse_x() int;                                               // Get mouse position X
+export @symbol("GetMouseY") fn get_mouse_y() int;                                               // Get mouse position Y
+export @symbol("GetMousePosition") fn get_mouse_position() Vector2;                             // Get mouse position XY
+export @symbol("GetMouseDelta") fn get_mouse_delta() Vector2;                                   // Get mouse delta between frames
+export @symbol("SetMousePosition") fn set_mouse_position(x: int, y: int) void;                  // Set mouse position XY
+export @symbol("SetMouseOffset") fn set_mouse_offset(offset_x: int, offset_y: int) void;        // Set mouse offset
+export @symbol("SetMouseScale") fn set_mouse_scale(scale_x: f32, scale_y: f32) void;            // Set mouse scaling
+export @symbol("GetMouseWheelMove") fn get_mouse_wheel_move() f32;                              // Get mouse wheel movement for X or Y, whichever is larger
+export @symbol("GetMouseWheelMoveV") fn get_mouse_wheel_move_v() Vector2;                       // Get mouse wheel movement for both X and Y
+export @symbol("SetMouseCursor") fn set_mouse_cursor(cursor: int) void;                         // Set mouse cursor
 
 // module: rshapes
 // NOTE: It can be useful when using basic shapes and one single font,
 // defining a font char white rectangle would allow drawing everything in a single draw call
-export @symbol("SetShapesTexture") fn set_shapes_texture(texture: Texture2D, source: Rectangle) void; // Set texture and rectangle to be used on shapes drawing
+export @symbol("SetShapesTexture") fn set_shapes_texture(texture: Texture2D, source: Rectangle) void;    // Set texture and rectangle to be used on shapes drawing
 
 // Basic shapes drawing functions
 export @symbol("DrawPixel") fn draw_pixel(x: int, y: int, color: Color) void;
@@ -272,12 +263,12 @@ export @symbol("CheckCollisionRecs") fn check_collision_recs(rec_1: Rectangle, r
 
 // module: rtextures
 // Image loading functions
-export fn load_image(filename: str) Image = { return LoadImage(c::fromstr(filename)); };
 @symbol("LoadImage") fn LoadImage(*c::char) Image;
+export fn load_image(filename: str) Image = return LoadImage(c::fromstr(filename));
 
 // Texture loading functions
-export fn load_texture(filename: str) Texture2D = { return LoadTexture(c::fromstr(filename)); };
 @symbol("LoadTexture") fn LoadTexture(*c::char) Texture2D;
+export fn load_texture(filename: str) Texture2D = return LoadTexture(c::fromstr(filename));
 export @symbol("LoadTextureFromImage") fn load_texture_from_image(image: Image) Texture2D;
 export @symbol("UnloadTexture") fn unload_texture(texture: Texture2D) void;
 
@@ -289,11 +280,9 @@ export @symbol("GetColor") fn get_color(color: u32) Color;
 
 // module: rtext
 // Text-Drawing functions
-export @symbol("DrawFPS") fn draw_fps(x: int, y: int) void;
-export fn draw_text(title: str, x: size, y: size, text_size: size, color: Color) void = {
-	DrawText(c::fromstr(title), x, y, text_size, color);
-};
 @symbol("DrawText") fn DrawText(*c::char, size, size, size, Color) void;
+export @symbol("DrawFPS") fn draw_fps(x: int, y: int) void;
+export fn draw_text(title: str, x: size, y: size, text_size: size, color: Color) void = DrawText(c::fromstr(title), x, y, text_size, color);
 
 // Text font info functions
 export @symbol("SetTextLineSpacing") fn set_text_line_spacing(spacing: int) void;
