@@ -3,15 +3,17 @@ use strconv;
 use types::c;
 use raylib::*;
 
-def SPEED: f32 = 300.0;
-def SCREEN_X: int = 1280;
-def SCREEN_Y: int = 720;
+def SCREEN_RESOLUTION = Vector2 {
+	x = 1280.0,
+	y = 720.0,
+};
 
 type Player = struct {
 	position:       Vector2,
 	dimensions:     Vector2,
 	collision:      Rectangle,
 	color:          Color,
+	speed:          f32,
 };
 
 type LineCollision = struct {
@@ -33,6 +35,7 @@ export fn main() void = {
 			height = 30.0,
 		},
 		color      = GREEN_DARK,
+		speed      = 300.0,
 	};
 
 	let mouse_square_color = AQUA_DARK;
@@ -60,8 +63,8 @@ export fn main() void = {
 
 	let camera = Camera2D {
 		cam_offset = Vector2 {
-			x = SCREEN_X: f32/2.0,
-			y = SCREEN_Y: f32/2.0,
+			x = SCREEN_RESOLUTION.x / 2.0,
+			y = SCREEN_RESOLUTION.y / 2.0,
 		},
 		target = Vector2 {
 			x = player.position.x + player.dimensions.x / 2.0,
@@ -71,7 +74,7 @@ export fn main() void = {
 		zoom = 1.0,
 	};
 
-	init_window(SCREEN_X: u32, SCREEN_Y: u32, "Input Test");
+	init_window(SCREEN_RESOLUTION.x: u32, SCREEN_RESOLUTION.y: u32, "Input Test");
 
 	let monitor = get_current_monitor();
 	let refresh_rate = get_monitor_refresh_rate(monitor);
@@ -86,16 +89,16 @@ export fn main() void = {
 		set_target_fps(refresh_rate * 2);
 		begin_mode_2d(camera);
 
-		draw_texture(texture, SCREEN_X / 3, SCREEN_Y / 3, get_color(0x000000FF));
+		draw_texture(texture, SCREEN_RESOLUTION.x: int / 3, SCREEN_RESOLUTION.y: int / 3, get_color(0x000000FF));
 
 		let rec_1_position = Vector2 { x = 0.0, y = 0.0 };
-		let rec_1_size     = Vector2 { x = SCREEN_X: f32, y = 5.0 };
-		let rec_2_position = Vector2 { x = SCREEN_X: f32, y = 0.0 };
-		let rec_2_size     = Vector2 { x = 5.0, y = SCREEN_Y: f32 };
-		let rec_3_position = Vector2 { x = 0.0, y = SCREEN_Y: f32 };
-		let rec_3_size     = Vector2 { x = SCREEN_X: f32 + 5.0, y = 5.0 };
+		let rec_1_size     = Vector2 { x = SCREEN_RESOLUTION.x, y = 5.0 };
+		let rec_2_position = Vector2 { x = SCREEN_RESOLUTION.x, y = 0.0 };
+		let rec_2_size     = Vector2 { x = 5.0, y = SCREEN_RESOLUTION.y };
+		let rec_3_position = Vector2 { x = 0.0, y = SCREEN_RESOLUTION.y };
+		let rec_3_size     = Vector2 { x = SCREEN_RESOLUTION.x + 5.0, y = 5.0 };
 		let rec_4_position = Vector2 { x = 0.0, y = 0.0 };
-		let rec_4_size     = Vector2 { x = 5.0, y = SCREEN_Y: f32 };
+		let rec_4_size     = Vector2 { x = 5.0, y = SCREEN_RESOLUTION.y };
 
 		draw_rectangle_v(rec_1_position, rec_1_size, PURPLE_DARK);
 		draw_rectangle_v(rec_2_position, rec_2_size, PURPLE_DARK);
@@ -204,15 +207,15 @@ export fn main() void = {
 		// Keyboard
 		set_exit_key('Q');
 
-		if (is_key_down('W')) player.position.y -= SPEED*get_frame_time();
-		if (is_key_down('A')) player.position.x -= SPEED*get_frame_time();
-		if (is_key_down('S')) player.position.y += SPEED*get_frame_time();
-		if (is_key_down('D')) player.position.x += SPEED*get_frame_time();
+		if (is_key_down('W')) player.position.y -= player.speed*get_frame_time();
+		if (is_key_down('A')) player.position.x -= player.speed*get_frame_time();
+		if (is_key_down('S')) player.position.y += player.speed*get_frame_time();
+		if (is_key_down('D')) player.position.x += player.speed*get_frame_time();
 
-		if (is_key_down('H')) player.position.x -= SPEED*get_frame_time();
-		if (is_key_down('J')) player.position.y += SPEED*get_frame_time();
-		if (is_key_down('K')) player.position.y -= SPEED*get_frame_time();
-		if (is_key_down('L')) player.position.x += SPEED*get_frame_time();
+		if (is_key_down('H')) player.position.x -= player.speed*get_frame_time();
+		if (is_key_down('J')) player.position.y += player.speed*get_frame_time();
+		if (is_key_down('K')) player.position.y -= player.speed*get_frame_time();
+		if (is_key_down('L')) player.position.x += player.speed*get_frame_time();
 
 		if (is_key_down('1')) player.color = RED_DARK;
 		if (is_key_down('2')) player.color = GREEN_DARK;
@@ -244,21 +247,21 @@ export fn main() void = {
 			line_1 = Rectangle {
 				x = 0.0,
 				y = 0.0,
-				width = SCREEN_X: f32,
+				width = SCREEN_RESOLUTION.x,
 				height = 2.0,
 			},
 
 			line_2 = Rectangle {
-				x = SCREEN_X: f32 + 4.0,
+				x = SCREEN_RESOLUTION.x + 4.0,
 				y = 0.0,
 				width = 5.0,
-				height = SCREEN_Y: f32,
+				height = SCREEN_RESOLUTION.y,
 			},
 
 			line_3 = Rectangle {
 				x = 0.0,
-				y = SCREEN_Y: f32 + 4.0,
-				width = SCREEN_X: f32,
+				y = SCREEN_RESOLUTION.y + 4.0,
+				width = SCREEN_RESOLUTION.x,
 				height = 5.0,
 			},
 
@@ -266,7 +269,7 @@ export fn main() void = {
 				x = 0.0,
 				y = 0.0,
 				width = 2.0,
-				height = SCREEN_Y: f32,
+				height = SCREEN_RESOLUTION.y,
 			},
 		};
 
@@ -284,12 +287,12 @@ export fn main() void = {
 
 		if (check_collision_recs(line_collision.line_2, player.collision)) { 
 			draw_rectangle_v(rec_2_position, rec_2_size, PURPLE_LIGHT);
-			player.position.x = SCREEN_X: f32 - player.dimensions.x + 2.0;
+			player.position.x = SCREEN_RESOLUTION.x - player.dimensions.x + 2.0;
 		};
 
 		if (check_collision_recs(line_collision.line_3, player.collision)) { 
 			draw_rectangle_v(rec_3_position, rec_3_size, PURPLE_LIGHT);
-			player.position.y = SCREEN_Y: f32 - player.dimensions.y + 2.0;
+			player.position.y = SCREEN_RESOLUTION.y - player.dimensions.y + 2.0;
 		};
 
 		if (check_collision_recs(line_collision.line_4, player.collision)) { 
@@ -314,101 +317,133 @@ export fn main() void = {
 
 		// Resident Evil-like camera
 		//
-		// if (player.position.x <= SCREEN_X: f32 / 2.0) camera.target.x = SCREEN_X: f32 / 4.0;
-		// if (player.position.x >= SCREEN_X: f32 / 2.0) camera.target.x = SCREEN_X: f32;
-		// if (player.position.y <= SCREEN_Y: f32 / 2.0) camera.target.y = SCREEN_Y: f32 / 4.0;
-		// if (player.position.y >= SCREEN_Y: f32 / 2.0) camera.target.y = SCREEN_Y: f32;
+		// if (player.position.x <= SCREEN_RESOLUTION.x / 2.0) camera.target.x = SCREEN_RESOLUTION.x / 4.0;
+		// if (player.position.x >= SCREEN_RESOLUTION.x / 2.0) camera.target.x = SCREEN_RESOLUTION.x;
+		// if (player.position.y <= SCREEN_RESOLUTION.y / 2.0) camera.target.y = SCREEN_RESOLUTION.y / 4.0;
+		// if (player.position.y >= SCREEN_RESOLUTION.y / 2.0) camera.target.y = SCREEN_RESOLUTION.y;
 
 		// Axis circles
-		draw_circle(    first_axis_x: int,
-				first_axis_y: int,
-				15.0,
-				first_axis_circle_color);
+		draw_circle(
+						first_axis_x: int,
+						first_axis_y: int,
+						15.0,
+						first_axis_circle_color
+		);
 
-		draw_circle(    second_axis_x: int,
-				second_axis_y: int,
-				15.0,
-				second_axis_circle_color);
+		draw_circle(
+						second_axis_x: int,
+						second_axis_y: int,
+						15.0,
+						second_axis_circle_color
+		);
 
 		// Middle buttons rectangles
-		draw_rectangle( button_select_x: int,
-				button_start_y: int,
-				30,
-				10,
-				button_select_square_color);
+		draw_rectangle(
+						button_select_x: int,
+						button_start_y: int,
+						30,
+						10,
+						button_select_square_color
+		);
 
-		draw_rectangle( button_start_x: int,
-				button_start_y: int,
-				30,
-				10,
-				button_start_square_color);
+		draw_rectangle(
+						button_start_x: int,
+						button_start_y: int,
+						30,
+						10,
+						button_start_square_color
+		);
 
 		// D-PAD Triangles
-		draw_triangle(  dpad_triangle_up_v1,
-				dpad_triangle_up_v2,
-				dpad_triangle_up_v3,
-				dpad_up_triangle_color);
+		draw_triangle(
+						dpad_triangle_up_v1,
+						dpad_triangle_up_v2,
+						dpad_triangle_up_v3,
+						dpad_up_triangle_color
+		);
 
-		draw_triangle(  dpad_triangle_down_v1,
-				dpad_triangle_down_v2,
-				dpad_triangle_down_v3,
-				dpad_down_triangle_color);
+		draw_triangle(
+						dpad_triangle_down_v1,
+						dpad_triangle_down_v2,
+						dpad_triangle_down_v3,
+						dpad_down_triangle_color
+		);
 
-		draw_triangle(  dpad_triangle_left_v1,
-				dpad_triangle_left_v2,
-				dpad_triangle_left_v3,
-				dpad_left_triangle_color);
+		draw_triangle(
+						dpad_triangle_left_v1,
+						dpad_triangle_left_v2,
+						dpad_triangle_left_v3,
+						dpad_left_triangle_color
+		);
 
-		draw_triangle(  dpad_triangle_right_v1,
-				dpad_triangle_right_v2,
-				dpad_triangle_right_v3,
-				dpad_right_triangle_color);
+		draw_triangle(
+						dpad_triangle_right_v1,
+						dpad_triangle_right_v2,
+						dpad_triangle_right_v3,
+						dpad_right_triangle_color
+		);
 
 		// Triggers/Shoulder buttons rectangles
-		draw_rectangle( button_lt_x: int,
-				button_lt_y: int,
-				30,
-				15,
-				button_lt_square_color);
+		draw_rectangle(
+						button_lt_x: int,
+						button_lt_y: int,
+						30,
+						15,
+						button_lt_square_color
+		);
 
-		draw_rectangle( button_lb_x: int,
-				button_lb_y: int,
-				30,
-				15,
-				button_lb_square_color);
+		draw_rectangle(
+						button_lb_x: int,
+						button_lb_y: int,
+						30,
+						15,
+						button_lb_square_color
+		);
 
-		draw_rectangle( button_rt_x: int,
-				button_rt_y: int,
-				30,
-				15,
-				button_rt_square_color);
+		draw_rectangle(
+						button_rt_x: int,
+						button_rt_y: int,
+						30,
+						15,
+						button_rt_square_color
+		);
 
-		draw_rectangle( button_rb_x: int,
-				button_rb_y: int,
-				30,
-				15,
-				button_rb_square_color);
+		draw_rectangle(
+						button_rb_x: int,
+						button_rb_y: int,
+						30,
+						15,
+						button_rb_square_color
+		);
 
 		// Front buttons circles
-		draw_circle(    button_a_x: int,
-				button_a_y: int,
-				15.0,
-				button_a_circle_color);
+		draw_circle(
+						button_a_x: int,
+						button_a_y: int,
+						15.0,
+						button_a_circle_color
+		);
 
-		draw_circle(    button_b_x: int,
-				button_b_y: int,
-				15.0,
-				button_b_circle_color);
+		draw_circle(
+						button_b_x: int,
+						button_b_y: int,
+						15.0,
+						button_b_circle_color
+		);
 
-		draw_circle(    button_x_x: int,
-				button_x_y: int,
-				15.0,
-				button_x_circle_color);
+		draw_circle(
+						button_x_x: int,
+						button_x_y: int,
+						15.0,
+						button_x_circle_color
+		);
 
-		draw_circle(    button_y_x: int,
-				button_y_y: int,
-				15.0,
-				button_y_circle_color);
+		draw_circle(
+						button_y_x: int,
+						button_y_y: int,
+						15.0,
+						button_y_circle_color
+		);
 
 		// Mouse cursor
 		draw_rectangle(mouse_x, mouse_y, 10, 10, mouse_square_color);
@@ -442,11 +477,11 @@ fn debug_info(monitor: int) void = {
 	draw_fps(10, 100);
 
 	// Right-side
-	draw_text("Resolution:", SCREEN_X: u32 - 300, 10, 20, FG_LIGHT);
-	draw_text(strconv::itos(get_render_width()), SCREEN_X: u32 - 180, 10, 20, FG_LIGHT);
-	draw_text("x", SCREEN_X: u32 - 130, 10, 20, FG_LIGHT);
-	draw_text(strconv::itos(get_render_height()), SCREEN_X: u32 - 110, 10, 20, FG_LIGHT);
-	draw_text("Monitor name:", SCREEN_X: u32 - 300, 40, 20, FG_LIGHT);
-	draw_text(get_monitor_name(monitor), SCREEN_X: u32 - 150, 40, 20, FG_LIGHT);
+	draw_text("Resolution:", SCREEN_RESOLUTION.x: u32 - 300, 10, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_render_width()), SCREEN_RESOLUTION.x: u32 - 180, 10, 20, FG_LIGHT);
+	draw_text("x", SCREEN_RESOLUTION.x: u32 - 130, 10, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_render_height()), SCREEN_RESOLUTION.x: u32 - 110, 10, 20, FG_LIGHT);
+	draw_text("Monitor name:", SCREEN_RESOLUTION.x: u32 - 300, 40, 20, FG_LIGHT);
+	draw_text(get_monitor_name(monitor), SCREEN_RESOLUTION.x: u32 - 150, 40, 20, FG_LIGHT);
 };
 
