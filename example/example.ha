@@ -3,6 +3,8 @@ use strconv;
 use types::c;
 use raylib::*;
 
+def TITLE = "Game Example";
+
 def SCREEN_RESOLUTION = Vector2 {
 	x = 1280.0,
 	y = 720.0,
@@ -21,6 +23,13 @@ type LineCollision = struct {
 	line_2: Rectangle,
 	line_3: Rectangle,
 	line_4: Rectangle,
+};
+
+type Wall = struct {
+	position:   Vector2,
+	dimensions: Vector2,
+	collisions: Rectangle,
+	color:      Color,
 };
 
 export fn main() void = {
@@ -74,7 +83,7 @@ export fn main() void = {
 		zoom = 1.0,
 	};
 
-	init_window(SCREEN_RESOLUTION.x: u32, SCREEN_RESOLUTION.y: u32, "Input Test");
+	init_window(SCREEN_RESOLUTION.x: u32, SCREEN_RESOLUTION.y: u32, TITLE);
 
 	let monitor = get_current_monitor();
 	let refresh_rate = get_monitor_refresh_rate(monitor);
@@ -82,11 +91,29 @@ export fn main() void = {
 	let image = load_image("./example/hare.png");
 	let texture = load_texture_from_image(image);
 
+	init_audio_device();
+	let music: Music = load_music_stream("./example/rollingdownthestreet.xm");
+	music.looping = true;
+	set_music_volume(music, 0.5);
+
+	set_target_fps(refresh_rate * 2);
+
 	for (!window_should_close()) {
-		set_window_title("Input Test");
+		set_window_title(TITLE);
+
+		update_music_stream(music);
+		switch (is_music_stream_playing(music)) {
+			case true =>
+			if (is_key_pressed('P')) pause_music_stream(music);
+			if (is_gamepad_button_pressed(0,16)) pause_music_stream(music);
+			case false =>
+			if (is_key_pressed('P')) play_music_stream(music);
+			if (is_gamepad_button_pressed(0,16)) play_music_stream(music);
+		};
+
 		begin_drawing();
 		clear_background(BG_LIGHT);
-		set_target_fps(refresh_rate * 2);
+		hide_cursor();
 		begin_mode_2d(camera);
 
 		draw_texture(texture, SCREEN_RESOLUTION.x: int / 3, SCREEN_RESOLUTION.y: int / 3, get_color(0x000000FF));
@@ -106,55 +133,6 @@ export fn main() void = {
 		draw_rectangle_v(rec_4_position, rec_4_size, PURPLE_DARK);
 
 		// Gamepad
-		let first_axis_x = 115.0 + get_gamepad_axis_movement(0,0)*30.0;
-		let first_axis_y = 115.0 + get_gamepad_axis_movement(0,1)*30.0;
-		let second_axis_x = 315.0 + get_gamepad_axis_movement(0,2)*30.0;
-		let second_axis_y = 115.0 + get_gamepad_axis_movement(0,3)*30.0;
-
-		let dpad_triangle_up_v1 = Vector2 { x = 100.0, y = 280.0 };
-		let dpad_triangle_up_v2 = Vector2 { x = 130.0, y = 280.0 };
-		let dpad_triangle_up_v3 = Vector2 { x = 115.0, y = 250.0 };
-
-		let dpad_triangle_down_v1 = Vector2 { x = 100.0, y = 310.0 };
-		let dpad_triangle_down_v2 = Vector2 { x = 115.0, y = 340.0 };
-		let dpad_triangle_down_v3 = Vector2 { x = 130.0, y = 310.0 };
-
-		let dpad_triangle_left_v1 = Vector2 { x = 70.0, y = 295.0 };
-		let dpad_triangle_left_v2 = Vector2 { x = 100.0, y = 310.0 };
-		let dpad_triangle_left_v3 = Vector2 { x = 100.0, y = 280.0 };
-
-		let dpad_triangle_right_v3 = Vector2 { x = 160.0, y = 295.0 };
-		let dpad_triangle_right_v1 = Vector2 { x = 130.0, y = 280.0 };
-		let dpad_triangle_right_v2 = Vector2 { x = 130.0, y = 310.0 };
-
-		let button_select_x = 180.0;
-		let button_select_y = 250.0;
-
-		let button_start_x = 220.0;
-		let button_start_y = 250.0;
-
-		let button_lt_x = 100.0;
-		let button_lt_y = 200.0;
-		let button_lb_x = 100.0;
-		let button_lb_y = 220.0;
-
-		let button_rt_x = 300.0;
-		let button_rt_y = 200.0;
-		let button_rb_x = 300.0;
-		let button_rb_y = 220.0;
-
-		let button_y_x = 315.0;
-		let button_y_y = 265.0;
-
-		let button_a_x = 315.0;
-		let button_a_y = 325.0;
-
-		let button_x_x = 285.0;
-		let button_x_y = 295.0;
-
-		let button_b_x = 345.0;
-		let button_b_y = 295.0;
-
 		player.position.x += get_gamepad_axis_movement(0,0)*2.0;
 		player.position.y += get_gamepad_axis_movement(0,1)*2.0;
 		if (is_gamepad_button_pressed(0,1)) player.dimensions.y -= 10.0;
@@ -226,21 +204,6 @@ export fn main() void = {
 		if (is_key_down('7')) player.color = ORANGE_DARK;
 		if (is_key_down('8')) player.color = FG_LIGHT;
 		if (is_key_down('9')) player.color = BG_LIGHT;
-
-		// Mouse
-		let mouse_x = get_mouse_x();
-		let mouse_y = get_mouse_y();
-		set_mouse_offset(-15, -15);
-
-		if (is_mouse_button_pressed(0)) mouse_square_color = BLUE_DARK;
-		if (is_mouse_button_pressed(1)) mouse_square_color = RED_DARK;
-		if (is_mouse_button_pressed(2)) mouse_square_color = BG_DARK;
-
-		if (is_mouse_button_released(0)) mouse_square_color = AQUA_DARK;
-		if (is_mouse_button_released(1)) mouse_square_color = AQUA_DARK;
-		if (is_mouse_button_released(2)) mouse_square_color = AQUA_DARK;
-
-		hide_cursor();
 
 		// Collision detection
 		let line_collision = LineCollision {
@@ -323,138 +286,134 @@ export fn main() void = {
 		// if (player.position.y >= SCREEN_RESOLUTION.y / 2.0) camera.target.y = SCREEN_RESOLUTION.y;
 
 		// Axis circles
-		draw_circle(
-						first_axis_x: int,
-						first_axis_y: int,
-						15.0,
-						first_axis_circle_color
-		);
+		let first_axis = Vector2 {
+			x = 115.0 + get_gamepad_axis_movement(0,0)*30.0,
+			y = 115.0 + get_gamepad_axis_movement(0,1)*30.0,
+		};
 
-		draw_circle(
-						second_axis_x: int,
-						second_axis_y: int,
-						15.0,
-						second_axis_circle_color
-		);
+		let second_axis = Vector2 {
+			x = 315.0 + get_gamepad_axis_movement(0,2)*30.0,
+			y = 115.0 + get_gamepad_axis_movement(0,3)*30.0,
+		};
+
+		draw_circle_v(first_axis, 15.0, first_axis_circle_color);
+		draw_circle_v(second_axis, 15.0, second_axis_circle_color);
 
 		// Middle buttons rectangles
-		draw_rectangle(
-						button_select_x: int,
-						button_start_y: int,
-						30,
-						10,
-						button_select_square_color
-		);
+		let button_select = Rectangle {
+			x = 180.0,
+			y = 250.0,
+			width = 30.0,
+			height = 10.0,
+		};
 
-		draw_rectangle(
-						button_start_x: int,
-						button_start_y: int,
-						30,
-						10,
-						button_start_square_color
-		);
+		let button_start = Rectangle {
+			x = 220.0,
+			y = 250.0,
+			width = 30.0,
+			height = 10.0,
+		};
+
+		draw_rectangle_rec(button_select, button_select_square_color);
+		draw_rectangle_rec(button_start, button_start_square_color);
 
 		// D-PAD Triangles
-		draw_triangle(
-						dpad_triangle_up_v1,
-						dpad_triangle_up_v2,
-						dpad_triangle_up_v3,
-						dpad_up_triangle_color
-		);
+		let dpad_up = Triangle {
+			point_1 = Vector2 { x = 100.0, y = 280.0 },
+			point_2 = Vector2 { x = 130.0, y = 280.0 },
+			point_3 = Vector2 { x = 115.0, y = 250.0 },
+		};
 
-		draw_triangle(
-						dpad_triangle_down_v1,
-						dpad_triangle_down_v2,
-						dpad_triangle_down_v3,
-						dpad_down_triangle_color
-		);
+		let dpad_down = Triangle {
+			point_1 = Vector2 { x = 100.0, y = 310.0 },
+			point_2 = Vector2 { x = 115.0, y = 340.0 },
+			point_3 = Vector2 { x = 130.0, y = 310.0 },
+		};
 
-		draw_triangle(
-						dpad_triangle_left_v1,
-						dpad_triangle_left_v2,
-						dpad_triangle_left_v3,
-						dpad_left_triangle_color
-		);
+		let dpad_left = Triangle {
+			point_1 = Vector2 { x = 70.0, y = 295.0 },
+			point_2 = Vector2 { x = 100.0, y = 310.0 },
+			point_3 = Vector2 { x = 100.0, y = 280.0 },
+		};
 
-		draw_triangle(
-						dpad_triangle_right_v1,
-						dpad_triangle_right_v2,
-						dpad_triangle_right_v3,
-						dpad_right_triangle_color
-		);
+		let dpad_right = Triangle {
+			point_1 = Vector2 { x = 160.0, y = 295.0 },
+			point_2 = Vector2 { x = 130.0, y = 280.0 },
+			point_3 = Vector2 { x = 130.0, y = 310.0 },
+		};
+
+		draw_triangle_v(dpad_up, dpad_up_triangle_color);
+		draw_triangle_v(dpad_down, dpad_down_triangle_color);
+		draw_triangle_v(dpad_left, dpad_left_triangle_color);
+		draw_triangle_v(dpad_right, dpad_right_triangle_color);
 
 		// Triggers/Shoulder buttons rectangles
-		draw_rectangle(
-						button_lt_x: int,
-						button_lt_y: int,
-						30,
-						15,
-						button_lt_square_color
-		);
+		let button_lt = Rectangle {
+			x = 107.5,
+			y = 190.0,
+			width = 15.0,
+			height = 25.0,
+		};
 
-		draw_rectangle(
-						button_lb_x: int,
-						button_lb_y: int,
-						30,
-						15,
-						button_lb_square_color
-		);
+		let button_lb = Rectangle {
+			x = 100.0,
+			y = 220.0,
+			width = 30.0,
+			height = 15.0,
+		};
 
-		draw_rectangle(
-						button_rt_x: int,
-						button_rt_y: int,
-						30,
-						15,
-						button_rt_square_color
-		);
+		let button_rt = Rectangle {
+			x = 307.5,
+			y = 190.0,
+			width = 15.0,
+			height = 25.0,
+		};
 
-		draw_rectangle(
-						button_rb_x: int,
-						button_rb_y: int,
-						30,
-						15,
-						button_rb_square_color
-		);
+		let button_rb = Rectangle {
+			x = 300.0,
+			y = 220.0,
+			width = 30.0,
+			height = 15.0,
+		};
+
+		draw_rectangle_rec(button_lt, button_lt_square_color);
+		draw_rectangle_rec(button_lb, button_lb_square_color);
+		draw_rectangle_rec(button_rt, button_rt_square_color);
+		draw_rectangle_rec(button_rb, button_rb_square_color);
 
 		// Front buttons circles
-		draw_circle(
-						button_a_x: int,
-						button_a_y: int,
-						15.0,
-						button_a_circle_color
-		);
+		let button_a = Vector2 {
+			x = 315.0,
+			y = 325.0,
+		};
 
-		draw_circle(
-						button_b_x: int,
-						button_b_y: int,
-						15.0,
-						button_b_circle_color
-		);
+		let button_b = Vector2 {
+			x = 345.0,
+			y = 295.0,
+		};
 
-		draw_circle(
-						button_x_x: int,
-						button_x_y: int,
-						15.0,
-						button_x_circle_color
-		);
+		let button_x = Vector2 {
+			x = 285.0,
+			y = 295.0,
+		};
 
-		draw_circle(
-						button_y_x: int,
-						button_y_y: int,
-						15.0,
-						button_y_circle_color
-		);
+		let button_y = Vector2 {
+			x = 315.0,
+			y = 265.0,
+		};
 
-		// Mouse cursor
-		draw_rectangle(mouse_x, mouse_y, 10, 10, mouse_square_color);
+		draw_circle_v(button_a, 15.0, button_a_circle_color);
+		draw_circle_v(button_b, 15.0, button_b_circle_color);
+		draw_circle_v(button_x, 15.0, button_x_circle_color);
+		draw_circle_v(button_y, 15.0, button_y_circle_color);
 
 		// Player
 		draw_rectangle_v(player.position, player.dimensions, player.color);
 
 		end_mode_2d();
 
-		if (is_gamepad_button_down(0,17)) debug_info(get_current_monitor());
-		if (is_key_down('I')) debug_info(get_current_monitor());
+		if (is_gamepad_button_down(0,17)) debug_info(get_current_monitor(), music);
+		if (is_key_down('I')) debug_info(get_current_monitor(), music);
 
 		end_drawing();
 
@@ -462,18 +421,22 @@ export fn main() void = {
 		if (is_key_pressed(' ')) take_screenshot("scr.png");
 		if (is_key_pressed('C')) open_url("https://codeberg.org/guapito/raylib.ha");
 	};
-
+	close_audio_device();
 	close_window();
 };
 
-fn debug_info(monitor: int) void = {
+fn debug_info(monitor: int, music: Music) void = {
 	// Background
 	draw_rectangle(0, 0, get_render_width(), 140, get_color(0x282828AA));
 
 	// Left-side
-	draw_text("Example: Input Test", 10, 10, 20, FG_LIGHT);
+	draw_text(TITLE, 10, 10, 20, FG_LIGHT);
 	draw_text("Controller:", 10, 40, 20, FG_LIGHT);
 	draw_text(get_gamepad_name(0), 130, 40, 20, FG_LIGHT);
+	draw_text("Music progress:", 10, 70, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_music_time_played(music): int), 200, 70, 20, FG_LIGHT);
+	draw_text("/", 240, 70, 20, FG_LIGHT);
+	draw_text(strconv::itos(get_music_time_length(music): int), 280, 70, 20, FG_LIGHT);
 	draw_fps(10, 100);
 
 	// Right-side

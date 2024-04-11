@@ -22,6 +22,12 @@ export type Rectangle = struct {
     height: f32,
 };
 
+export type Triangle = struct {
+    point_1: Vector2,
+    point_2: Vector2,
+    point_3: Vector2,
+};
+
 export type Image = struct {
     data: *opaque,
     width: int,
@@ -54,6 +60,39 @@ export type Camera2D = struct {
     target: Vector2,
     rotation: f32,
     zoom: f32,
+};
+
+export type Wave = struct {
+    frame_count: u32,
+    sample_rate: u32,
+    sample_size: u32,
+    channels:    u32,
+    data:        *opaque,
+};
+
+export type rAudioBuffer = *rAudioBuffer;
+export type rAudioProcessor = *rAudioProcessor;
+
+export type AudioStream = struct {
+    buffer: rAudioBuffer,
+    processor: rAudioProcessor,
+
+    sample_rate: u32,
+    sample_size: u32,
+    channels:    u32,
+};
+
+export type Sound = struct {
+    stream: AudioStream,
+    frame_count: u32,
+};
+
+export type Music = struct {
+    stream: AudioStream,
+    frame_count: u32,
+    looping: bool,
+    context_type: int,
+    context_data: *opaque
 };
 
 // Gruvbox colors
@@ -250,6 +289,9 @@ export @symbol("DrawRectangleLinesEx") fn draw_rectangle_lines_ex(rec: Rectangle
 export @symbol("DrawRectangleRounded") fn draw_rectangle_rounded(rec: Rectangle, roundness: f32, segments: int, color: Color) void;
 export @symbol("DrawRectangleRoundedLines") fn draw_rectangle_rounded_lines(rec: Rectangle, roundness: f32, segments: int, line_thic: f32, color: Color) void;
 export @symbol("DrawTriangle") fn draw_triangle(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void;
+export fn draw_triangle_v(points: Triangle, color: Color) void = {
+    draw_triangle(points.point_1, points.point_2, points.point_3, color);
+};
 export @symbol("DrawTriangleLines") fn draw_triangle_lines(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void;
 // TODO:
 // DrawTriangleFan
@@ -286,4 +328,34 @@ export fn draw_text(title: str, x: size, y: size, text_size: size, color: Color)
 
 // Text font info functions
 export @symbol("SetTextLineSpacing") fn set_text_line_spacing(spacing: int) void;
+
+// module: raudio
+// Audio device management functions
+export @symbol("InitAudioDevice") fn init_audio_device() void;
+export @symbol("CloseAudioDevice") fn close_audio_device() void;
+export @symbol("IsAudioDeviceReady") fn is_audio_device_ready() bool;
+export @symbol("SetMasterVolume") fn set_master_volume(volume: f32) void;
+export @symbol("GetMasterVolume") fn get_master_volume() f32;
+
+// Music management functions
+@symbol("LoadMusicStream") fn LoadMusicStream(*c::char) Music;
+@symbol("LoadMusicStreamFromMemory") fn LoadMusicStreamFromMemory(*c::char, *c::char, int) Music;
+export fn load_music_stream(filename: str) Music = return LoadMusicStream(c::fromstr(filename));
+export fn load_music_stream_from_memory(filetype: str, data: str, datasize: int) Music = { 
+    return LoadMusicStreamFromMemory(c::fromstr(filetype), c::fromstr(data), datasize);
+};
+export @symbol("IsMusicReady") fn is_music_ready(music: Music) bool;
+export @symbol("UnloadMusicStream") fn unload_music_stream(music: Music) void;
+export @symbol("PlayMusicStream") fn play_music_stream(music: Music) void;
+export @symbol("IsMusicStreamPlaying") fn is_music_stream_playing(music: Music) bool;
+export @symbol("UpdateMusicStream") fn update_music_stream(music: Music) void;
+export @symbol("StopMusicStream") fn stop_music_stream(music: Music) void;
+export @symbol("PauseMusicStream") fn pause_music_stream(music: Music) void;
+export @symbol("ResumeMusicStream") fn resume_music_stream(music: Music) void;
+export @symbol("SeekMusicStream") fn seek_music_stream(music: Music, position: f32) void;
+export @symbol("SetMusicVolume") fn set_music_volume(music: Music, volume: f32) void;
+export @symbol("SetMusicPitch") fn set_music_pitch(music: Music, pitch: f32) void;
+export @symbol("SetMusicPan") fn set_music_pan(music: Music, pan: f32) void;
+export @symbol("GetMusicTimeLength") fn get_music_time_length(music: Music) f32;
+export @symbol("GetMusicTimePlayed") fn get_music_time_played(music: Music) f32;
 
