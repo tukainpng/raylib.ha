@@ -25,13 +25,6 @@ type LineCollision = struct {
 	line_4: Rectangle,
 };
 
-type Wall = struct {
-	position:   Vector2,
-	dimensions: Vector2,
-	collisions: Rectangle,
-	color:      Color,
-};
-
 export fn main() void = {
 
 	let player = Player {
