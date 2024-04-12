@@ -128,6 +128,7 @@ export type FilePathList = struct {
 	paths:		**str
 };
 
+// Enums
 export type ConfigFlags = enum {
 	FLAG_FULLSCREEN_MODE    = 0x00000002,
 	FLAG_WINDOW_RESIZABLE   = 0x00000004,

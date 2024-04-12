@@ -145,8 +145,11 @@ for (!window_should_close()) {
 	draw_rectangle_rec(rec_4, PURPLE_DARK);
 
 	// Gamepad
-	player.position.x += get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_X)*2.0;
-	player.position.y += get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_Y)*2.0;
+	if (get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_X) > 0.0) player.position.x += player.speed*get_frame_time();
+	if (get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_X) < 0.0) player.position.x -= player.speed*get_frame_time();
+	if (get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_Y) > 0.0) player.position.y += player.speed*get_frame_time();
+	if (get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_Y) < 0.0) player.position.y -= player.speed*get_frame_time();
+
 	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP)) player.dimensions.y -= 10.0;
 	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN)) player.dimensions.y += 10.0;
 	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT)) player.dimensions.x -= 10.0;
