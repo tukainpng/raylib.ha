@@ -97,11 +97,11 @@ for (!window_should_close()) {
 	update_music_stream(music);
 	switch (is_music_stream_playing(music)) {
 		case true =>
-		if (is_key_pressed('P')) pause_music_stream(music);
-		if (is_gamepad_button_pressed(0,16)) pause_music_stream(music);
+		if (is_key_pressed(KeyboardKey::KEY_P)) pause_music_stream(music);
+		if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_THUMB)) pause_music_stream(music);
 		case false =>
-		if (is_key_pressed('P')) play_music_stream(music);
-		if (is_gamepad_button_pressed(0,16)) play_music_stream(music);
+		if (is_key_pressed(KeyboardKey::KEY_P)) play_music_stream(music);
+		if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_THUMB)) play_music_stream(music);
 	};
 
 	begin_drawing();
@@ -145,77 +145,87 @@ for (!window_should_close()) {
 	draw_rectangle_rec(rec_4, PURPLE_DARK);
 
 	// Gamepad
-	player.position.x += get_gamepad_axis_movement(0,0)*2.0;
-	player.position.y += get_gamepad_axis_movement(0,1)*2.0;
-	if (is_gamepad_button_pressed(0,1)) player.dimensions.y -= 10.0;
-	if (is_gamepad_button_pressed(0,3)) player.dimensions.y += 10.0;
-	if (is_gamepad_button_pressed(0,4)) player.dimensions.x -= 10.0;
-	if (is_gamepad_button_pressed(0,2)) player.dimensions.x += 10.0;
+	player.position.x += get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_X)*2.0;
+	player.position.y += get_gamepad_axis_movement(0,GamepadAxis::GAMEPAD_AXIS_LEFT_Y)*2.0;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP)) player.dimensions.y -= 10.0;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN)) player.dimensions.y += 10.0;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT)) player.dimensions.x -= 10.0;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT)) player.dimensions.x += 10.0;
 
-	if (is_gamepad_button_pressed(0,6)) player.color                 = RED_DARK;
-	if (is_gamepad_button_pressed(0,8)) player.color                 = BLUE_DARK;
-	if (is_gamepad_button_pressed(0,7)) player.color                 = GREEN_DARK;
-	if (is_gamepad_button_pressed(0,5)) player.color                 = YELLOW_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_THUMB)) first_axis_circle_color = BLUE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_THUMB)) second_axis_circle_color = BLUE_DARK;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_LEFT_THUMB)) first_axis_circle_color = PURPLE_DARK;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_THUMB)) second_axis_circle_color = PURPLE_DARK;
 
-	if (is_gamepad_button_pressed(0,16)) first_axis_circle_color     = BLUE_DARK;
-	if (is_gamepad_button_pressed(0,17)) second_axis_circle_color    = BLUE_DARK;
-	if (is_gamepad_button_released(0,16)) first_axis_circle_color    = PURPLE_DARK;
-	if (is_gamepad_button_released(0,17)) second_axis_circle_color   = PURPLE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_LEFT)) button_select_square_color = BLUE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_RIGHT)) button_start_square_color = BLUE_DARK;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_LEFT)) button_select_square_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_MIDDLE_RIGHT)) button_start_square_color = FG_LIGHT;
 
-	if (is_gamepad_button_pressed(0,13)) button_select_square_color  = BLUE_DARK;
-	if (is_gamepad_button_pressed(0,15)) button_start_square_color   = BLUE_DARK;
-	if (is_gamepad_button_released(0,13)) button_select_square_color = FG_LIGHT;
-	if (is_gamepad_button_released(0,15)) button_start_square_color  = FG_LIGHT;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_TRIGGER_2)) button_lb_square_color = ORANGE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_TRIGGER_1)) button_lt_square_color = RED_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_TRIGGER_2)) button_rb_square_color = ORANGE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_TRIGGER_1)) button_rt_square_color = RED_DARK;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_LEFT_TRIGGER_2)) button_lb_square_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_LEFT_TRIGGER_1)) button_lt_square_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_TRIGGER_2)) button_rb_square_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_TRIGGER_1)) button_rt_square_color = FG_LIGHT;
 
-	if (is_gamepad_button_pressed(0,10)) button_lb_square_color      = ORANGE_DARK;
-	if (is_gamepad_button_pressed(0,9)) button_lt_square_color       = RED_DARK;
-	if (is_gamepad_button_pressed(0,12)) button_rb_square_color      = ORANGE_DARK;
-	if (is_gamepad_button_pressed(0,11)) button_rt_square_color      = RED_DARK;
-	if (is_gamepad_button_released(0,10)) button_lb_square_color     = FG_LIGHT;
-	if (is_gamepad_button_released(0,9)) button_lt_square_color      = FG_LIGHT;
-	if (is_gamepad_button_released(0,12)) button_rb_square_color     = FG_LIGHT;
-	if (is_gamepad_button_released(0,11)) button_rt_square_color     = FG_LIGHT;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) player.color = RED_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT)) player.color = BLUE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) player.color = GREEN_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP)) player.color = YELLOW_DARK;
 
-	if (is_gamepad_button_pressed(0,6)) button_b_circle_color        = RED_DARK;
-	if (is_gamepad_button_pressed(0,8)) button_x_circle_color        = BLUE_DARK;
-	if (is_gamepad_button_pressed(0,7)) button_a_circle_color        = GREEN_DARK;
-	if (is_gamepad_button_pressed(0,5)) button_y_circle_color        = YELLOW_DARK;
-	if (is_gamepad_button_released(0,6)) button_b_circle_color       = FG_LIGHT;
-	if (is_gamepad_button_released(0,8)) button_x_circle_color       = FG_LIGHT;
-	if (is_gamepad_button_released(0,7)) button_a_circle_color       = FG_LIGHT;
-	if (is_gamepad_button_released(0,5)) button_y_circle_color       = FG_LIGHT;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) button_b_circle_color = RED_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT)) button_x_circle_color = BLUE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) button_a_circle_color = GREEN_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP)) button_y_circle_color = YELLOW_DARK;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_RIGHT)) button_b_circle_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_LEFT)) button_x_circle_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_DOWN)) button_a_circle_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_FACE_UP)) button_y_circle_color = FG_LIGHT;
 
-	if (is_gamepad_button_pressed(0,1)) dpad_up_triangle_color       = ORANGE_DARK;
-	if (is_gamepad_button_pressed(0,3)) dpad_down_triangle_color     = ORANGE_DARK;
-	if (is_gamepad_button_pressed(0,4)) dpad_left_triangle_color     = ORANGE_DARK;
-	if (is_gamepad_button_pressed(0,2)) dpad_right_triangle_color    = ORANGE_DARK;
-	if (is_gamepad_button_released(0,1)) dpad_up_triangle_color      = FG_LIGHT;
-	if (is_gamepad_button_released(0,3)) dpad_down_triangle_color    = FG_LIGHT;
-	if (is_gamepad_button_released(0,4)) dpad_left_triangle_color    = FG_LIGHT;
-	if (is_gamepad_button_released(0,2)) dpad_right_triangle_color   = FG_LIGHT;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP)) dpad_up_triangle_color = ORANGE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN)) dpad_down_triangle_color = ORANGE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT)) dpad_left_triangle_color = ORANGE_DARK;
+	if (is_gamepad_button_pressed(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT)) dpad_right_triangle_color = ORANGE_DARK;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_UP)) dpad_up_triangle_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_DOWN)) dpad_down_triangle_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_LEFT)) dpad_left_triangle_color = FG_LIGHT;
+	if (is_gamepad_button_released(0,GamepadButton::GAMEPAD_BUTTON_LEFT_FACE_RIGHT)) dpad_right_triangle_color = FG_LIGHT;
 
 	// Keyboard
-	set_exit_key('Q');
+	set_exit_key(KeyboardKey::KEY_Q);
 
-	if (is_key_down('W')) player.position.y -= player.speed*get_frame_time();
-	if (is_key_down('A')) player.position.x -= player.speed*get_frame_time();
-	if (is_key_down('S')) player.position.y += player.speed*get_frame_time();
-	if (is_key_down('D')) player.position.x += player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_W)) player.position.y -= player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_A)) player.position.x -= player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_S)) player.position.y += player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_D)) player.position.x += player.speed*get_frame_time();
 
-	if (is_key_down('H')) player.position.x -= player.speed*get_frame_time();
-	if (is_key_down('J')) player.position.y += player.speed*get_frame_time();
-	if (is_key_down('K')) player.position.y -= player.speed*get_frame_time();
-	if (is_key_down('L')) player.position.x += player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_H)) player.position.x -= player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_J)) player.position.y += player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_K)) player.position.y -= player.speed*get_frame_time();
+	if (is_key_down(KeyboardKey::KEY_L)) player.position.x += player.speed*get_frame_time();
 
-	if (is_key_down('1')) player.color = RED_DARK;
-	if (is_key_down('2')) player.color = GREEN_DARK;
-	if (is_key_down('3')) player.color = YELLOW_DARK;
-	if (is_key_down('4')) player.color = BLUE_DARK;
-	if (is_key_down('5')) player.color = PURPLE_DARK;
-	if (is_key_down('6')) player.color = AQUA_DARK;
-	if (is_key_down('7')) player.color = ORANGE_DARK;
-	if (is_key_down('8')) player.color = FG_LIGHT;
-	if (is_key_down('9')) player.color = BG_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_ONE)) player.color = RED_DARK;
+	if (is_key_down(KeyboardKey::KEY_TWO)) player.color = GREEN_DARK;
+	if (is_key_down(KeyboardKey::KEY_THREE)) player.color = YELLOW_DARK;
+	if (is_key_down(KeyboardKey::KEY_FOUR)) player.color = BLUE_DARK;
+	if (is_key_down(KeyboardKey::KEY_FIVE)) player.color = PURPLE_DARK;
+	if (is_key_down(KeyboardKey::KEY_SIX)) player.color = AQUA_DARK;
+	if (is_key_down(KeyboardKey::KEY_SEVEN)) player.color = ORANGE_DARK;
+	if (is_key_down(KeyboardKey::KEY_EIGHT)) player.color = FG_DARK;
+	if (is_key_down(KeyboardKey::KEY_NINE)) player.color = BG_DARK;
+
+	if (is_key_down(KeyboardKey::KEY_KP_1)) player.color = RED_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_2)) player.color = GREEN_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_3)) player.color = YELLOW_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_4)) player.color = BLUE_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_5)) player.color = PURPLE_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_6)) player.color = AQUA_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_7)) player.color = ORANGE_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_8)) player.color = FG_LIGHT;
+	if (is_key_down(KeyboardKey::KEY_KP_9)) player.color = BG_LIGHT;
 
 	// Collision detection
 	let line_collision = LineCollision {
@@ -409,14 +419,14 @@ for (!window_should_close()) {
 
 	end_mode_2d();
 
-	if (is_gamepad_button_down(0,17)) debug_info(get_current_monitor(), music);
-	if (is_key_down('I')) debug_info(get_current_monitor(), music);
+	if (is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_THUMB)) debug_info(get_current_monitor(), music);
+	if (is_key_down(KeyboardKey::KEY_I)) debug_info(get_current_monitor(), music);
 
 	end_drawing();
 
 	// Misc.
-	if (is_key_pressed(' ')) take_screenshot("scr.png");
-	if (is_key_pressed('C')) open_url("https://codeberg.org/guapito/raylib.ha");
+	if (is_key_pressed(KeyboardKey::KEY_SPACE)) take_screenshot("scr.png");
+	if (is_key_pressed(KeyboardKey::KEY_C)) open_url("https://codeberg.org/guapito/raylib.ha");
 };
 close_audio_device();
 close_window();
