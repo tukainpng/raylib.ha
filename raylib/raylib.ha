@@ -1,4 +1,3 @@
-use fmt;
 use types::c;
 
 // Structs
@@ -341,25 +340,59 @@ export type FontType = enum {
 	FONT_SDF
 };
 
+export type NPatchLayout = enum {
+	NPATCH_NINE_PATCH = 0,          // Npatch layout: 3x3 tiles
+	NPATCH_THREE_PATCH_VERTICAL,    // Npatch layout: 1x3 tiles
+	NPATCH_THREE_PATCH_HORIZONTAL   // Npatch layout: 3x1 tiles};
+};
+
 // Gruvbox colors
-export const BG_DARK		= Color { r = 40,  g = 40,  b = 40,  a = 255 };
-export const FG_DARK		= Color { r = 168, g = 153, b = 132, a = 255 };
-export const RED_DARK		= Color { r = 204, g = 36,  b = 29,  a = 255 };
-export const GREEN_DARK		= Color { r = 152, g = 151, b = 26,  a = 255 };
-export const YELLOW_DARK	= Color { r = 215, g = 153, b = 33,  a = 255 };
-export const BLUE_DARK		= Color { r = 69,  g = 133, b = 136, a = 255 };
-export const PURPLE_DARK	= Color { r = 177, g = 98,  b = 134, a = 255 };
-export const AQUA_DARK		= Color { r = 104, g = 157, b = 106, a = 255 };
-export const ORANGE_DARK	= Color { r = 214, g = 93,  b = 14,  a = 255 };
-export const BG_LIGHT		= Color { r = 60,  g = 56,  b = 54,  a = 255 };
-export const FG_LIGHT		= Color { r = 235, g = 219, b = 178, a = 255 };
-export const RED_LIGHT		= Color { r = 251, g = 73,  b = 52,  a = 255 };
-export const GREEN_LIGHT	= Color { r = 184, g = 187, b = 38,  a = 255 };
-export const YELLOW_LIGHT	= Color { r = 250, g = 189, b = 47,  a = 255 };
-export const BLUE_LIGHT		= Color { r = 131, g = 165, b = 152, a = 255 };
-export const PURPLE_LIGHT	= Color { r = 211, g = 134, b = 155, a = 255 };
-export const AQUA_LIGHT		= Color { r = 142, g = 192, b = 124, a = 255 };
-export const ORANGE_LIGHT	= Color { r = 254, g = 128, b = 25,  a = 255 };
+export const GRUV_BG_DARK		= Color { r = 40,  g = 40,  b = 40,  a = 255 };
+export const GRUV_FG_DARK		= Color { r = 168, g = 153, b = 132, a = 255 };
+export const GRUV_RED_DARK		= Color { r = 204, g = 36,  b = 29,  a = 255 };
+export const GRUV_GREEN_DARK		= Color { r = 152, g = 151, b = 26,  a = 255 };
+export const GRUV_YELLOW_DARK		= Color { r = 215, g = 153, b = 33,  a = 255 };
+export const GRUV_BLUE_DARK		= Color { r = 69,  g = 133, b = 136, a = 255 };
+export const GRUV_PURPLE_DARK		= Color { r = 177, g = 98,  b = 134, a = 255 };
+export const GRUV_AQUA_DARK		= Color { r = 104, g = 157, b = 106, a = 255 };
+export const GRUV_ORANGE_DARK		= Color { r = 214, g = 93,  b = 14,  a = 255 };
+export const GRUV_BG_LIGHT		= Color { r = 60,  g = 56,  b = 54,  a = 255 };
+export const GRUV_FG_LIGHT		= Color { r = 235, g = 219, b = 178, a = 255 };
+export const GRUV_RED_LIGHT		= Color { r = 251, g = 73,  b = 52,  a = 255 };
+export const GRUV_GREEN_LIGHT		= Color { r = 184, g = 187, b = 38,  a = 255 };
+export const GRUV_YELLOW_LIGHT		= Color { r = 250, g = 189, b = 47,  a = 255 };
+export const GRUV_BLUE_LIGHT		= Color { r = 131, g = 165, b = 152, a = 255 };
+export const GRUV_PURPLE_LIGHT		= Color { r = 211, g = 134, b = 155, a = 255 };
+export const GRUV_AQUA_LIGHT		= Color { r = 142, g = 192, b = 124, a = 255 };
+export const GRUV_ORANGE_LIGHT		= Color { r = 254, g = 128, b = 25,  a = 255 };
+
+// Raylib colors
+export const LIGHTGRAY			= Color { r = 200, g = 200, b = 200, a = 255 };
+export const GRAY			= Color { r = 130, g = 130, b = 130, a = 255 };
+export const DARKGRAY			= Color { r = 80,  g = 80,  b = 80,  a = 255 };
+export const YELLOW			= Color { r = 253, g = 249, b = 0,   a = 255 };
+export const GOLD			= Color { r = 255, g = 203, b = 0,   a = 255 };
+export const ORANGE			= Color { r = 255, g = 161, b = 0,   a = 255 };
+export const PINK			= Color { r = 255, g = 109, b = 194, a = 255 };
+export const RED			= Color { r = 230, g = 41,  b = 55,  a = 255 };
+export const MAROON			= Color { r = 190, g = 33,  b = 55,  a = 255 };
+export const GREEN			= Color { r = 0,   g = 228, b = 48,  a = 255 };
+export const LIME			= Color { r = 0,   g = 158, b = 47,  a = 255 };
+export const DARKGREEN			= Color { r = 0,   g = 117, b = 44,  a = 255 };
+export const SKYBLUE			= Color { r = 102, g = 191, b = 255, a = 255 };
+export const BLUE			= Color { r = 0,   g = 121, b = 241, a = 255 };
+export const DARKBLUE			= Color { r = 0,   g = 82,  b = 172, a = 255 };
+export const PURPLE			= Color { r = 200, g = 122, b = 255, a = 255 };
+export const VIOLET			= Color { r = 135, g = 60,  b = 190, a = 255 };
+export const DARKPURPLE			= Color { r = 112, g = 31,  b = 126, a = 255 };
+export const BEIGE			= Color { r = 211, g = 176, b = 131, a = 255 };
+export const BROWN			= Color { r = 127, g = 106, b = 79,  a = 255 };
+export const DARKBROWN			= Color { r = 76,  g = 63,  b = 47,  a = 255 };
+export const WHITE			= Color { r = 255, g = 255, b = 255, a = 255 };
+export const BLACK			= Color { r = 0,   g = 0,   b = 0,   a = 255 };
+export const BLANK			= Color { r = 0,   g = 0,   b = 0,   a = 0 };
+export const MAGENTA			= Color { r = 255, g = 0,   b = 255, a = 255 };
+export const RAYWHITE			= Color { r = 245, g = 245, b = 245, a = 255 };
 
 // Window-Related functions
 @symbol("InitWindow") fn InitWindow(size, size, *c::char) void;
@@ -561,6 +594,11 @@ export @symbol("UnloadTexture") fn unload_texture(texture: Texture2D) void;
 
 // Texture drawing functions
 export @symbol("DrawTexture") fn draw_texture(texture: Texture, x: int, y: int, tint: Color) void;
+export @symbol("DrawTextureV") fn draw_texture_v(texture: Texture, position: Vector2, tint: Color) void;
+export @symbol("DrawTextureEx") fn draw_texture_ex(texture: Texture, position: Vector2, rotation: f32, scale: f32, tint: Color) void;
+export @symbol("DrawTextureRec") fn draw_texture_rec(texture: Texture, source: Rectangle, position: Vector2, tint: Color) void;
+export @symbol("DrawTexturePro") fn draw_texture_pro(texture: Texture, source: Rectangle, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void;
+export @symbol("DrawTextureNPatch") fn draw_texture_npatch(texture: Texture, npatch_info: NPatchInfo, dest: Rectangle, origin: Vector2, rotation: f32, tint: Color) void;
 
 // Color/Pixel related functions
 export @symbol("GetColor") fn get_color(color: u32) Color;
@@ -581,6 +619,39 @@ export @symbol("CloseAudioDevice") fn close_audio_device() void;
 export @symbol("IsAudioDeviceReady") fn is_audio_device_ready() bool;
 export @symbol("SetMasterVolume") fn set_master_volume(volume: f32) void;
 export @symbol("GetMasterVolume") fn get_master_volume() f32;
+
+// Wave/Sound loading/unloading functions
+@symbol("LoadWave") fn LoadWave(*c::char) Wave;
+@symbol("LoadSound") fn LoadSound(*c::char) Sound;
+@symbol("ExportWave") fn ExportWave(Wave, *c::char) bool;
+@symbol("ExportWaveAsCode") fn ExportWaveAsCode(Wave, *c::char) bool;
+export fn load_wave(filename: str) Wave = return LoadWave(c::fromstr(filename));
+export @symbol("IsWaveReady") fn is_wave_ready(wave: Wave) bool;
+export fn load_sound(filename: str) Sound = return LoadSound(c::fromstr(filename));
+export @symbol("LoadSoundFromWave") fn load_sound_from_wave(wave: Wave) Sound;
+export @symbol("LoadSoundAlias") fn load_sound_alias(source: Sound) Sound;
+export @symbol("IsSoundReady") fn is_sound_ready(sound: Sound) bool;
+export @symbol("UpdateSound") fn update_sound(sound: Sound, data: *opaque, sample_count: int) void;
+export @symbol("UnloadWave") fn unload_wave(wave: Wave) void;
+export @symbol("UnloadSound") fn unload_sound(sound: Sound) void;
+export @symbol("UnloadSoundAlias") fn unload_sound_alias(alias: Sound) void;
+export fn export_wave(wave: Wave, filename: str) bool = ExportWave(wave, c::fromstr(filename));
+export fn export_wave_as_code(wave: Wave, filename: str) bool = ExportWaveAsCode(wave, c::fromstr(filename));
+
+// Wave/Sound management functions
+export @symbol("PlaySound") fn play_sound(sound: Sound) void;
+export @symbol("StopSound") fn stop_sound(sound: Sound) void;
+export @symbol("PauseSound") fn pause_sound(sound: Sound) void;
+export @symbol("ResumeSound") fn resume_sound(sound: Sound) void;
+export @symbol("IsSoundPlaying") fn is_sound_playing(sound: Sound) bool;
+export @symbol("SetSoundVolume") fn set_sound_volume(sound: Sound, volume: f32) void;
+export @symbol("SetSoundPitch") fn set_sound_pitch(sound: Sound, pitch: f32) void;
+export @symbol("SetSoundPan") fn set_sound_pan(sound: Sound, pan: f32) void;
+export @symbol("WaveCopy") fn wave_copy(wave: Wave) Wave;
+export @symbol("WaveCrop") fn wave_crop(wave: *Wave, init_sample: int, final_sample: int) void;
+export @symbol("WaveFormat") fn wave_format(wave: *Wave, sample_rate: int, sample_size: int, channels: int) void;
+export @symbol("LoadWaveSamples") fn load_wave_samples(wave: Wave) *f32;
+export @symbol("UnloadWaveSamples") fn unload_wave_samples(samples: *f32) void;
 
 // Music management functions
 @symbol("LoadMusicStream") fn LoadMusicStream(*c::char) Music;
@@ -604,3 +675,26 @@ export @symbol("SetMusicPan") fn set_music_pan(music: Music, pan: f32) void;
 export @symbol("GetMusicTimeLength") fn get_music_time_length(music: Music) f32;
 export @symbol("GetMusicTimePlayed") fn get_music_time_played(music: Music) f32;
 
+// TODO:
+//    // AudioStream management functions
+//    AudioStream LoadAudioStream(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels); // Load audio stream (to stream raw audio pcm data)
+//    bool IsAudioStreamReady(AudioStream stream);                    // Checks if an audio stream is ready
+//    void UnloadAudioStream(AudioStream stream);                     // Unload audio stream and free memory
+//    void UpdateAudioStream(AudioStream stream, const void *data, int frameCount); // Update audio stream buffers with data
+//    bool IsAudioStreamProcessed(AudioStream stream);                // Check if any audio stream buffers requires refill
+//    void PlayAudioStream(AudioStream stream);                       // Play audio stream
+//    void PauseAudioStream(AudioStream stream);                      // Pause audio stream
+//    void ResumeAudioStream(AudioStream stream);                     // Resume audio stream
+//    bool IsAudioStreamPlaying(AudioStream stream);                  // Check if audio stream is playing
+//    void StopAudioStream(AudioStream stream);                       // Stop audio stream
+//    void SetAudioStreamVolume(AudioStream stream, float volume);    // Set volume for audio stream (1.0 is max level)
+//    void SetAudioStreamPitch(AudioStream stream, float pitch);      // Set pitch for audio stream (1.0 is base level)
+//    void SetAudioStreamPan(AudioStream stream, float pan);          // Set pan for audio stream (0.5 is centered)
+//    void SetAudioStreamBufferSizeDefault(int size);                 // Default size for new audio streams
+//    void SetAudioStreamCallback(AudioStream stream, AudioCallback callback); // Audio thread callback to request new data
+
+//    void AttachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Attach audio stream processor to stream, receives the samples as <float>s
+//    void DetachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Detach audio stream processor from stream
+
+//    void AttachAudioMixedProcessor(AudioCallback processor); // Attach audio stream processor to the entire audio pipeline, receives the samples as <float>s
+//    void DetachAudioMixedProcessor(AudioCallback processor); // Detach audio stream processor from the entire audio pipeline
