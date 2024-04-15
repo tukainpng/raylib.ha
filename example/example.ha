@@ -127,26 +127,22 @@ for (!window_should_close()) {
 	// Map Limits
 
 	// Top
-	draw_rectangle(0, 120, 640, 2, RED);
 	if (check_collision_recs(Rectangle { x = 0.0, y = 120.0, width = 640.0, height = 2.0 }, player.collision)) {
 		player.position.y += 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
 	// Left-side
-	draw_rectangle(120, 140, 2, 50, RED);
 	if (check_collision_recs(Rectangle { x = 120.0, y = 140.0, width = 2.0, height = 50.0 }, player.collision)) {
 		player.position.x += 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
-	draw_rectangle(85, 200, 25, 2, RED);
 	if (check_collision_recs(Rectangle { x = 85.0, y = 200.0, width = 25.0, height = 2.0 }, player.collision)) {
 		player.position.y += 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
-	draw_rectangle(80, 200, 2, 155, RED);
 	if (check_collision_recs(Rectangle { x = 80.0, y = 200.0, width = 2.0, height = 140.0 }, player.collision)) {
 		player.position.x += 2.5;
 		player.speed = 0.0;
@@ -156,7 +152,6 @@ for (!window_should_close()) {
 	let left_corner_1_point_2 = Vector2 { x = 80.0, y = 400.0 };
 	let left_corner_1_point_3 = Vector2 { x = 120.0, y = 400.0 };
 	let left_corner_1_point_player = Vector2 { x = player.position.x, y = player.position.y + 30.0};
-	draw_triangle(left_corner_1_point_1, left_corner_1_point_2, left_corner_1_point_3, RED);
 	if (check_collision_point_triangle(left_corner_1_point_player, left_corner_1_point_1, left_corner_1_point_2, left_corner_1_point_3)) {
 		player.position.x += 2.5;
 		player.position.y -= 2.5;
@@ -165,7 +160,6 @@ for (!window_should_close()) {
 		player.speed = 300.0;
 	};
 
-	draw_rectangle(120, 400, 40, 20, RED);
 	if (check_collision_recs(Rectangle { x = 120.0, y = 410.0, width = 40.0, height = 20.0 }, player.collision)) {
 		player.position.y -= 2.5;
 		player.speed = 0.0;
@@ -175,7 +169,6 @@ for (!window_should_close()) {
 	let left_corner_2_point_2 = Vector2 { x = 160.0, y = 440.0 };
 	let left_corner_2_point_3 = Vector2 { x = 200.0, y = 440.0 };
 	let left_corner_2_point_player = Vector2 { x = player.position.x, y = player.position.y + 30.0};
-	draw_triangle(left_corner_2_point_1, left_corner_2_point_2, left_corner_2_point_3, RED);
 	if (check_collision_point_triangle(left_corner_2_point_player, left_corner_2_point_1, left_corner_2_point_2, left_corner_2_point_3)) {
 		player.position.x += 2.5;
 		player.position.y -= 2.5;
@@ -185,44 +178,37 @@ for (!window_should_close()) {
 	};
 
 	// Bottom
-	draw_rectangle(0, 440, 650, 2, RED);
 	if (check_collision_recs(Rectangle { x = 0.0, y = 450.0, width = 650.0, height = 2.0 }, player.collision)) {
 		player.position.y -= 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
 	// Right-side
-	draw_rectangle(480, 140, 2, 50, RED);
 	if (check_collision_recs(Rectangle { x = 490.0, y = 140.0, width = 2.0, height = 50.0 }, player.collision)) {
 		player.position.x -= 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
-	draw_rectangle(490, 200, 25, 2, RED);
 	if (check_collision_recs(Rectangle { x = 510.0, y = 200.0, width = 25.0, height = 2.0 }, player.collision)) {
 		player.position.y += 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
-	draw_rectangle(520, 200, 2, 30, RED);
 	if (check_collision_recs(Rectangle { x = 530.0, y = 200.0, width = 2.0, height = 30.0 }, player.collision)) {
 		player.position.x -= 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
-	draw_rectangle(530, 240, 25, 2, RED);
 	if (check_collision_recs(Rectangle { x = 535.0, y = 240.0, width = 25.0, height = 2.0 }, player.collision)) {
 		player.position.y += 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
-	draw_rectangle(560, 240, 2, 150, RED);
 	if (check_collision_recs(Rectangle { x = 570.0, y = 240.0, width = 2.0, height = 150.0 }, player.collision)) {
 		player.position.x -= 2.5;
 		player.speed = 0.0;
 	} else player.speed = 300.0;
 
-	draw_rectangle(540, 390, 20, 10, RED);
 	if (check_collision_recs(Rectangle { x = 540.0, y = 390.0, width = 20.0, height = 10.0 }, player.collision)) {
 		player.position.y -= 2.5;
 		player.speed = 0.0;
@@ -232,7 +218,6 @@ for (!window_should_close()) {
 	let right_corner_point_2 = Vector2 { x = 480.0, y = 440.0 };
 	let right_corner_point_3 = Vector2 { x = 560.0, y = 440.0 };
 	let right_corner_point_player = Vector2 { x = player.position.x + 40.0, y = player.position.y + 30.0 };
-	draw_triangle(right_corner_point_1, right_corner_point_2, right_corner_point_3, RED);
 	if (check_collision_point_triangle(right_corner_point_player, right_corner_point_1, right_corner_point_2, right_corner_point_3)) {
 		player.position.x -= 2.5;
 		player.position.y -= 2.5;
