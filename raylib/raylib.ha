@@ -580,6 +580,8 @@ export @symbol("DrawPolyLinesEx") fn draw_poly_lines_ex(center: Vector2, sides: 
 
 // Basic shapes collision detection functions
 export @symbol("CheckCollisionRecs") fn check_collision_recs(rec_1: Rectangle, rec_2: Rectangle) bool;
+export @symbol("CheckCollisionPointTriangle") fn check_collision_point_triangle(point: Vector2, v1: Vector2, v2: Vector2, v3: Vector2) bool;
+export @symbol("CheckCollisionLines") fn check_collision_lines(pos_1_start: Vector2, pos_1_end: Vector2, pos_2_start: Vector2, pos_2_end: Vector2, collision_point: *Vector2) bool;
 
 // module: rtextures
 // Image loading functions

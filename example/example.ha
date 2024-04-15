@@ -1,4 +1,3 @@
-use fmt;
 use strconv;
 use types::c;
 use raylib::*;
@@ -18,17 +17,10 @@ type Player = struct {
 	speed:      f32,
 };
 
-type LineCollision = struct {
-	line_1: Rectangle,
-	line_2: Rectangle,
-	line_3: Rectangle,
-	line_4: Rectangle,
-};
-
 export fn main() void = {
 
 let player = Player {
-	position   = Vector2 { x = 10.0,  y = 10.0 },
+	position   = Vector2 { x = 320.0,  y = 240.0 },
 	dimensions = Vector2 { x = 30.0, y = 30.0 },
 	collision  = Rectangle {
 		x = 0.0,
@@ -59,13 +51,11 @@ let monitor = get_current_monitor();
 let refresh_rate = get_monitor_refresh_rate(monitor);
 
 // Textures
-let hare = load_texture("./example/hare.png");
-let map = load_texture("./example/images/map.png");
-let mushroon = load_texture("./example/images/mushroon.png");
+let ruins = load_texture("./example/images/ruins.png");
 let player_texture = load_texture("./example/images/player.png");
 
 init_audio_device();
-let music: Music = load_music_stream("./example/sounds/rollingdownthestreet.xm");
+let music: Music = load_music_stream("./example/sounds/ruins.mp3");
 music.looping = true;
 let menu_enter = load_sound("./example/sounds/snd_bell.wav");
 let menu_quit = load_sound("./example/sounds/snd_select.wav");
@@ -90,7 +80,7 @@ for (!window_should_close()) {
 	};
 
 	begin_drawing();
-	clear_background(get_color(0x1b215aFF));
+	clear_background(BLACK);
 	hide_cursor();
 	begin_mode_2d(camera);
 
@@ -113,70 +103,18 @@ for (!window_should_close()) {
 	if (is_key_down(KeyboardKey::KEY_K)) player.position.y -= player.speed*get_frame_time();
 	if (is_key_down(KeyboardKey::KEY_L)) player.position.x += player.speed*get_frame_time();
 
-	let rec_1 = Rectangle {
-		x = 0.0,
-		y = 0.0,
-		width = SCREEN_RESOLUTION.x,
-		height = 5.0,
-	};
+	// Camera
+	// if (player.position.x <= SCREEN_RESOLUTION.x / 2.0) camera.target.x = SCREEN_RESOLUTION.x / 4.0;
+	// if (player.position.x >= SCREEN_RESOLUTION.x / 2.0) camera.target.x = SCREEN_RESOLUTION.x;
+	// if (player.position.y <= SCREEN_RESOLUTION.y / 2.0) camera.target.y = SCREEN_RESOLUTION.y / 4.0;
+	// if (player.position.y >= SCREEN_RESOLUTION.y / 2.0) camera.target.y = SCREEN_RESOLUTION.y;
+	camera.target.x = 320.0;
+	camera.target.y = 240.0;
 
-	let rec_2 = Rectangle {
-		x = SCREEN_RESOLUTION.x,
-		y = 0.0,
-		width = 5.0,
-		height = SCREEN_RESOLUTION.y,
-	};
+	// Background
+	draw_texture(ruins, 0, 0, get_color(0xFFFFFFFF));
 
-	let rec_3 = Rectangle {
-		x = 0.0,
-		y = SCREEN_RESOLUTION.y,
-		width = SCREEN_RESOLUTION.x + 5.0,
-		height = 5.0,
-	};
-
-	let rec_4 = Rectangle {
-		x = 0.0,
-		y = 0.0,
-		width = 5.0,
-		height = SCREEN_RESOLUTION.y,
-	};
-
-	draw_rectangle_rec(rec_1, GRUV_PURPLE_DARK);
-	draw_rectangle_rec(rec_2, GRUV_PURPLE_DARK);
-	draw_rectangle_rec(rec_3, GRUV_PURPLE_DARK);
-	draw_rectangle_rec(rec_4, GRUV_PURPLE_DARK);
-
-	// Collision detection
-	let line_collision = LineCollision {
-		line_1 = Rectangle {
-			x = 0.0,
-			y = 0.0,
-			width = SCREEN_RESOLUTION.x,
-			height = 2.0,
-		},
-
-		line_2 = Rectangle {
-			x = SCREEN_RESOLUTION.x + 4.0,
-			y = 0.0,
-			width = 5.0,
-			height = SCREEN_RESOLUTION.y,
-		},
-
-		line_3 = Rectangle {
-			x = 0.0,
-			y = SCREEN_RESOLUTION.y + 4.0,
-			width = SCREEN_RESOLUTION.x,
-			height = 5.0,
-		},
-
-		line_4 = Rectangle {
-			x = 0.0,
-			y = 0.0,
-			width = 2.0,
-			height = SCREEN_RESOLUTION.y,
-		},
-	};
-
+	// Player
 	player.collision = Rectangle {
 		x = player.position.x,
 		y = player.position.y,
@@ -184,99 +122,124 @@ for (!window_should_close()) {
 		height = 60.0,
 	};
 
-	if (check_collision_recs(line_collision.line_1, player.collision)) { 
-		draw_rectangle_rec(rec_1, GRUV_PURPLE_LIGHT);
-		player.position.y = 4.0;
-	};
-
-	if (check_collision_recs(line_collision.line_2, player.collision)) { 
-		draw_rectangle_rec(rec_2, GRUV_PURPLE_LIGHT);
-		player.position.x = SCREEN_RESOLUTION.x - 36.0;
-	};
-
-	if (check_collision_recs(line_collision.line_3, player.collision)) { 
-		draw_rectangle_rec(rec_3, GRUV_PURPLE_LIGHT);
-		player.position.y = SCREEN_RESOLUTION.y - 58.0;
-	};
-
-	if (check_collision_recs(line_collision.line_4, player.collision)) { 
-		draw_rectangle_rec(rec_4, GRUV_PURPLE_LIGHT);
-		player.position.x = 4.0;
-	};
-
-	// Camera
-	camera.target = Vector2 {
-		x = player.position.x + player.dimensions.x / 2.0,
-		y = player.position.y + player.dimensions.y / 2.0
-	};
-
-	if (is_gamepad_button_down(0,10)) camera.rotation -= 0.3;
-	if (is_gamepad_button_down(0,12)) camera.rotation += 0.3;
-	if (is_gamepad_button_down(0,9)) camera.zoom -= 0.01;
-	if (is_gamepad_button_down(0,11)) camera.zoom += 0.01;
-	if (is_gamepad_button_pressed(0,13)) camera.rotation = 0.0;
-	if (is_gamepad_button_pressed(0,15)) camera.zoom = 1.0;
-	camera.zoom += get_mouse_wheel_move() / 20.0;
-	if (camera.zoom < 0.0) camera.zoom = 0.0;
-
-	// Resident Evil-like camera
-	//
-	// if (player.position.x <= SCREEN_RESOLUTION.x / 2.0) camera.target.x = SCREEN_RESOLUTION.x / 4.0;
-	// if (player.position.x >= SCREEN_RESOLUTION.x / 2.0) camera.target.x = SCREEN_RESOLUTION.x;
-	// if (player.position.y <= SCREEN_RESOLUTION.y / 2.0) camera.target.y = SCREEN_RESOLUTION.y / 4.0;
-	// if (player.position.y >= SCREEN_RESOLUTION.y / 2.0) camera.target.y = SCREEN_RESOLUTION.y;
-
-	// Scene
-	let map_mushroon        = Rectangle { x = 0.0,   y = 0.0,    width = 13.0,  height = 13.0 };
-	let map_mushroon_size   = Rectangle { x = 10.0,  y = 20.0,   width = 26.0,  height = 26.0 };
-	let map_pilar_4         = Rectangle { x = 180.0, y = 100.0,  width = 60.0,  height = 100.0 };
-	let map_pilar_size_4    = Rectangle { x = 0.0,   y = -200.0, width = 120.0, height = 200.0 };
-	let map_ground          = Rectangle { x = 160.0, y = 200.0,  width = 60.0,  height = 40.0 };
-	let map_ground_size     = Rectangle { x = 0.0,   y = 0.0,    width = 240.0, height = 180.0 };
-	let map_ground_position = Vector2   { x = 0.0,   y = 0.0 };
-
-	// Ground
-	draw_texture_pro(map, map_ground, map_ground_size, Vector2 { x = 0.0, y = 0.0 }, 0.0, get_color(0xFFFFFFFF));
-	draw_texture_pro(map, map_ground, map_ground_size, Vector2 { x = 0.0, y = -180.0 }, 0.0, get_color(0xFFFFFFFF));
-	draw_texture_pro(map, map_ground, map_ground_size, Vector2 { x = 0.0, y = -180.0 * 2.0 }, 0.0, get_color(0xFFFFFFFF));
-	draw_texture_pro(map, map_ground, map_ground_size, Vector2 { x = 0.0, y = -180.0 * 3.0 }, 0.0, get_color(0xFFFFFFFF));
-
-	// Pilars
-	draw_texture_pro(map, map_pilar_4, map_pilar_size_4, map_ground_position, 0.0, get_color(0xFFFFFFFF));
-
-	map_pilar_size_4.x = 120.0;
-	draw_texture_pro(map, map_pilar_4, map_pilar_size_4, map_ground_position, 0.0, get_color(0xFFFFFFFF));
-
-	map_pilar_size_4.y = -280.0;
-	draw_texture_pro(map, map_pilar_4, map_pilar_size_4, map_ground_position, 0.0, get_color(0xFFFFFFFF));
-
-	// Mushroons
-	draw_texture_pro(mushroon, map_mushroon, map_mushroon_size, map_ground_position, 0.0, get_color(0xFFFFFFFF));
-
-	map_mushroon_size.x = 40.0;
-	map_mushroon_size.y = 30.0;
-	map_mushroon_size.width = 30.0;
-	draw_texture_pro(mushroon, map_mushroon, map_mushroon_size, map_ground_position, 0.0, get_color(0xFFFFFFFF));
-
-	draw_texture(hare, SCREEN_RESOLUTION.x: int / 3, SCREEN_RESOLUTION.y: int / 3, get_color(0x000000FF));
-
-	// Player
 	draw_texture(player_texture, player.position.x: int, player.position.y: int, get_color(0xFFFFFFFF));
 
-	let wall_left = Rectangle { x = 240.0, y = 0.0, width = 2.0, height = 200.0 };
-	let wall_right = Rectangle { x = 240.0, y = 200.0, width = 2.0, height = 200.0 };
-	let wall_up = Rectangle { x = 240.0, y = 200.0, width = 200.0, height = 2.0 };
-	let wall_down = Rectangle { x = 40.0, y = 200.0, width = 200.0, height = 2.0 };
+	// Map Limits
 
-	draw_rectangle_rec(wall_left, GRUV_PURPLE_DARK);
-	draw_rectangle_rec(wall_right, GRUV_BLUE_DARK);
-	draw_rectangle_rec(wall_up, GRUV_GREEN_DARK);
-	draw_rectangle_rec(wall_down, GRUV_RED_DARK);
+	// Top
+	draw_rectangle(0, 120, 640, 2, RED);
+	if (check_collision_recs(Rectangle { x = 0.0, y = 120.0, width = 640.0, height = 2.0 }, player.collision)) {
+		player.position.y += 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
 
-	if (check_collision_recs(wall_left, player.collision)) player.position.x -= 3.0;
-	if (check_collision_recs(wall_right, player.collision)) player.position.x += 3.0;
-	if (check_collision_recs(wall_up, player.collision)) player.position.y -= 3.0;
-	if (check_collision_recs(wall_down, player.collision)) player.position.y += 3.0;
+	// Left-side
+	draw_rectangle(120, 140, 2, 50, RED);
+	if (check_collision_recs(Rectangle { x = 120.0, y = 140.0, width = 2.0, height = 50.0 }, player.collision)) {
+		player.position.x += 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	draw_rectangle(85, 200, 25, 2, RED);
+	if (check_collision_recs(Rectangle { x = 85.0, y = 200.0, width = 25.0, height = 2.0 }, player.collision)) {
+		player.position.y += 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	draw_rectangle(80, 200, 2, 155, RED);
+	if (check_collision_recs(Rectangle { x = 80.0, y = 200.0, width = 2.0, height = 140.0 }, player.collision)) {
+		player.position.x += 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+	
+	let left_corner_1_point_1 = Vector2 { x = 80.0, y = 360.0 };
+	let left_corner_1_point_2 = Vector2 { x = 80.0, y = 400.0 };
+	let left_corner_1_point_3 = Vector2 { x = 120.0, y = 400.0 };
+	let left_corner_1_point_player = Vector2 { x = player.position.x, y = player.position.y + 30.0};
+	draw_triangle(left_corner_1_point_1, left_corner_1_point_2, left_corner_1_point_3, RED);
+	if (check_collision_point_triangle(left_corner_1_point_player, left_corner_1_point_1, left_corner_1_point_2, left_corner_1_point_3)) {
+		player.position.x += 2.5;
+		player.position.y -= 2.5;
+		player.speed = 0.0;
+	} else {
+		player.speed = 300.0;
+	};
+
+	draw_rectangle(120, 400, 40, 20, RED);
+	if (check_collision_recs(Rectangle { x = 120.0, y = 410.0, width = 40.0, height = 20.0 }, player.collision)) {
+		player.position.y -= 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	let left_corner_2_point_1 = Vector2 { x = 160.0, y = 400.0 };
+	let left_corner_2_point_2 = Vector2 { x = 160.0, y = 440.0 };
+	let left_corner_2_point_3 = Vector2 { x = 200.0, y = 440.0 };
+	let left_corner_2_point_player = Vector2 { x = player.position.x, y = player.position.y + 30.0};
+	draw_triangle(left_corner_2_point_1, left_corner_2_point_2, left_corner_2_point_3, RED);
+	if (check_collision_point_triangle(left_corner_2_point_player, left_corner_2_point_1, left_corner_2_point_2, left_corner_2_point_3)) {
+		player.position.x += 2.5;
+		player.position.y -= 2.5;
+		player.speed = 0.0;
+	} else {
+		player.speed = 300.0;
+	};
+
+	// Bottom
+	draw_rectangle(0, 440, 650, 2, RED);
+	if (check_collision_recs(Rectangle { x = 0.0, y = 450.0, width = 650.0, height = 2.0 }, player.collision)) {
+		player.position.y -= 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	// Right-side
+	draw_rectangle(480, 140, 2, 50, RED);
+	if (check_collision_recs(Rectangle { x = 490.0, y = 140.0, width = 2.0, height = 50.0 }, player.collision)) {
+		player.position.x -= 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	draw_rectangle(490, 200, 25, 2, RED);
+	if (check_collision_recs(Rectangle { x = 510.0, y = 200.0, width = 25.0, height = 2.0 }, player.collision)) {
+		player.position.y += 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	draw_rectangle(520, 200, 2, 30, RED);
+	if (check_collision_recs(Rectangle { x = 530.0, y = 200.0, width = 2.0, height = 30.0 }, player.collision)) {
+		player.position.x -= 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	draw_rectangle(530, 240, 25, 2, RED);
+	if (check_collision_recs(Rectangle { x = 535.0, y = 240.0, width = 25.0, height = 2.0 }, player.collision)) {
+		player.position.y += 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	draw_rectangle(560, 240, 2, 150, RED);
+	if (check_collision_recs(Rectangle { x = 570.0, y = 240.0, width = 2.0, height = 150.0 }, player.collision)) {
+		player.position.x -= 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	draw_rectangle(540, 390, 20, 10, RED);
+	if (check_collision_recs(Rectangle { x = 540.0, y = 390.0, width = 20.0, height = 10.0 }, player.collision)) {
+		player.position.y -= 2.5;
+		player.speed = 0.0;
+	} else player.speed = 300.0;
+
+	let right_corner_point_1 = Vector2 { x = 560.0, y = 360.0 };
+	let right_corner_point_2 = Vector2 { x = 480.0, y = 440.0 };
+	let right_corner_point_3 = Vector2 { x = 560.0, y = 440.0 };
+	let right_corner_point_player = Vector2 { x = player.position.x + 40.0, y = player.position.y + 30.0 };
+	draw_triangle(right_corner_point_1, right_corner_point_2, right_corner_point_3, RED);
+	if (check_collision_point_triangle(right_corner_point_player, right_corner_point_1, right_corner_point_2, right_corner_point_3)) {
+		player.position.x -= 2.5;
+		player.position.y -= 2.5;
+		player.speed = 0.0;
+	} else {
+		player.speed = 300.0;
+	};
 
 	debug_info(get_current_monitor(), music);
 	end_mode_2d();
@@ -294,25 +257,17 @@ fn debug_info(monitor: int, music: Music) bool = {
 
 if (is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_THUMB) || is_key_down(KeyboardKey::KEY_I) ) { 
 	// Background
-	draw_rectangle(0, 0, get_render_width() + 5, 140, get_color(0x282828AA));
+	draw_rectangle(SCREEN_RESOLUTION.x: int / 8, 60, 320, 320, get_color(0x282828AA));
 
-	// Left-side
-	draw_text(TITLE, 10, 10, 20, GRUV_FG_LIGHT);
-	draw_text("Controller:", 10, 40, 20, GRUV_FG_LIGHT);
-	draw_text(get_gamepad_name(0), 130, 40, 20, GRUV_FG_LIGHT);
-	draw_text("Music progress:", 10, 70, 20, GRUV_FG_LIGHT);
-	draw_text(strconv::itos(get_music_time_played(music): int), 200, 70, 20, GRUV_FG_LIGHT);
-	draw_text("/", 240, 70, 20, GRUV_FG_LIGHT);
-	draw_text(strconv::itos(get_music_time_length(music): int), 280, 70, 20, GRUV_FG_LIGHT);
-	draw_fps(10, 100);
-
-	// Right-side
-	draw_text("Resolution:", SCREEN_RESOLUTION.x: u32 - 300, 10, 20, GRUV_FG_LIGHT);
-	draw_text(strconv::itos(get_render_width()), SCREEN_RESOLUTION.x: u32 - 180, 10, 20, GRUV_FG_LIGHT);
-	draw_text("x", SCREEN_RESOLUTION.x: u32 - 130, 10, 20, GRUV_FG_LIGHT);
-	draw_text(strconv::itos(get_render_height()), SCREEN_RESOLUTION.x: u32 - 110, 10, 20, GRUV_FG_LIGHT);
-	draw_text("Monitor name:", SCREEN_RESOLUTION.x: u32 - 300, 40, 20, GRUV_FG_LIGHT);
-	draw_text(get_monitor_name(monitor), SCREEN_RESOLUTION.x: u32 - 150, 40, 20, GRUV_FG_LIGHT);
+	// Content
+	draw_text(TITLE, SCREEN_RESOLUTION.x: u32 / 8 + 5, 60, 20, GRUV_FG_LIGHT);
+	draw_text("Controller:", SCREEN_RESOLUTION.x: u32 / 8 + 5, 80, 20, GRUV_FG_LIGHT);
+	draw_text(get_gamepad_name(0), SCREEN_RESOLUTION.x: u32 / 8 + 5, 100, 15, GRUV_FG_LIGHT);
+	draw_text("Music progress:", SCREEN_RESOLUTION.x: u32 / 8 + 5, 120, 20, GRUV_FG_LIGHT);
+	draw_text(strconv::itos(get_music_time_played(music): int), SCREEN_RESOLUTION.x: u32 / 8 + 10, 140, 20, GRUV_FG_LIGHT);
+	draw_text("/", SCREEN_RESOLUTION.x: u32 / 8 + 45, 140, 20, GRUV_FG_LIGHT);
+	draw_text(strconv::itos(get_music_time_length(music): int), SCREEN_RESOLUTION.x: u32 / 8 + 90, 140, 20, GRUV_FG_LIGHT);
+	draw_fps(SCREEN_RESOLUTION.x: int / 8 + 5, 350);
 
 	return true;
 };
