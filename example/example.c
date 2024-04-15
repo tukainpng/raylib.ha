@@ -51,15 +51,15 @@ void main()
     int refresh_rate = GetMonitorRefreshRate(monitor);
 
     // Textures
-    Texture2D ruins = LoadTexture("./img/ruins.png");
-    Texture2D chara = LoadTexture("./img/player.png");
+    Texture2D ruins = LoadTexture("./images/ruins.png");
+    Texture2D chara = LoadTexture("./images/player.png");
 
     // Audio
     InitAudioDevice();
-    Music music = LoadMusicStream("./snd/ruins.mp3");
+    Music music = LoadMusicStream("./sounds/ruins.mp3");
     music.looping = true;
-    Sound menu_enter = LoadSound("./snd/snd_bell.wav");
-    Sound menu_quit = LoadSound("./snd/snd_select.wav");
+    Sound menu_enter = LoadSound("./sounds/snd_bell.wav");
+    Sound menu_quit = LoadSound("./sounds/snd_select.wav");
     SetMusicVolume(music, 0.5f);
 
     // Target FPS
