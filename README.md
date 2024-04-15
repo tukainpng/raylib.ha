@@ -16,3 +16,6 @@
 possible to the original.
 - Take advantage of Hare features
 
+### Also
+
+- There's a C version of the example game. I've made it so it's possible to compare the raylib.ha bindings to the original way to use raylib.
