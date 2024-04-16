@@ -1,10 +1,11 @@
 <div align="center">
-    <img title="Screenshot taken with the example itself" width="400px" src="scr.png">
-    <h1>example.ha</h1>
-    <p>A example that shows some of raylib bindings in use</p>
+    <img title="Screenshot taken with the game example" width="200px" src="screenshots/game.png">
+    <img title="Screenshot taken with the fib example" width="200px" src="screenshots/fib.png">
+    <h1>examples</h1>
+    <p>A collection of examples that shows some of raylib bindings in use</p>
 </div>
 
-### Keybinds  
+## Game Example Keybinds  
 #### Keyboard  
 - W/A/S/D - Moves the player
 - Space - Take Screenshot
