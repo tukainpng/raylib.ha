@@ -395,10 +395,10 @@ export const MAGENTA			= Color { r = 255, g = 0,   b = 255, a = 255 };
 export const RAYWHITE			= Color { r = 245, g = 245, b = 245, a = 255 };
 
 // Window-Related functions
-@symbol("InitWindow") fn InitWindow(size, size, *c::char) void;
+@symbol("InitWindow") fn InitWindow(int, int, *c::char) void;
 @symbol("SetWindowTitle") fn SetWindowTitle(*c::char) void;
 @symbol("GetMonitorName") fn GetMonitorName(monitor: int) const *c::char;
-export fn init_window(width: size, height: size, title: str) void = InitWindow(width, height, c::fromstr(title));
+export fn init_window(width: int, height: int, title: str) void = InitWindow(width, height, c::fromstr(title));
 export @symbol("CloseWindow") fn close_window() void;
 export @symbol("WindowShouldClose") fn window_should_close() bool;
 export fn set_window_title(title: str) void = SetWindowTitle(c::fromstr(title));
@@ -607,9 +607,9 @@ export @symbol("GetColor") fn get_color(color: u32) Color;
 
 // module: rtext
 // Text-Drawing functions
-@symbol("DrawText") fn DrawText(*c::char, size, size, size, Color) void;
+@symbol("DrawText") fn DrawText(*c::char, int, int, int, Color) void;
 export @symbol("DrawFPS") fn draw_fps(x: int, y: int) void;
-export fn draw_text(title: str, x: size, y: size, text_size: size, color: Color) void = DrawText(c::fromstr(title), x, y, text_size, color);
+export fn draw_text(title: str, x: int, y: int, text_size: int, color: Color) void = DrawText(c::fromstr(title), x, y, text_size, color);
 
 // Text font info functions
 export @symbol("SetTextLineSpacing") fn set_text_line_spacing(spacing: int) void;

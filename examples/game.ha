@@ -45,21 +45,22 @@ let camera = Camera2D {
 	zoom = 1.0,
 };
 
-init_window(SCREEN_RESOLUTION.x: u32, SCREEN_RESOLUTION.y: u32, TITLE);
+init_window(SCREEN_RESOLUTION.x: int, SCREEN_RESOLUTION.y: int, TITLE);
 
 let monitor = get_current_monitor();
 let refresh_rate = get_monitor_refresh_rate(monitor);
 
 // Textures
-let ruins = load_texture("./example/images/ruins.png");
-let player_texture = load_texture("./example/images/player.png");
+let ruins = load_texture("./examples/images/ruins.png");
+let player_texture = load_texture("./examples/images/player.png");
 
 init_audio_device();
-let music: Music = load_music_stream("./example/sounds/ruins.mp3");
+let music: Music = load_music_stream("./examples/sounds/ruins.mp3");
 music.looping = true;
-let menu_enter = load_sound("./example/sounds/snd_bell.wav");
-let menu_quit = load_sound("./example/sounds/snd_select.wav");
+let menu_enter = load_sound("./examples/sounds/snd_bell.wav");
+let menu_quit = load_sound("./examples/sounds/snd_select.wav");
 set_music_volume(music, 0.5);
+play_music_stream(music);
 
 set_target_fps(refresh_rate * 2);
 
@@ -245,13 +246,13 @@ if (is_gamepad_button_down(0,GamepadButton::GAMEPAD_BUTTON_RIGHT_THUMB) || is_ke
 	draw_rectangle(SCREEN_RESOLUTION.x: int / 8, 60, 320, 320, get_color(0x282828AA));
 
 	// Content
-	draw_text(TITLE, SCREEN_RESOLUTION.x: u32 / 8 + 5, 60, 20, GRUV_FG_LIGHT);
-	draw_text("Controller:", SCREEN_RESOLUTION.x: u32 / 8 + 5, 80, 20, GRUV_FG_LIGHT);
-	draw_text(get_gamepad_name(0), SCREEN_RESOLUTION.x: u32 / 8 + 5, 100, 15, GRUV_FG_LIGHT);
-	draw_text("Music progress:", SCREEN_RESOLUTION.x: u32 / 8 + 5, 120, 20, GRUV_FG_LIGHT);
-	draw_text(strconv::itos(get_music_time_played(music): int), SCREEN_RESOLUTION.x: u32 / 8 + 10, 140, 20, GRUV_FG_LIGHT);
-	draw_text("/", SCREEN_RESOLUTION.x: u32 / 8 + 45, 140, 20, GRUV_FG_LIGHT);
-	draw_text(strconv::itos(get_music_time_length(music): int), SCREEN_RESOLUTION.x: u32 / 8 + 90, 140, 20, GRUV_FG_LIGHT);
+	draw_text(TITLE, SCREEN_RESOLUTION.x: int / 8 + 5, 60, 20, GRUV_FG_LIGHT);
+	draw_text("Controller:", SCREEN_RESOLUTION.x: int / 8 + 5, 80, 20, GRUV_FG_LIGHT);
+	draw_text(get_gamepad_name(0), SCREEN_RESOLUTION.x: int / 8 + 5, 100, 15, GRUV_FG_LIGHT);
+	draw_text("Music progress:", SCREEN_RESOLUTION.x: int / 8 + 5, 120, 20, GRUV_FG_LIGHT);
+	draw_text(strconv::itos(get_music_time_played(music): int), SCREEN_RESOLUTION.x: int / 8 + 10, 140, 20, GRUV_FG_LIGHT);
+	draw_text("/", SCREEN_RESOLUTION.x: int / 8 + 45, 140, 20, GRUV_FG_LIGHT);
+	draw_text(strconv::itos(get_music_time_length(music): int), SCREEN_RESOLUTION.x: int / 8 + 90, 140, 20, GRUV_FG_LIGHT);
 	draw_fps(SCREEN_RESOLUTION.x: int / 8 + 5, 350);
 
 	return true;
