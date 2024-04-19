@@ -578,10 +578,35 @@ export @symbol("DrawPoly") fn draw_poly(center: Vector2, sides: int, radius: f32
 export @symbol("DrawPolyLines") fn draw_poly_lines(center: Vector2, sides: int, radius: f32, rotation: f32, color: Color) void;
 export @symbol("DrawPolyLinesEx") fn draw_poly_lines_ex(center: Vector2, sides: int, radius: f32, rotation: f32, line_thic: f32,color: Color) void;
 
+ // Splines drawing functions
+export @symbol("DrawSplineLinear") fn draw_spline_linear(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                                  // Draw spline: Linear, minimum 2 points
+export @symbol("DrawSplineBasis") fn draw_spline_basis(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                                   // Draw spline: B-Spline, minimum 4 points
+export @symbol("DrawSplineCatmullRom") fn draw_spline_catmull_rom(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                        // Draw spline: Catmull-Rom, minimum 4 points
+export @symbol("DrawSplineBezierQuadratic") fn draw_spline_bezier_quadratic(points: *Vector2, point_count: int, thick: f32, color: Color) void;                              // Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
+export @symbol("DrawSplineBezierCubic") fn draw_spline_cubic(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                             // Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
+export @symbol("DrawSplineSegmentLinear") fn draw_spline_segment_linear(p1: Vector2, p2: Vector2, thick: f32, color: Color) void;                                            // Draw spline segment: Linear, 2 points
+export @symbol("DrawSplineSegmentBasis") fn draw_spline_segment_basis(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2, thick: f32, color: Color) void;                    // Draw spline segment: B-Spline, 4 points
+export @symbol("DrawSplineSegmentCatmullRom") fn draw_spline_segment_catmull_rom(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2, thick: f32, color: Color) void;         // Draw spline segment: Catmull-Rom, 4 points
+export @symbol("DrawSplineSegmentBezierQuadratic") fn draw_spline_segment_bezier_quadratic(p1: Vector2, c2: Vector2, p3: Vector2, thick: f32, color: Color) void;            // Draw spline segment: Quadratic Bezier, 2 points, 1 control point
+export @symbol("DrawSplineSegmentBezierCubic") fn draw_spline_segment_bezier_cubic(p1: Vector2, c2: Vector2, c3: Vector2, p4: Vector2, thick: f32, color: Color) void;       // Draw spline segment: Cubic Bezier, 2 points, 2 control points
+
+// Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
+export @symbol("GetSplinePointLinear") fn get_spline_point_linear(start_pos: Vector2, end_pos: Vector2, t: f32) Vector2;                            // Get (evaluate) spline point: Linear
+export @symbol("GetSplinePointBasis") fn get_spline_point_basis(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2, t: f32) Vector2;              // Get (evaluate) spline point: B-Spline
+export @symbol("GetSplinePointCatmullRom") fn get_spline_point_catmull_rom(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2, t: f32) Vector2;   // Get (evaluate) spline point: Catmull-Rom
+export @symbol("GetSplinePointBezierQuad") fn get_spline_point_bezier_quad(p1: Vector2, c2: Vector2, p3: Vector2, t: f32) Vector2;                // Get (evaluate) spline point: Quadratic Bezier
+export @symbol("GetSplinePointBezierCubic") fn get_spline_point_bezier_cubic(p1: Vector2, c2: Vector2, c3: Vector2, p4: Vector2, t: f32) Vector2; // Get (evaluate) spline point: Cubic Bezier
+
 // Basic shapes collision detection functions
 export @symbol("CheckCollisionRecs") fn check_collision_recs(rec_1: Rectangle, rec_2: Rectangle) bool;
+export @symbol("CheckCollisionCircles") fn check_collision_circles(center_1: Vector2, radius_1: f32, center_2: Vector2, radius_2: f32) bool;
+export @symbol("CheckCollisionCirclesRec") fn check_collision_circles_rec(center: Vector2, radius: f32, rectangle: Rectangle) bool;
+export @symbol("CheckCollisionPointCircles") fn check_collision_point_circles(point: Vector2, center: Vector2, radius: f32) bool;
 export @symbol("CheckCollisionPointTriangle") fn check_collision_point_triangle(point: Vector2, v1: Vector2, v2: Vector2, v3: Vector2) bool;
+export @symbol("CheckCollisionPointPoly") fn check_collision_point_poly(point: Vector2, points: *Vector2, point_count: int) bool;
 export @symbol("CheckCollisionLines") fn check_collision_lines(pos_1_start: Vector2, pos_1_end: Vector2, pos_2_start: Vector2, pos_2_end: Vector2, collision_point: *Vector2) bool;
+export @symbol("CheckCollisionPointLine") fn check_collision_point_line(point: Vector2, p1: Vector2, p2: Vector2, threshold: int) bool;
+export @symbol("GetCollisionRec") fn get_collision_rec(rectangle_1: Rectangle, rectangle_2: Rectangle) Rectangle;
 
 // module: rtextures
 // Image loading functions
