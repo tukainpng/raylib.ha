@@ -541,8 +541,7 @@ export @symbol("DrawPixelV") fn draw_pixel_v(position: Vector2, color: Color) vo
 export @symbol("DrawLine") fn draw_line(start_x: int, start_y: int, end_x: int, end_y: int, color: Color) void;
 export @symbol("DrawLineV") fn draw_line_v(start_position: Vector2, end_position: Vector2, color: Color) void;
 export @symbol("DrawLineEx") fn draw_line_ex(start_position: Vector2, end_position: Vector2, thic: f32, color: Color) void;
-// TODO:
-// DrawLineStrip
+export @symbol("DrawLineStrip") fn draw_line_strip(points: *Vector2, point_count: int, color: Color) void;
 export @symbol("DrawLineBezier") fn draw_line_bezier(start_position: Vector2, end_position: Vector2, thic: f32, color: Color) void;
 export @symbol("DrawCircle") fn draw_circle(center_x: int, center_y: int, radius: f32, color: Color) void;
 export @symbol("DrawCircleSector") fn draw_circle_sector(center: Vector2, radius: f32, start_angle: f32, end_angle: f32, segments: int, color: Color) void;
@@ -571,9 +570,8 @@ export fn draw_triangle_v(points: Triangle, color: Color) void = {
 	draw_triangle(points.point_1, points.point_2, points.point_3, color);
 };
 export @symbol("DrawTriangleLines") fn draw_triangle_lines(v1: Vector2, v2: Vector2, v3: Vector2, color: Color) void;
-// TODO:
-// DrawTriangleFan
-// DrawTriangleStrip
+export @symbol("DrawTriangleFan") fn draw_triangle_fan(points: *Vector2, point_count: int, color: Color) void;
+export @symbol("DrawTriangleStrip") fn draw_triangle_strip(points: *Vector2, point_count: int, color: Color) void;
 export @symbol("DrawPoly") fn draw_poly(center: Vector2, sides: int, radius: f32, rotation: f32, color: Color) void;
 export @symbol("DrawPolyLines") fn draw_poly_lines(center: Vector2, sides: int, radius: f32, rotation: f32, color: Color) void;
 export @symbol("DrawPolyLinesEx") fn draw_poly_lines_ex(center: Vector2, sides: int, radius: f32, rotation: f32, line_thic: f32,color: Color) void;
