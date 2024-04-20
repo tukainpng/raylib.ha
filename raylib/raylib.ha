@@ -700,26 +700,28 @@ export @symbol("SetMusicPan") fn set_music_pan(music: Music, pan: f32) void;
 export @symbol("GetMusicTimeLength") fn get_music_time_length(music: Music) f32;
 export @symbol("GetMusicTimePlayed") fn get_music_time_played(music: Music) f32;
 
+// AudioStream management functions
+export @symbol("LoadAudioStream") fn load_audio_stream(sample_rate: u32, sample_size: u32, channels: u32) AudioStream;    // Load audio stream (to stream raw audio pcm data)
+export @symbol("IsAudioStreamReady") fn is_audio_stream_ready(stream: AudioStream) bool;                                  // Checks if an audio stream is ready
+export @symbol("UnloadAudioStream") fn unload_audio_stream(stream: AudioStream) void;                                     // Unload audio stream and free memory
+export @symbol("UpdateAudioStream") fn update_audio_stream(stream: AudioStream, data: *opaque, frame_count: int) void;    // Update audio stream buffers with data
+export @symbol("IsAudioStreamProcessed") fn is_audio_stream_processed(stream: AudioStream) bool;                          // Check if any audio stream buffers requires refill
+export @symbol("PlayAudioStream") fn play_audio_stream(stream: AudioStream) void;                                         // Play audio stream
+export @symbol("PauseAudioStream") fn pause_audio_stream(stream: AudioStream) void;                                       // Pause audio stream
+export @symbol("ResumeAudioStream") fn resume_audio_stream(stream: AudioStream) void;                                     // Resume audio stream
+export @symbol("IsAudioStreamPlaying") fn is_audio_stream_playing(stream: AudioStream) bool;                              // Check if audio stream is playing
+export @symbol("StopAudioStream") fn stop_audio_stream(stream: AudioStream) void;                                         // Stop audio stream
+export @symbol("SetAudioStreamVolume") fn set_audio_stream_volume(stream: AudioStream, volume: f32) void;                 // Set volume for audio stream (1.0 is max level)
+export @symbol("SetAudioStreamPitch") fn set_audio_stream_pitch(stream: AudioStream, pitch: f32) void;                    // Set pitch for audio stream (1.0 is base level)
+export @symbol("SetAudioStreamPan") fn set_audio_stream_pan(stream: AudioStream, pan: f32) void;                          // Set pan for audio stream (0.5 is centered)
+export @symbol("SetAudioStreamBufferSizeDefault") fn set_audio_stream_buffer_size_default(buffer_size: int) void;         // Default size for new audio streams
+
 // TODO:
-//    // AudioStream management functions
-//    AudioStream LoadAudioStream(unsigned int sampleRate, unsigned int sampleSize, unsigned int channels); // Load audio stream (to stream raw audio pcm data)
-//    bool IsAudioStreamReady(AudioStream stream);                    // Checks if an audio stream is ready
-//    void UnloadAudioStream(AudioStream stream);                     // Unload audio stream and free memory
-//    void UpdateAudioStream(AudioStream stream, const void *data, int frameCount); // Update audio stream buffers with data
-//    bool IsAudioStreamProcessed(AudioStream stream);                // Check if any audio stream buffers requires refill
-//    void PlayAudioStream(AudioStream stream);                       // Play audio stream
-//    void PauseAudioStream(AudioStream stream);                      // Pause audio stream
-//    void ResumeAudioStream(AudioStream stream);                     // Resume audio stream
-//    bool IsAudioStreamPlaying(AudioStream stream);                  // Check if audio stream is playing
-//    void StopAudioStream(AudioStream stream);                       // Stop audio stream
-//    void SetAudioStreamVolume(AudioStream stream, float volume);    // Set volume for audio stream (1.0 is max level)
-//    void SetAudioStreamPitch(AudioStream stream, float pitch);      // Set pitch for audio stream (1.0 is base level)
-//    void SetAudioStreamPan(AudioStream stream, float pan);          // Set pan for audio stream (0.5 is centered)
-//    void SetAudioStreamBufferSizeDefault(int size);                 // Default size for new audio streams
-//    void SetAudioStreamCallback(AudioStream stream, AudioCallback callback); // Audio thread callback to request new data
+// void SetAudioStreamCallback(AudioStream stream, AudioCallback callback); // Audio thread callback to request new data
 
-//    void AttachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Attach audio stream processor to stream, receives the samples as <float>s
-//    void DetachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Detach audio stream processor from stream
+// void AttachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Attach audio stream processor to stream, receives the samples as <float>s
+// void DetachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Detach audio stream processor from stream
 
-//    void AttachAudioMixedProcessor(AudioCallback processor); // Attach audio stream processor to the entire audio pipeline, receives the samples as <float>s
-//    void DetachAudioMixedProcessor(AudioCallback processor); // Detach audio stream processor from the entire audio pipeline
+// void AttachAudioMixedProcessor(AudioCallback processor); // Attach audio stream processor to the entire audio pipeline, receives the samples as <float>s
+// void DetachAudioMixedProcessor(AudioCallback processor); // Detach audio stream processor from the entire audio pipeline
+
