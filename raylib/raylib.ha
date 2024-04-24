@@ -401,52 +401,52 @@ export const RAYWHITE			= Color { r = 245, g = 245, b = 245, a = 255 };
 export fn init_window(width: int, height: int, title: str) void = InitWindow(width, height, c::fromstr(title));
 export @symbol("CloseWindow") fn close_window() void;
 export @symbol("WindowShouldClose") fn window_should_close() bool;
+export @symbol("IsWindowReady") fn is_window_ready() bool;
+export @symbol("IsWindowFullscreen") fn is_window_fullscreen() bool;
+export @symbol("IsWindowHidden") fn is_window_hidden() bool;
+export @symbol("IsWindowMinimized") fn is_window_minimized() bool;
+export @symbol("IsWindowMaximized") fn is_window_maximized() bool;
+export @symbol("IsWindowFocused") fn is_window_focused() bool;
+export @symbol("IsWindowResized") fn is_window_resized() bool;
+export @symbol("IsWindowState") fn is_window_state(flag: u32) bool;
+export @symbol("SetWindowState") fn set_window_state(flags: u32) void;
+export @symbol("ClearWindowState") fn clear_window_state(flags: u32) void;
+export @symbol("ToggleFullsreen") fn toggle_fullscreen() void;
+export @symbol("ToggleBorderlessWindowed") fn toggle_borderless_windowed() void;
+export @symbol("MaximizeWindow") fn maximize_window() void;
+export @symbol("MinimizeWindow") fn minimize_window() void;
+export @symbol("RestoreWindow") fn restore_window() void;
+export @symbol("SetWindowIcon") fn set_window_icon(image: Image) void;
+export @symbol("SetWindowIcons") fn set_window_icons(images: *Image, count: int) void;
 export fn set_window_title(title: str) void = SetWindowTitle(c::fromstr(title));
+export @symbol("SetWindowPosition") fn set_window_position(x: int, y: int) void;
+export @symbol("SetWindowMonitor") fn set_window_monitor(monitor: int) void;
+export @symbol("SetWindowMinSize") fn set_window_min_size(width: int, height: int) void;
+export @symbol("SetWindowMaxSize") fn set_window_max_size(width: int, height: int) void;
+export @symbol("SetWindowSize") fn set_window_size(width: int, height: int) void;
+export @symbol("SetWindowOpacity") fn set_window_opacity(opacity: f32) void;
+export @symbol("SetWindowFocused") fn set_window_focused() void;
 export @symbol("GetScreenWidth") fn get_screen_width() int;
 export @symbol("GetScreenHeight") fn get_screen_height() int;
 export @symbol("GetRenderWidth") fn get_render_width() int;
 export @symbol("GetRenderHeight") fn get_render_height() int;
+export @symbol("GetMonitorCount") fn get_monitor_count() int;
 export @symbol("GetCurrentMonitor") fn get_current_monitor() int;
+export @symbol("GetMonitorPosition") fn get_monitor_position(monitor: int) Vector2;
 export @symbol("GetMonitorWidth") fn get_monitor_width(monitor: int) int;
 export @symbol("GetMonitorHeight") fn get_monitor_height(monitor: int) int;
+export @symbol("GetMonitorPhysicalWidth") fn get_monitor_physical_width(monitor: int) int;
+export @symbol("GetMonitorPhysicalHeight") fn get_monitor_physical_height(monitor: int) int;
 export @symbol("GetMonitorRefreshRate") fn get_monitor_refresh_rate(monitor: int) int;
 export @symbol("GetWindowPosition") fn get_window_position() Vector2;
 export @symbol("GetWindowScaleDPI") fn get_window_scale_dpi() Vector2;
 export fn get_monitor_name(monitor: int) str = return c::tostr(GetMonitorName(monitor))!;
+export @symbol("EnableEventWaiting") fn enable_event_waiting() void;
+export @symbol("DisableEventWaiting") fn disable_event_waiting() void;
 // TODO:
-// IsWindowReady
-// IsWindowFullscreen
-// IsWindowHidden
-// IsWindowMinimized
-// IsWindowMaximized
-// IsWindowFocused
-// IsWindowResized
-// IsWindowState
-// SetWindowState
-// ClearWindowState
-// ToggleFullscreen
-// ToggleBorderlessWindowed
-// MaximizeWindow
-// MinimizeWindow
-// RestoreWindow
-// SetWindowIcon
-// SetWindowIcons
-// SetWindowPosition
-// SetWindowMonitor
-// SetWindowMinSize
-// SetWindowMaxSize
-// SetWindowSize
-// SetWindowOpacity
-// SetWindowFocused
 // *GetWindowHandle
-// GetMonitorCount
-// GetMonitorPosition
-// GetMonitorPhysicalWidth
-// GetMonitorPhysicalHeight
 // SetClipboardText
 // *GetClipboardText
-// EnableEventWaiting
-// DisableEventWaiting
 
 // Cursor-Related functions
 export @symbol("ShowCursor") fn show_cursor() void;
@@ -464,15 +464,43 @@ export @symbol("BeginMode2D") fn begin_mode_2d(camera: Camera2D) void;
 export @symbol("EndMode2D") fn end_mode_2d() void;
 export @symbol("BeginTextureMode") fn begin_texture_mode(target: RenderTexture2D) void;
 export @symbol("EndTextureMode") fn end_texture_mode() void;
+export @symbol("BeginBlendMode") fn begin_blend_mode(mode: int) void;
+export @symbol("EndBlendMode") fn end_blend_mode() void;
+export @symbol("BeginScissorMode") fn begin_scissor_mode(x: int, y: int, width: int, height: int) void;
+export @symbol("EndScissorMode") fn end_scissor_mode() void;
 // TODO:
+// BeginMode3D
+// EndMode3D
 // BeginShaderMode
 // EndShaderMode
-// BeginBlendMode
-// EndBlendMode
-// BeginScissorMode
-// EndScissorMode
 // BeginVrStereoMode
 // EndVrStereoMode
+
+// TODO: VR stereo config functions for VR simulator
+// LoadVrStereoConfig
+// UnloadVrStereoConfig
+
+// TODO: Shader management functions
+// NOTE: Shader functionality is not available on OpenGL 1.1
+// LoadShader
+// LoadShaderFromMemory
+// IsShaderReady
+// GetShaderLocation
+// GetShaderLocationAttrib
+// SetShaderValue
+// SetShaderValueV
+// SetShaderValueMatrix
+// SetShaderValueTexture
+// UnloadShader
+
+// TODO: Screen-space-related functions
+// GetMouseRay
+// GetCameraMatrix
+// GetCameraMatrix2D
+// GetWorldToScreen
+// GetScreenToWorld2D
+// GetWorldToScreenEx
+// GetWorldToScreen2D
 
 // Timing-Related functions
 export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;
@@ -485,6 +513,70 @@ export @symbol("GetFPS") fn get_fps() int;
 @symbol("OpenURL") fn OpenURL(*c::char) void;
 export fn take_screenshot(filename: str) void = TakeScreenshot(c::fromstr(filename));
 export fn open_url(url: str) void = OpenURL(c::fromstr(url));
+
+// // NOTE: Following functions implemented in module [utils]
+// //------------------------------------------------------------------
+// TraceLog
+// SetTraceLogLevel
+// *MemAlloc
+// *MemRealloc
+// MemFree
+
+// // Set custom callbacks
+// // WARNING: Callbacks setup is intended for advance users
+// SetTraceLogCallback
+// SetLoadFileDataCallback
+// SetSaveFileDataCallback
+// SetLoadFileTextCallback
+// SetSaveFileTextCallback
+
+// // Files management functions
+// *LoadFileData
+// UnloadFileData
+// SaveFileData
+// ExportDataAsCode
+// *LoadFileText
+// UnloadFileText
+// SaveFileText
+// //------------------------------------------------------------------
+
+// // File system functions
+// FileExists
+// DirectoryExists
+// IsFileExtension
+// GetFileLength
+// *GetFileExtension
+// *GetFileName
+// *GetFileNameWithoutExt
+// *GetDirectoryPath
+// *GetPrevDirectoryPath
+// *GetWorkingDirectory
+// *GetApplicationDirectory
+// ChangeDirectory
+// IsPathFile
+// LoadDirectoryFiles
+// LoadDirectoryFilesEx
+// UnloadDirectoryFiles
+// IsFileDropped
+// LoadDroppedFiles
+// UnloadDroppedFiles
+// GetFileModTime
+
+// // Compression/Encoding functionality
+// *CompressData
+// *DecompressData
+// *EncodeDataBase64
+// *DecodeDataBase64
+
+// // Automation events functionality
+// LoadAutomationEventList
+// UnloadAutomationEventList
+// ExportAutomationEventList
+// SetAutomationEventList
+// SetAutomationEventBaseFrame
+// StartAutomationEventRecording
+// StopAutomationEventRecording
+// PlayAutomationEvent
 
 //------------------------------------------------------------------------------------
 // Input Handling Functions (Module: core)
@@ -577,7 +669,7 @@ export @symbol("DrawPolyLines") fn draw_poly_lines(center: Vector2, sides: int, 
 export @symbol("DrawPolyLinesEx") fn draw_poly_lines_ex(center: Vector2, sides: int, radius: f32, rotation: f32, line_thic: f32,color: Color) void;
 
  // Splines drawing functions
-export @symbol("DrawSplineLinear") fn draw_spline_linear(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                                  // Draw spline: Linear, minimum 2 points
+export @symbol("DrawSplineLinear") fn draw_spline_linear(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                                 // Draw spline: Linear, minimum 2 points
 export @symbol("DrawSplineBasis") fn draw_spline_basis(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                                   // Draw spline: B-Spline, minimum 4 points
 export @symbol("DrawSplineCatmullRom") fn draw_spline_catmull_rom(points: *Vector2, point_count: int, thick: f32, color: Color) void;                                        // Draw spline: Catmull-Rom, minimum 4 points
 export @symbol("DrawSplineBezierQuadratic") fn draw_spline_bezier_quadratic(points: *Vector2, point_count: int, thick: f32, color: Color) void;                              // Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
@@ -589,7 +681,7 @@ export @symbol("DrawSplineSegmentBezierQuadratic") fn draw_spline_segment_bezier
 export @symbol("DrawSplineSegmentBezierCubic") fn draw_spline_segment_bezier_cubic(p1: Vector2, c2: Vector2, c3: Vector2, p4: Vector2, thick: f32, color: Color) void;       // Draw spline segment: Cubic Bezier, 2 points, 2 control points
 
 // Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
-export @symbol("GetSplinePointLinear") fn get_spline_point_linear(start_pos: Vector2, end_pos: Vector2, t: f32) Vector2;                            // Get (evaluate) spline point: Linear
+export @symbol("GetSplinePointLinear") fn get_spline_point_linear(start_pos: Vector2, end_pos: Vector2, t: f32) Vector2;                          // Get (evaluate) spline point: Linear
 export @symbol("GetSplinePointBasis") fn get_spline_point_basis(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2, t: f32) Vector2;              // Get (evaluate) spline point: B-Spline
 export @symbol("GetSplinePointCatmullRom") fn get_spline_point_catmull_rom(p1: Vector2, p2: Vector2, p3: Vector2, p4: Vector2, t: f32) Vector2;   // Get (evaluate) spline point: Catmull-Rom
 export @symbol("GetSplinePointBezierQuad") fn get_spline_point_bezier_quad(p1: Vector2, c2: Vector2, p3: Vector2, t: f32) Vector2;                // Get (evaluate) spline point: Quadratic Bezier
@@ -717,11 +809,9 @@ export @symbol("SetAudioStreamPan") fn set_audio_stream_pan(stream: AudioStream,
 export @symbol("SetAudioStreamBufferSizeDefault") fn set_audio_stream_buffer_size_default(buffer_size: int) void;         // Default size for new audio streams
 
 // TODO:
-// void SetAudioStreamCallback(AudioStream stream, AudioCallback callback); // Audio thread callback to request new data
-
-// void AttachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Attach audio stream processor to stream, receives the samples as <float>s
-// void DetachAudioStreamProcessor(AudioStream stream, AudioCallback processor); // Detach audio stream processor from stream
-
-// void AttachAudioMixedProcessor(AudioCallback processor); // Attach audio stream processor to the entire audio pipeline, receives the samples as <float>s
-// void DetachAudioMixedProcessor(AudioCallback processor); // Detach audio stream processor from the entire audio pipeline
+// SetAudioStreamCallback
+// AttachAudioStreamProcessor
+// DetachAudioStreamProcessor
+// AttachAudioMixedProcessor
+// DetachAudioMixedProcessor
 
