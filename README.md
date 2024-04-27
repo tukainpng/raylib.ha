@@ -1,6 +1,3 @@
-<div align="center"> <img width="200px" src="logo.jpg"> <h1>raylib.ha</h1>
-<p>raylib bindings for Hare.</p> </div>
-
 ### Things to know
 - Currently, i'm focussing on 2D game development, this means that any/all 3D
   related functions/structs/variables will not be implemented yet.
