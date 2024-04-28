@@ -15,3 +15,8 @@
 
 - There's a C version of the example game. I've made it so it's possible to
   compare the raylib.ha bindings to the original way to use raylib.
+
+### Cloning the repository
+
+You can clone this repo by typing
+$ git clone https://git.cbps.xyz/guapito/raylib.ha
