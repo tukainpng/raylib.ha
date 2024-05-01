@@ -496,17 +496,33 @@ export @symbol("EndScissorMode") fn end_scissor_mode() void;
 // TODO: Screen-space-related functions
 // GetMouseRay
 // GetCameraMatrix
-// GetCameraMatrix2D
 // GetWorldToScreen
-// GetScreenToWorld2D
 // GetWorldToScreenEx
-// GetWorldToScreen2D
+export @symbol("GetCameraMatrix2D") fn get_camera_matrix_2d(camera: Camera2D) Matrix;
+export @symbol("GetScreenToWorld2D") fn get_screen_to_world_2d(position: Vector2, camera: Camera2D) Vector2;
+export @symbol("GetWorldToScreen2D") fn get_world_to_screen_2d(position: Vector2, camera: Camera2D) Vector2;
 
 // Timing-Related functions
 export @symbol("SetTargetFPS") fn set_target_fps(fps: int) void;
 export @symbol("GetFrameTime") fn get_frame_time() f32;
 export @symbol("GetTime") fn get_time() f64;
 export @symbol("GetFPS") fn get_fps() int;
+
+// Custom frame control functions
+// NOTE: Those functions are intended for advance users that want full control over the frame processing
+// By default EndDrawing() does this job: draws everything + SwapScreenBuffer() + manage frame timing + PollInputEvents()
+// To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
+export @symbol("SwapScreenBuffer") fn swap_screen_buffer() void; // Swap back buffer with front buffer (screen drawing)
+export @symbol("PollInputEvents") fn poll_input_events() void;   // Register all input events
+export @symbol("WaitTime") fn wait_time(seconds: f64);           // Wait for some time (halt program execution)
+
+// Random values generation functions
+export @symbol("SetRandomSeed") fn set_random_seed(seed: u32) void; // Set the seed for the random number generator
+export @symbol("GetRandomValue") fn get_random_value(min: int, max: int) void; // Get a random value between min and max (both included)
+
+// TODO:
+// int *LoadRandomSequence(unsigned int count, int min, int max); // Load random values sequence, no values repeated
+// void UnloadRandomSequence(int *sequence); // Unload random values sequence
 
 // Misc. functions
 @symbol("TakeScreenshot") fn TakeScreenshot(*c::char) void;
