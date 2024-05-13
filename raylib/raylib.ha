@@ -514,7 +514,7 @@ export @symbol("GetFPS") fn get_fps() int;
 // To avoid that behaviour and control frame processes manually, enable in config.h: SUPPORT_CUSTOM_FRAME_CONTROL
 export @symbol("SwapScreenBuffer") fn swap_screen_buffer() void; // Swap back buffer with front buffer (screen drawing)
 export @symbol("PollInputEvents") fn poll_input_events() void;   // Register all input events
-export @symbol("WaitTime") fn wait_time(seconds: f64);           // Wait for some time (halt program execution)
+export @symbol("WaitTime") fn wait_time(seconds: f64) void;      // Wait for some time (halt program execution)
 
 // Random values generation functions
 export @symbol("SetRandomSeed") fn set_random_seed(seed: u32) void; // Set the seed for the random number generator
