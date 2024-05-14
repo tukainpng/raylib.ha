@@ -1,7 +1,5 @@
 #include <raylib.h>
-
-char TITLE[] = "Game Example";
-Vector2 SCREEN_RESOLUTION = { 1280.0, 720.0 };
+#include "game.h"
 
 bool debug_info(int monitor)
 {
@@ -21,38 +19,30 @@ bool debug_info(int monitor)
     DrawText("Controller:", (int)SCREEN_RESOLUTION.x / 8 + 5, 80, 20, WHITE);
     DrawText(GetGamepadName(0), (int)SCREEN_RESOLUTION.x / 8 + 5, 100, 15, WHITE);
     DrawFPS((int)SCREEN_RESOLUTION.x / 8 + 5, 350);
-
     return true;
   }
   return false;
 }
 
-void main()
+int main()
 {
-  struct Player {
-    Vector2 position;
-    Vector2 dimensions;
-    Rectangle collisions;
-    Color color;
-    float speed;
-  } Player;
 
   struct Player player = {
-    (Vector2){ 320.0, 240.0 },
-    (Vector2){ 30.0, 30.0 },
-    (Rectangle){ 0.0, 0.0, 38.0, 60.0 },
-    BLACK,
-    300.0f
+    .position   = { 320.0, 240.0 },
+    .dimensions = { 30.0, 30.0 },
+    .collisions = { 0.0, 0.0, 38.0, 60.0 },
+    .color      = BLACK,
+    .speed      = 300.0f,
   };
 
   struct Camera2D camera = {
-    (Vector2){ SCREEN_RESOLUTION.x / 2.0f, SCREEN_RESOLUTION.y / 2.0f },
-    (Vector2){
+    .offset = { SCREEN_RESOLUTION.x / 2.0f, SCREEN_RESOLUTION.y / 2.0f },
+    .target = {
       player.position.x + player.dimensions.x / 2.0f,
       player.position.y + player.dimensions.y / 2.0f
     },
-    0.0f,
-    1.0f
+    .rotation = 0.0f,
+    .zoom = 1.0f
   };
 
   InitWindow(1280, 720, TITLE);
@@ -138,10 +128,10 @@ void main()
 
           // Player
           player.collisions = (Rectangle){
-            player.position.x,
-            player.position.y,
-            38.0f,
-            60.0f
+            .x = player.position.x,
+            .y = player.position.y,
+            .width = 38.0f,
+            .height = 60.0f
           };
 
           DrawTexture(
@@ -156,11 +146,11 @@ void main()
           // Top
           if (CheckCollisionRecs(
                 (Rectangle){
-                  0.0f, 0.0f,
-                  SCREEN_RESOLUTION.x,
-                  120.0f
-                  }, player.collisions)
-          )
+                  .x = 0.0f,
+                  .y = 0.0f,
+                  .width = SCREEN_RESOLUTION.x,
+                  .height = 120.0f,
+                  }, player.collisions))
           {
             player.position.y += 2.5f;
             player.speed = 0.0f;
@@ -169,12 +159,11 @@ void main()
           // Left-side
           if(CheckCollisionRecs(
                 (Rectangle){
-                110.0f,
-                140.0f,
-                2.0f,
-                10.0f },
-                player.collisions)
-          )
+                .x = 110.0f,
+                .y = 140.0f,
+                .width = 2.0f,
+                .height = 10.0f,
+                }, player.collisions))
           {
             player.position.x += 2.5f;
             player.speed = 0.0f;
@@ -182,12 +171,11 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                90.0f,
-                160.0f,
-                20.0f,
-                2.0f },
-                player.collisions)
-          )
+                .x = 90.0f,
+                .y = 160.0f,
+                .width = 20.0f,
+                .height = 2.0f,
+                }, player.collisions))
           {
             player.position.y += 2.5f;
             player.speed = 0.0f;
@@ -195,21 +183,20 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                80.0f,
-                200.0f,
-                2.0f,
-                140.0f },
-                player.collisions)
-            )
+                .x = 80.0f,
+                .y = 200.0f,
+                .width = 2.0f,
+                .height = 140.0f,
+                }, player.collisions))
           {
             player.position.x += 2.5f;
             player.speed = 0.0f;
           } else player.speed = 300.0f;
 
-          Vector2 left_corner_1_point_1 = (Vector2){ 80.0f, 360.0f  };
-          Vector2 left_corner_1_point_2 = (Vector2){ 80.0f, 400.0f  };
-          Vector2 left_corner_1_point_3 = (Vector2){ 120.0f, 400.0f };
-          Vector2 left_corner_1_point_player = (Vector2){
+          Vector2 left_corner_1_point_1 = { 80.0f, 360.0f  };
+          Vector2 left_corner_1_point_2 = { 80.0f, 400.0f  };
+          Vector2 left_corner_1_point_3 = { 120.0f, 400.0f };
+          Vector2 left_corner_1_point_player = {
             player.position.x,
             player.position.y + 30.0
           };
@@ -217,8 +204,7 @@ void main()
                 left_corner_1_point_player,
                 left_corner_1_point_1,
                 left_corner_1_point_2,
-                left_corner_1_point_3)
-            )
+                left_corner_1_point_3))
           {
             player.position.x += 2.5f;
             player.position.y -= 2.5f;
@@ -227,21 +213,20 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                120.0f,
-                410.0f,
-                40.0f,
-                20.0f },
-                player.collisions)
-          )
+                .x = 120.0f,
+                .y = 410.0f,
+                .width = 40.0f,
+                .height = 20.0f,
+                }, player.collisions))
           {
             player.position.y -= 2.5f;
             player.speed = 0.0f;
           } else player.speed = 300.0f;
 
-          Vector2 left_corner_2_point_1 = (Vector2){ 160.0f, 400.0f };
-          Vector2 left_corner_2_point_2 = (Vector2){ 160.0f, 440.0f };
-          Vector2 left_corner_2_point_3 = (Vector2){ 200.0f, 440.0f };
-          Vector2 left_corner_2_point_player = (Vector2){
+          Vector2 left_corner_2_point_1 = { 160.0f, 400.0f };
+          Vector2 left_corner_2_point_2 = { 160.0f, 440.0f };
+          Vector2 left_corner_2_point_3 = { 200.0f, 440.0f };
+          Vector2 left_corner_2_point_player = {
             player.position.x,
             player.position.y + 30.0f
           };
@@ -249,8 +234,7 @@ void main()
                 left_corner_2_point_player,
                 left_corner_2_point_1,
                 left_corner_2_point_2,
-                left_corner_2_point_3)
-          )
+                left_corner_2_point_3))
           {
             player.position.x += 2.5;
             player.position.y -= 2.5;
@@ -260,12 +244,11 @@ void main()
           // Bottom
           if (CheckCollisionRecs(
                 (Rectangle){
-                0.0f,
-                450.0f,
-                650.0f,
-                2.0f },
-                player.collisions)
-          )
+                .x = 0.0f,
+                .y = 450.0f,
+                .width = 650.0f,
+                .height = 2.0f,
+                }, player.collisions))
           {
             player.position.y -= 2.5;
             player.speed = 0.0;
@@ -274,12 +257,11 @@ void main()
           // Right-side
           if (CheckCollisionRecs(
                 (Rectangle){
-                490.0f,
-                140.0f,
-                2.0f,
-                50.0f },
-                player.collisions)
-          )
+                .x = 490.0f,
+                .y = 140.0f,
+                .width = 2.0f,
+                .height = 50.0f,
+                }, player.collisions))
           {
             player.position.x -= 2.5;
             player.speed = 0.0;
@@ -287,12 +269,11 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                510.0f,
-                200.0f,
-                25.0f,
-                2.0f },
-                player.collisions)
-          )
+                .x = 510.0f,
+                .y = 200.0f,
+                .width = 25.0f,
+                .height = 2.0f,
+                }, player.collisions))
           {
             player.position.y += 2.5;
             player.speed = 0.0;
@@ -300,12 +281,11 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                530.0f,
-                200.0f,
-                2.0f,
-                30.0f },
-                player.collisions)
-          )
+                .x = 530.0f,
+                .y = 200.0f,
+                .width = 2.0f,
+                .height = 30.0f,
+                }, player.collisions))
           {
             player.position.x -= 2.5;
             player.speed = 0.0;
@@ -313,11 +293,11 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                535.0f,
-                240.0f,
-                25.0f,2.0f },
-                player.collisions)
-          )
+                .x = 535.0f,
+                .y = 240.0f,
+                .width = 25.0f,
+                .height = 2.0f,
+                }, player.collisions))
           {
             player.position.y += 2.5;
             player.speed = 0.0;
@@ -325,12 +305,11 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                570.0f,
-                240.0f,
-                2.0f,
-                150.0f },
-                player.collisions)
-          )
+                .x = 570.0f,
+                .y = 240.0f,
+                .width = 2.0f,
+                .height = 150.0f,
+                }, player.collisions))
           {
             player.position.x -= 2.5;
             player.speed = 0.0;
@@ -338,21 +317,20 @@ void main()
 
           if (CheckCollisionRecs(
                 (Rectangle){
-                540.0f,
-                390.0f,
-                20.0f,
-                10.0f },
-                player.collisions)
-          )
+                .x = 540.0f,
+                .y = 390.0f,
+                .width = 20.0f,
+                .height = 10.0f
+                }, player.collisions))
           {
             player.position.y -= 2.5;
             player.speed = 0.0;
           } else player.speed = 300.0;
 
-          Vector2 right_corner_point_1 = (Vector2){ 560.0f, 360.0f };
-          Vector2 right_corner_point_2 = (Vector2){ 480.0f, 440.0f };
-          Vector2 right_corner_point_3 = (Vector2){ 560.0f, 440.0f };
-          Vector2 right_corner_point_player = (Vector2){
+          Vector2 right_corner_point_1 = { 560.0f, 360.0f };
+          Vector2 right_corner_point_2 = { 480.0f, 440.0f };
+          Vector2 right_corner_point_3 = { 560.0f, 440.0f };
+          Vector2 right_corner_point_player = {
             player.position.x + 40.0f,
             player.position.y + 30.0f
           };
@@ -360,8 +338,7 @@ void main()
                 right_corner_point_player,
                 right_corner_point_1,
                 right_corner_point_2,
-                right_corner_point_3)
-          )
+                right_corner_point_3))
           {
             player.position.x -= 2.5;
             player.position.y -= 2.5;
@@ -377,4 +354,5 @@ void main()
     UnloadTexture(chara);
     CloseAudioDevice();
     CloseWindow();
+    return 0;
 }
