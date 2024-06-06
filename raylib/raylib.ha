@@ -1,11 +1,18 @@
 use types::c;
 
-// Structs
+// 2D Vector
 export type Vector2 = struct { x: f32, y: f32 };
+
+// 3D Vector
 export type Vector3 = struct { x: f32, y: f32, z: f32 };
+
+// 4D Vector
 export type Vector4 = struct { x: f32, y: f32, z: f32, w: f32 };
+
+// Same as 4D Vector
 export type Quaternion = Vector4;
 
+// Matrix
 export type Matrix = struct {
 	m0: f32, m4: f32, m8: f32, m12: f32,
 	m1: f32, m5: f32, m9: f32, m13: f32,
@@ -13,8 +20,12 @@ export type Matrix = struct {
 	m3: f32, m7: f32, m11: f32, m15: f32,
 };
 
+// RGBA Color struct
 export type Color = struct { r: u8, g: u8, b: u8, a: u8 };
 
+// Rectangle struct.
+//
+// It takes a [x, y] position and [width, height]
 export type Rectangle = struct {
 	x:		f32,
 	y:		f32,
@@ -22,12 +33,27 @@ export type Rectangle = struct {
 	height:		f32,
 };
 
+// Triangle struct.
+//
+// It takes 3 2D vectors. They are used to define each vertice of the triangle.
 export type Triangle = struct {
 	point_1:	Vector2,
 	point_2:	Vector2,
 	point_3:	Vector2,
 };
 
+// Image struct.
+//
+// Not really sure if I bound it correctly, but at least on the example game it
+// works as spected.
+//
+// This struct is used by these functions:
+// - set_window_icon
+// - set_window_icons
+// - load_image
+// - load_texture_from_image
+// - draw_texture
+//
 export type Image = struct {
 	data:		*opaque,
 	width:		int,
@@ -127,7 +153,7 @@ export type FilePathList = struct {
 	paths:		**str
 };
 
-// Enums
+// Flags
 export type ConfigFlags = enum {
 	FLAG_FULLSCREEN_MODE    = 0x00000002,
 	FLAG_WINDOW_RESIZABLE   = 0x00000004,
@@ -141,6 +167,10 @@ export type ConfigFlags = enum {
 	FLAG_WINDOW_TRANSPARENT = 0x00000010,
 };
 
+// Keyboard keys
+//
+// Example:
+//	if (is_key_pressed(KeyboardKey::KEY_I)) play_sound(menu_enter);
 export type KeyboardKey = enum {
 	KEY_NULL            = 0,
 	// Alphanumeric keys
@@ -253,6 +283,7 @@ export type KeyboardKey = enum {
 	KEY_KP_EQUAL        = 336,
 };
 
+// Mouse buttons
 export type MouseButton = enum {
 	MOUSE_BUTTON_LEFT    = 0,
 	MOUSE_BUTTON_RIGHT   = 1,
@@ -263,6 +294,7 @@ export type MouseButton = enum {
 	MOUSE_BUTTON_BACK    = 6,
 };
 
+// Mouse cursor
 export type MouseCursor = enum {
 	MOUSE_CURSOR_DEFAULT       = 0,
 	MOUSE_CURSOR_ARROW         = 1,
@@ -277,6 +309,7 @@ export type MouseCursor = enum {
 	MOUSE_CURSOR_NOT_ALLOWED   = 10
 };
 
+// Gamepad buttons
 export type GamepadButton = enum {
 	GAMEPAD_BUTTON_UNKNOWN = 0,
 	GAMEPAD_BUTTON_LEFT_FACE_UP,
@@ -298,6 +331,7 @@ export type GamepadButton = enum {
 	GAMEPAD_BUTTON_RIGHT_THUMB
 };
 
+// Gamepad axis
 export type GamepadAxis = enum {
 	GAMEPAD_AXIS_LEFT_X        = 0,
 	GAMEPAD_AXIS_LEFT_Y        = 1,
@@ -307,6 +341,7 @@ export type GamepadAxis = enum {
 	GAMEPAD_AXIS_RIGHT_TRIGGER = 5
 };
 
+// Pixel format
 export type PixelFormat = enum {
 	PIXELFORMAT_UNCOMPRESSED_GRAYSCALE = 1,
 	PIXELFORMAT_UNCOMPRESSED_GRAY_ALPHA,
@@ -334,6 +369,7 @@ export type PixelFormat = enum {
 	PIXELFORMAT_COMPRESSED_ASTC_8x8_RGBA
 };
 
+// Font type
 export type FontType = enum {
 	FONT_DEFAULT = 0,
 	FONT_BITMAP,
@@ -346,52 +382,94 @@ export type NPatchLayout = enum {
 	NPATCH_THREE_PATCH_HORIZONTAL   // Npatch layout: 3x1 tiles};
 };
 
-// Gruvbox colors
+// 235-bg-0 (#282828)
 export const GRUV_BG_DARK		= Color { r = 40,  g = 40,  b = 40,  a = 255 };
+// 223-fg-15 (#ebdbb2)
 export const GRUV_FG_DARK		= Color { r = 168, g = 153, b = 132, a = 255 };
+// 124-red-1 (#cc241d)
 export const GRUV_RED_DARK		= Color { r = 204, g = 36,  b = 29,  a = 255 };
+// 106-green-2 (#98971a)
 export const GRUV_GREEN_DARK		= Color { r = 152, g = 151, b = 26,  a = 255 };
+// 172-yellow-3 (#d79921)
 export const GRUV_YELLOW_DARK		= Color { r = 215, g = 153, b = 33,  a = 255 };
+// 66-blue-4 (#458588)
 export const GRUV_BLUE_DARK		= Color { r = 69,  g = 133, b = 136, a = 255 };
+// 132-purple-5 (#b16286)
 export const GRUV_PURPLE_DARK		= Color { r = 177, g = 98,  b = 134, a = 255 };
+// 72-aqua-6 (#689d6a)
 export const GRUV_AQUA_DARK		= Color { r = 104, g = 157, b = 106, a = 255 };
+// 166-orange-- (#d65d0e)
 export const GRUV_ORANGE_DARK		= Color { r = 214, g = 93,  b = 14,  a = 255 };
+// 237-bg1-- (#3c3836)
 export const GRUV_BG_LIGHT		= Color { r = 60,  g = 56,  b = 54,  a = 255 };
+// 229-fg0-- (#fbf1c7)
 export const GRUV_FG_LIGHT		= Color { r = 235, g = 219, b = 178, a = 255 };
+// 167-red-9 (#fb4934)
 export const GRUV_RED_LIGHT		= Color { r = 251, g = 73,  b = 52,  a = 255 };
+// 142-green-10 (#b8bb26)
 export const GRUV_GREEN_LIGHT		= Color { r = 184, g = 187, b = 38,  a = 255 };
+// 214-yellow-11 (#fabd2f)
 export const GRUV_YELLOW_LIGHT		= Color { r = 250, g = 189, b = 47,  a = 255 };
+// 109-blue-12 (#83a598)
 export const GRUV_BLUE_LIGHT		= Color { r = 131, g = 165, b = 152, a = 255 };
+// 175-purple-13 (#d3869b)
 export const GRUV_PURPLE_LIGHT		= Color { r = 211, g = 134, b = 155, a = 255 };
+// 108-aqua-14 (#8ec07c)
 export const GRUV_AQUA_LIGHT		= Color { r = 142, g = 192, b = 124, a = 255 };
+// 208-orange-- (#fe8019)
 export const GRUV_ORANGE_LIGHT		= Color { r = 254, g = 128, b = 25,  a = 255 };
 
-// Raylib colors
+// Light Gray
 export const LIGHTGRAY			= Color { r = 200, g = 200, b = 200, a = 255 };
+// Gray
 export const GRAY			= Color { r = 130, g = 130, b = 130, a = 255 };
+// Dark Gray
 export const DARKGRAY			= Color { r = 80,  g = 80,  b = 80,  a = 255 };
+// Yellow
 export const YELLOW			= Color { r = 253, g = 249, b = 0,   a = 255 };
+// Gold
 export const GOLD			= Color { r = 255, g = 203, b = 0,   a = 255 };
+// Orange
 export const ORANGE			= Color { r = 255, g = 161, b = 0,   a = 255 };
+// Pink
 export const PINK			= Color { r = 255, g = 109, b = 194, a = 255 };
+// Red
 export const RED			= Color { r = 230, g = 41,  b = 55,  a = 255 };
+// Maroon
 export const MAROON			= Color { r = 190, g = 33,  b = 55,  a = 255 };
+// Green
 export const GREEN			= Color { r = 0,   g = 228, b = 48,  a = 255 };
+// Lime
 export const LIME			= Color { r = 0,   g = 158, b = 47,  a = 255 };
+// Dark Green
 export const DARKGREEN			= Color { r = 0,   g = 117, b = 44,  a = 255 };
+// Sky Blue
 export const SKYBLUE			= Color { r = 102, g = 191, b = 255, a = 255 };
+// Blue
 export const BLUE			= Color { r = 0,   g = 121, b = 241, a = 255 };
+// Dark Blue
 export const DARKBLUE			= Color { r = 0,   g = 82,  b = 172, a = 255 };
+// Purple
 export const PURPLE			= Color { r = 200, g = 122, b = 255, a = 255 };
+// Violet
 export const VIOLET			= Color { r = 135, g = 60,  b = 190, a = 255 };
+// Dark Purple
 export const DARKPURPLE			= Color { r = 112, g = 31,  b = 126, a = 255 };
+// Beige
 export const BEIGE			= Color { r = 211, g = 176, b = 131, a = 255 };
+// Brown
 export const BROWN			= Color { r = 127, g = 106, b = 79,  a = 255 };
+// Dark Brown
 export const DARKBROWN			= Color { r = 76,  g = 63,  b = 47,  a = 255 };
+// White
 export const WHITE			= Color { r = 255, g = 255, b = 255, a = 255 };
+// Black
 export const BLACK			= Color { r = 0,   g = 0,   b = 0,   a = 255 };
+// Blank
 export const BLANK			= Color { r = 0,   g = 0,   b = 0,   a = 0 };
+// Magenta
 export const MAGENTA			= Color { r = 255, g = 0,   b = 255, a = 255 };
+// Ray White
 export const RAYWHITE			= Color { r = 245, g = 245, b = 245, a = 255 };
 
 // Window-Related functions
